@@ -4,7 +4,6 @@ module Aspose
       class Builder
 
         def save code_text, symbology, image_format, x_resolution, y_resolution, x_dimension, y_dimension
-          begin
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/barcode/generate?text=' + code_text.to_s + '&type=' + symbology.to_s + '&format=' + image_format.to_s +
               (x_resolution <= 0 ? '' : '&resolutionX=' + x_resolution.to_s) +
               (y_resolution <=0 ? '' : '&resolutionY=' + y_resolution.to_s) +
@@ -15,14 +14,9 @@ module Aspose
             output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}barcode#{symbology}.#{image_format}"
             Aspose::Cloud::Common::Utils.save_file(response, output_path)
             output_path
-          rescue Exception=>e
-            print e
-          end
-
         end
       end
     end
 
   end
 end
-
