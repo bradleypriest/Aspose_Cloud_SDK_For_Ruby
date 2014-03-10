@@ -17,7 +17,7 @@ module Aspose
               raise('Filename cannot be empty.')
             end
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.get(signed_str_uri,{:accept=>'application/json'})
@@ -44,9 +44,9 @@ module Aspose
             end       
         
             if sourcefolder == ''
-              struri = "#{$product_uri}/pdf/#{base_pdf}/appenddocument?appendfile=#{new_pdf}"+(startpage > 0 ? '&startPage=' + startpage.to_str : '' )  + (endpage > 0 ? '&endPage=' + endpage : '' )          
+              struri = "#{Aspose::Cloud::Common::Product.product_uri}/pdf/#{base_pdf}/appenddocument?appendfile=#{new_pdf}"+(startpage > 0 ? '&startPage=' + startpage.to_str : '' )  + (endpage > 0 ? '&endPage=' + endpage : '' )          
             else
-              struri = "#{$product_uri}/pdf/#{base_pdf}/appenddocument?appendfile=#{sourcefolder}/#{new_pdf}"+ (startpage > 0 ? '&startPage=' + startpage.to_str : '' )  + (endpage > 0 ? '&endPage=' + endpage : '' )
+              struri = "#{Aspose::Cloud::Common::Product.product_uri}/pdf/#{base_pdf}/appenddocument?appendfile=#{sourcefolder}/#{new_pdf}"+ (startpage > 0 ? '&startPage=' + startpage.to_str : '' )  + (endpage > 0 ? '&endPage=' + endpage : '' )
             end
         
             signeduri = Aspose::Cloud::Common::Utils.sign(struri)
@@ -63,7 +63,7 @@ module Aspose
               else
                 output_stream = folder.get_file(sourcefolder + '/' + base_pdf)
               end
-              output_path = $out_put_location + base_pdf;
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + base_pdf;
           
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
@@ -94,7 +94,7 @@ module Aspose
             # Build JSON to post
             json_data = JSON.generate('List'=>source_files)
         
-            struri = "#{$product_uri}/pdf/#{_mergedfilename}/merge"
+            struri = "#{Aspose::Cloud::Common::Product.product_uri}/pdf/#{_mergedfilename}/merge"
       
             signeduri = Aspose::Cloud::Common::Utils.sign(struri)
         
@@ -118,7 +118,7 @@ module Aspose
     
         def get_form_field_count
           begin
-            str_uri = $product_uri + '/pdf/' + @filename + '/feilds'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
         
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
@@ -137,7 +137,7 @@ module Aspose
         def get_form_fields
           begin
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/feilds'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
         
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
@@ -157,7 +157,7 @@ module Aspose
         def get_form_field(field_name)
       
           begin
-            str_uri = $product_uri + '/pdf/' + @filename + '/feilds/' + field_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds/' + field_name
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri) 
         
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
@@ -188,7 +188,7 @@ module Aspose
               raise('HTML file name not specified.')
             end
         
-            str_uri = $product_uri + '/pdf/' + pdf_filename + '?templatefile=' + html_filename + '&templatetype=html'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + pdf_filename + '?templatefile=' + html_filename + '&templatetype=html'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.put(str_signed_uri, '', {:accept=>'application/json'})
@@ -199,7 +199,7 @@ module Aspose
               folder = Aspose::Cloud::AsposeStorage::Folder.new 
           
               output_stream = folder.get_file(pdf_filename)          
-              output_path = $out_put_location + pdf_filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + pdf_filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -233,7 +233,7 @@ module Aspose
               raise('XML file name not specified.')
             end        
         
-            str_uri = $product_uri + '/pdf/' + pdf_filename + '?templatefile=' + xslt_filename + '&datafile=' + xml_filename + '&templatetype=xml'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + pdf_filename + '?templatefile=' + xslt_filename + '&datafile=' + xml_filename + '&templatetype=xml'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.put(str_signed_uri, '', {:accept=>'application/json'})
@@ -244,7 +244,7 @@ module Aspose
               folder = Aspose::Cloud::AsposeStorage::Folder.new 
           
               output_stream = folder.get_file(pdf_filename)          
-              output_path = $out_put_location + pdf_filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + pdf_filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -268,7 +268,7 @@ module Aspose
               raise('PDF file name not specified.')
             end
         
-            str_uri = $product_uri + '/pdf/' + pdf_filename
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + pdf_filename
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.put(str_signed_uri, '', {:accept=>'application/json'})
@@ -279,7 +279,7 @@ module Aspose
               folder = Aspose::Cloud::AsposeStorage::Folder.new 
           
               output_stream = folder.get_file(pdf_filename)          
-              output_path = $out_put_location + pdf_filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + pdf_filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -302,7 +302,7 @@ module Aspose
               raise('PDF file name not specified.')
             end
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.put(str_signed_uri, '', {:accept=>'application/json'})
@@ -313,7 +313,7 @@ module Aspose
               folder = Aspose::Cloud::AsposeStorage::Folder.new 
           
               output_stream = folder.get_file(@filename)          
-              output_path = $out_put_location + @filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -343,7 +343,7 @@ module Aspose
         
         
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
                 
             response_stream = RestClient.delete(str_signed_uri, {:accept=>'application/json'})
@@ -354,7 +354,7 @@ module Aspose
               folder = Aspose::Cloud::AsposeStorage::Folder.new 
           
               output_stream = folder.get_file(@filename)          
-              output_path = $out_put_location + @filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -389,7 +389,7 @@ module Aspose
         
         
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/movepage?newindex=' + new_location.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/movepage?newindex=' + new_location.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
                        
             response_stream = RestClient.post(str_signed_uri, '', {:accept=>'application/json'})
@@ -400,7 +400,7 @@ module Aspose
               folder = Aspose::Cloud::AsposeStorage::Folder.new 
           
               output_stream = folder.get_file(@filename)          
-              output_path = $out_put_location + @filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -440,7 +440,7 @@ module Aspose
         
         
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
                        
             response_stream = RestClient.post(str_signed_uri, image_stream, {:accept=>'application/json'})
@@ -451,7 +451,7 @@ module Aspose
               folder = Aspose::Cloud::AsposeStorage::Folder.new 
           
               output_stream = folder.get_file(@filename)          
-              output_path = $out_put_location + @filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -490,7 +490,7 @@ module Aspose
         
         
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '/imagefile=' + image_filename
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '/imagefile=' + image_filename
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
    
             response_stream = RestClient.post(str_signed_uri, '', {:accept=>'application/json'})
@@ -501,7 +501,7 @@ module Aspose
               folder = Aspose::Cloud::AsposeStorage::Folder.new 
           
               output_stream = folder.get_file(@filename)          
-              output_path = $out_put_location + @filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -528,7 +528,7 @@ module Aspose
               raise('property name not specified.')
             end
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/documentProperties/' + property_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/documentProperties/' + property_name
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
@@ -555,7 +555,7 @@ module Aspose
         
         
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/documentProperties'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/documentProperties'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
        
             response_stream = RestClient.get(str_signed_uri,  {:accept=>'application/json'})
@@ -592,7 +592,7 @@ module Aspose
             # Build JSON to post
             json_data = JSON.generate('Value'=>property_value)
 
-            str_uri = $product_uri + '/pdf/' + @filename + '/documentProperties/' + property_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/documentProperties/' + property_name
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
             response_stream = RestClient.put(str_signed_uri, json_data, {:accept=>'application/json'})
@@ -617,7 +617,7 @@ module Aspose
               raise('PDF file name not specified.')
             end                                       
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/documentProperties/'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/documentProperties/'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.delete(str_signed_uri, {:accept=>'application/json'})

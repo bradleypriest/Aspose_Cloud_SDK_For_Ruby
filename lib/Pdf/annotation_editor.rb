@@ -23,7 +23,7 @@ module Aspose
               raise 'page number not specified'
             end
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/annotations'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/annotations'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -58,7 +58,7 @@ module Aspose
               raise 'annotation index not specified'
             end
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/annotations/' + annotation_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/annotations/' + annotation_index.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -120,7 +120,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/bookmarks'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/bookmarks'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)  
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -151,7 +151,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/bookmarks/' + parent.to_s + '/bookmarks'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/bookmarks/' + parent.to_s + '/bookmarks'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -182,7 +182,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/bookmarks/' + bookmark_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/bookmarks/' + bookmark_index.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -218,7 +218,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/bookmarks/' + parent_index.to_s + '/bookmarks/' + child_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/bookmarks/' + parent_index.to_s + '/bookmarks/' + child_index.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -276,7 +276,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/attachments'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/attachments'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
 
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
@@ -308,7 +308,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/attachments/' + attachment_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/attachments/' + attachment_index.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -373,14 +373,14 @@ module Aspose
             file_info = self.get_attachment(attachment_index)
         
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/attachments/' + attachment_index.to_s + '/download'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/attachments/' + attachment_index.to_s + '/download'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
         
             if valid_output == ''                   
-              output_path = $out_put_location + file_info['Name'];
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + file_info['Name'];
               Aspose::Cloud::Common::Utils.saveFile(response_stream,output_path)
               return ''
             else
@@ -410,7 +410,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/links'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/links'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -445,7 +445,7 @@ module Aspose
               raise 'link index not specified'
             end
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/links/' + link_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/links/' + link_index.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
@@ -512,7 +512,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/bookmarks/' + bookmark_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/bookmarks/' + bookmark_index.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         

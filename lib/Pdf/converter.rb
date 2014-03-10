@@ -33,7 +33,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '?format=' + image_format + '&width=' + width.to_s + '&height=' + height.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '?format=' + image_format + '&width=' + width.to_s + '&height=' + height.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})                
@@ -41,7 +41,7 @@ module Aspose
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
         
             if valid_output == ''          
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + page_number.to_s + '.' + image_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + page_number.to_s + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return ''
             else
@@ -71,7 +71,7 @@ module Aspose
               raise 'image format not specified'
             end
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '?format=' + image_format
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '?format=' + image_format
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})                
@@ -79,7 +79,7 @@ module Aspose
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
         
             if valid_output == ''          
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + page_number.to_s + '.' + image_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + page_number.to_s + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return ''
             else
@@ -106,9 +106,9 @@ module Aspose
               raise('save format not specified')
             end
             if(storage_name.empty? == true)        
-              str_uri = $product_uri + '/pdf/' + @filename + '?format=' + @save_format
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '?format=' + @save_format
             else
-              str_uri = $product_uri + '/pdf/' + @filename + '?&format=' + @save_format + '&storage='+@save_format+'&folder='+folder
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '?&format=' + @save_format + '&storage='+@save_format+'&folder='+folder
             end
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
@@ -124,7 +124,7 @@ module Aspose
                 save_format = @save_format
               end
           
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '.' + save_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '.' + save_format
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return output_path
             else
@@ -164,7 +164,7 @@ module Aspose
         
         
         
-            str_uri = $product_uri + '/pdf/convert?format=' + output_format
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/convert?format=' + output_format
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = Aspose::Cloud::Common::Utils.upload_file_binary(input_file, str_signed_uri)                
@@ -183,7 +183,7 @@ module Aspose
                 output_filename = Utils::get_filename(input_file) + '.' + save_format
               end
           
-              output_path = $out_put_location + output_filename
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + output_filename
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return ''
             else

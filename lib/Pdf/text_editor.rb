@@ -20,9 +20,9 @@ module Aspose
             end
         
             if page_number > 0
-              str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/textitems'
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/textitems'
             else
-              str_uri = $product_uri + '/pdf/' + @filename + '/textitems';
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/textitems';
             end
         
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
@@ -51,14 +51,14 @@ module Aspose
             end
         
             if page_number > 0
-              str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/textitems'
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/textitems'
             else
-              str_uri = $product_uri + '/pdf/' + @filename + '/textitems';
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/textitems';
             end
             if fragment_number > 0
-              str_uri = $product_uri + '/pdf/' + @filename + '/fragments/' + fragment_number.to_s + '/textitems'
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/fragments/' + fragment_number.to_s + '/textitems'
             else
-              str_uri = $product_uri + '/pdf/' + @filename + '/textitems';
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/textitems';
             end
         
         
@@ -90,7 +90,7 @@ module Aspose
             end
         
        
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments'        
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments'        
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  
         
@@ -124,7 +124,7 @@ module Aspose
             end
         
        
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments/' + fragment_number.to_s + (!segament_number.nil? ?  '/segments/' + segament_number.to_s : '') + '/textformat'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments/' + fragment_number.to_s + (!segament_number.nil? ?  '/segments/' + segament_number.to_s : '') + '/textformat'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  
         
@@ -163,9 +163,9 @@ module Aspose
         
         
             if page_number > 0
-              str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/replaceText'
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/replaceText'
             else
-              str_uri = $product_uri + '/pdf/' + @filename + '/replaceText'
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/replaceText'
             end
 
         
@@ -178,7 +178,7 @@ module Aspose
             if valid_output == ''
               folder = Aspose::Cloud::AsposeStorage::Folder.new           
               output_stream = folder.get_file(@filename)          
-              output_path = $out_put_location + @filename;          
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -210,7 +210,7 @@ module Aspose
               raise 'page number not specified'
             end
                
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments/' + fragment_number.to_s       
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments/' + fragment_number.to_s       
         
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  

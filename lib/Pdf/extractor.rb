@@ -25,7 +25,7 @@ module Aspose
             end
         
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})        
@@ -63,7 +63,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '?format=' + image_format
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '?format=' + image_format
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})        
@@ -71,7 +71,7 @@ module Aspose
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
         
             if valid_output == ''          
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + image_index.to_s + '.' + image_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + image_index.to_s + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return ''
             else
@@ -112,7 +112,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '?format=' + image_format + '&width=' + width.to_s + '&height=' + height.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '?format=' + image_format + '&width=' + width.to_s + '&height=' + height.to_s
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})        
@@ -120,7 +120,7 @@ module Aspose
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
         
             if valid_output == ''          
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + image_index.to_s + '.' + image_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + image_index.to_s + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return ''
             else
