@@ -7,7 +7,7 @@ module Aspose
         end
     
         def get_properties
-          begin
+
             if @filename == ''
               raise 'Base file name not specified.'
             end
@@ -21,14 +21,12 @@ module Aspose
               return false
             end
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
         def get_property property_name
-          begin
+
             if @filename == ''
               raise 'Base file name not specified.'
             end
@@ -45,14 +43,12 @@ module Aspose
               return false
             end
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
         def set_property property_name='',property_value=''
-          begin
+
             if @filename == ''
               raise 'Base file name not specified.'
             end
@@ -78,13 +74,11 @@ module Aspose
               return false
             end
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
         def remove_all_properties
-          begin
+
             if @filename == ''
               raise 'Base file name not specified.'
             end
@@ -98,14 +92,12 @@ module Aspose
               return false
             end
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
         def remove_property property_name
-          begin
+
             if @filename == ''
               raise 'Base file name not specified.'
             end
@@ -122,27 +114,23 @@ module Aspose
               return false
             end
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
         def create_empty_workbook
-          begin
+
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri,'', :accept => 'application/json')
             json = JSON.parse(response)
             return json  
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
         def create_workbook_from_template template_file_name
-          begin
+
             if template_file_name == ''
               raise 'Template file not specified'
             end
@@ -151,14 +139,12 @@ module Aspose
             response = RestClient.put(signed_uri,'', :accept => 'application/json')
             json = JSON.parse(response)
             return json  
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
         def create_workbook_from_smart_marker_template template_file_name ='',data_file=''
-          begin
+
             if template_file_name == ''
               raise 'Template file not specified'
             end
@@ -170,14 +156,12 @@ module Aspose
             response = RestClient.put(signed_uri,'', :accept => 'application/json')
             json = JSON.parse(response)
             return json  
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
         def process_smart_marker data_file=''
-          begin
+
             if data_file == ''
               raise 'Data file not specified'
             end
@@ -186,14 +170,12 @@ module Aspose
             response = RestClient.post(signed_uri,'', :accept => 'application/json')
             json = JSON.parse(response)
             return json  
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
         def get_worksheets_count
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -202,13 +184,11 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['Worksheets']['WorksheetList'].size
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def get_name_count
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -217,13 +197,11 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['Names'].count
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def get_default_style
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -232,13 +210,11 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['Style']
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def encrypt_workbook encryption_type='XOR',password='',key_length=''
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -256,13 +232,11 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def protect_workbook protection_type = 'all',password=''
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -281,13 +255,11 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def unprotect_workbook password
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -304,13 +276,11 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
 
         def set_modify_password password=''
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -326,13 +296,11 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end 
     
         def clear_modify_password password=''
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -348,14 +316,12 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end 
 
 
         def decrypt_password password
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -371,13 +337,11 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end 
 
         def add_worksheet worksheet_name=''
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -390,13 +354,11 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end 
    
         def remove_worksheet worksheet_name=''
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -409,13 +371,11 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def merge_workbook merge_file_name =''
-          begin
+
             if @filename == ''
               raise 'Base file name not specified'
             end
@@ -428,9 +388,7 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
    
       end

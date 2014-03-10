@@ -21,7 +21,7 @@ module Aspose
         # * :saveFormat represents the converted format. For a list of supported formats, please visit 
         #  http://aspose.com/docs/display/cells/workbook		 
         def convert local_file,save_format
-          begin
+
             if @filename == ''
               raise 'Base file is not specified'
             end  
@@ -36,13 +36,11 @@ module Aspose
             else
               return validate_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
         
         def convert_to_image image_format,worksheet_name
-          begin
+
             if @filename == ''
               raise 'Base File is not specified.'
             end
@@ -58,13 +56,11 @@ module Aspose
               return validate_output
             end
             
-          rescue Exception=>e
-            print e
-          end
+
         end
         
         def save output_format
-          begin
+
             if @filename==''
               raise 'Base File is not specified.'
             end
@@ -81,13 +77,11 @@ module Aspose
             end
             
             
-          rescue Exception=>e
-            print e
-          end
+
         end
         
         def worksheet_to_image image_format
-          begin
+
             if @filename==''
               raise 'Base file name is not specified.'
             end
@@ -106,14 +100,12 @@ module Aspose
             else
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
           
         end
         
         def picture_to_image picture_index,image_format
-          begin
+
             if @filename==''
               raise 'Base File is not specified'
             end
@@ -134,13 +126,11 @@ module Aspose
             else
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
         
         def oleobject_to_image object_index,image_format
-          begin
+
             if @filename==''
               raise 'Base File is not specified'
             end
@@ -160,13 +150,11 @@ module Aspose
             else
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
         
         def chart_to_image chart_index,image_format
-          begin
+
             if @filename==''
               raise 'Base File is not specified'
             end
@@ -187,13 +175,11 @@ module Aspose
             else
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
         
         def autoshape_to_image shape_index,image_format
-          begin
+
             if @filename==''
               raise 'Base File is not specified'
             end
@@ -214,9 +200,7 @@ module Aspose
             else
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
       end  
     end

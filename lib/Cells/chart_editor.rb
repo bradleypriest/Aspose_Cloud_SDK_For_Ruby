@@ -16,7 +16,7 @@ module Aspose
         # lowerRightColumn
     
         def add_chart chart_type, upper_left_row, upper_left_column, lower_right_row, lower_right_column
-          begin
+
             if @filename==''
               raise 'Base file not specified'
             end
@@ -40,16 +40,14 @@ module Aspose
             else
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         # Deletes a chart 
         # chart_index
     
         def delete_chart chart_index
-          begin
+
             if @filename==''
               raise 'Base file not specified'
             end
@@ -70,16 +68,14 @@ module Aspose
             else
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         # Gets ChartArea of a chart 
         # chart_index
      
         def get_chart_area chart_index
-          begin
+
             if @filename==''
               raise 'Base file not specified'
             end
@@ -91,16 +87,14 @@ module Aspose
             response = RestClient.get signed_uri, {:accept => 'application/json'}
             json = JSON.parse(response)
             return json['ChartArea']
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         # Gets fill format of the ChartArea of a chart 
         # chart_index
     
         def get_fill_format chart_index
-          begin
+
             if @filename==''
               raise 'Base file not specified'
             end
@@ -112,16 +106,14 @@ module Aspose
             response = RestClient.get signed_uri, {:accept => 'application/json'}
             json = JSON.parse(response)
             return json['FillFormat']
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         # Gets border of the ChartArea of a chart 
         # chart_index
 	
         def get_border chart_index
-          begin
+
             if @filename==''
               raise 'Base file not specified'
             end
@@ -133,9 +125,7 @@ module Aspose
             response = RestClient.get signed_uri, {:accept => 'application/json'}
             json = JSON.parse(response)
             return json['Line']
-          rescue Exception=>e
-            print e
-          end
+
         end
       end
     end

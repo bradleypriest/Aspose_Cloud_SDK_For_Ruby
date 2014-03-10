@@ -7,7 +7,7 @@ module Aspose
         end
     
         def find_text text
-          begin
+
             if @filename == ''
               raise 'Base File Name is not Specified.'
             end
@@ -16,12 +16,10 @@ module Aspose
             response = RestClient.post signed_uri, '' , {:accept => 'application/json'}
             json = JSON.parse(response)
             return json['TextItems']['TextItemList']
-          rescue Exception=>e
-            print e
-          end
+
         end
         def find_text_in_worksheet worksheet_name,text
-          begin
+
             if @filename == ''
               raise 'Base File Name is not Specified.'
             end
@@ -30,13 +28,11 @@ module Aspose
             response = RestClient.post signed_uri, '' , {:accept => 'application/json'}
             json = JSON.parse(response)
             return json['TextItems']['TextItemList']
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def get_text_items worksheet_name
-          begin
+
             if @filename == ''
               raise 'Base File Name is not Specified.'
             end
@@ -45,13 +41,11 @@ module Aspose
             response = RestClient.get signed_uri, {:accept => 'application/json'}
             json = JSON.parse(response)
             return json['TextItems']['TextItemList']
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def replace_text old_text,new_text
-          begin
+
             if @filename == ''
               raise 'Base File Name is not Specified.'
             end
@@ -67,13 +61,11 @@ module Aspose
               Aspose::Cloud::Common::Utils.save_file(output_stream, output_path);
               return 'Value is changed';
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def replace_text_in_worksheet worksheet_name, old_text, new_text
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not Specified.'
             end
@@ -89,9 +81,7 @@ module Aspose
               Aspose::Cloud::Common::Utils.save_file(output_stream, output_path);
               return 'Value is changed';
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
       end
     end

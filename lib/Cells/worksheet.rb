@@ -9,7 +9,7 @@ module Aspose
         end
     
         def get_cells_list(offset,count)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -23,13 +23,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Cells']['CellList']
                       
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def get_row_list(offset,count)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -43,13 +41,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Rows']['RowsList']
                       
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def get_columns_list(offset,count)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -63,13 +59,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Columns']['ColumnsList']
                       
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def get_max_columns(offset,count)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -83,13 +77,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Cells']['MaxColumn']
                       
-          rescue Exception=>e
-            print e
-            return 0
-          end
+
         end
+
         def get_max_row(offset,count)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -103,14 +95,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Cells']['MaxRow']
                       
-          rescue Exception=>e
-            print e
-            return 0
-          end
+
         end
     
         def get_cells_count(offset,count)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -124,14 +113,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Cells']['CellCount']
                       
-          rescue Exception=>e
-            print e
-            return 0
-          end
+
         end
     
         def get_auto_shapes_count
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -145,14 +131,11 @@ module Aspose
             json = JSON.parse(response)
             return json['AutoShapes']['AuotShapeList'].count
                       
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def get_auto_shapes_by_index(index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -165,14 +148,11 @@ module Aspose
             json = JSON.parse(response)
             return json['AutoShapes']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def get_cell(cell_name)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -185,14 +165,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Cell']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def get_cell_style(cell_name='')
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -205,14 +182,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Style']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def set_cell_style(cell_name='',style)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -230,14 +204,11 @@ module Aspose
               return false
             end
                       
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
     
         def get_chart_by_index(index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -250,14 +221,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Chart']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def get_hyperlink_by_index(index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -270,14 +238,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Hyperlink']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def get_comment(cell_name='')
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -290,14 +255,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Comment']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def get_oleobject_by_index(index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -310,13 +272,10 @@ module Aspose
             json = JSON.parse(response)
             return json['OleObject']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
         def get_picture_by_index(index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -329,14 +288,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Picture']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def get_validation_by_index(index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -349,14 +305,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Validation']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def get_mergedcell_by_index(index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -369,14 +322,11 @@ module Aspose
             json = JSON.parse(response)
             return json['MergedCell']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def get_mergedcells_count
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -388,15 +338,11 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
             return json['MergedCells']['Count']
-                      
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def get_validations_count
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -409,14 +355,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Validations']['Count']
                       
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def get_pictures_count
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -428,15 +371,11 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
             return json['Pictures']['PictureList'].count
-                      
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def get_oleobjects_count
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -449,14 +388,11 @@ module Aspose
             json = JSON.parse(response)
             return json['OleObjects']['OleOjectList'].count
                       
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def get_charts_count
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -468,15 +404,11 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
             return json['Charts']['ChartList'].count
-                      
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def get_comments_count
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -489,14 +421,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Comments']['CommentList'].count
                       
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def get_hyperlinks_count
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -509,14 +438,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Hyperlinks']['HyperlinkList'].count
                       
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def hide_worksheet
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -532,15 +458,11 @@ module Aspose
             else
               return false
             end
-                      
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
     
         def unhide_worksheet
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -557,14 +479,11 @@ module Aspose
               return false
             end
                       
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
     
         def move_worksheet(worksheet_name = '',position)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -585,14 +504,11 @@ module Aspose
               return false
             end
                       
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
     
         def calculate_formula(formula = '')
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -605,14 +521,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Value']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def set_cell_value(cell_name='',value_type='',value='')
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -630,14 +543,11 @@ module Aspose
               return false
             end
                       
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
     
         def get_rows_count(offset,count)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -651,14 +561,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Rows']['RowsCount']
                       
-          rescue Exception=>e
-            print e
-            return -1
-          end
+
         end
     
         def get_rows(row_index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -672,14 +579,11 @@ module Aspose
             json = JSON.parse(response)
             return json['Row']
                       
-          rescue Exception=>e
-            print e
-            return nil
-          end
+
         end
     
         def delete_row(row_index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -696,14 +600,11 @@ module Aspose
               return false
             end
                       
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
     
         def sort_data(data_sort,cell_area = '')
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -721,14 +622,11 @@ module Aspose
               return false
             end
                       
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
     
         def get_column(column_index)
-          begin
+
             if(@filename == '')
               raise 'Base File Name is not specified'
             end
@@ -740,13 +638,10 @@ module Aspose
             response = RestClient.get(signed_uri,:accept => 'application/json' )
             json = JSON.parse(response)
             return json['Column']                    
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
         def get_cell(cell_name)
-          begin
+
             if(@filename=='')
               raise 'Base File Name is not specified'
             end
@@ -758,13 +653,10 @@ module Aspose
             response = RestClient.get(signed_uri, :accept=>'application/json')
             json = JSON.parse(response)
             return json['Cell']
-          rescue Exception=>e
-            print e
-            return false
-          end
+
         end
         def get_cell_style(cell_name)
-          begin
+
             if(@filename=='')
               raise 'Base File Name is not specified'
             end
@@ -776,13 +668,11 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['Style']
-          rescue Exception => e
-            print e
-          end
+
         end
     
         def add_picture(picture_path,picture_location, upper_left_row, upper_left_column, lower_right_row, lower_right_column)
-          begin
+
             if(@filename=='')
               raise 'Base File Name is not specified'
             end
@@ -808,9 +698,7 @@ module Aspose
             else
               return false
             end
-          rescue Exception=>e
-            print e
-          end
+         
       
         end
       end

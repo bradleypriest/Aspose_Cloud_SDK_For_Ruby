@@ -11,7 +11,7 @@ module Aspose
         # @param picture_index
         # @param image_format
         def get_picture worksheet_name, picture_index, image_format
-          begin
+
             if @filename==''
               raise 'Base file name is not specified'
             end
@@ -36,9 +36,7 @@ module Aspose
             else 
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         # saves a specific OleObject from a specific sheet as image
@@ -47,7 +45,7 @@ module Aspose
         # @param image_format
     
         def get_ole_object worksheet_name, object_index, image_format
-          begin
+
             if @filename==''
               raise 'Base file name is not specified'
             end
@@ -72,9 +70,7 @@ module Aspose
             else 
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         # saves a specific chart from a specific sheet as image
@@ -83,7 +79,7 @@ module Aspose
         # @param image_format
     
         def get_chart worksheet_name, chart_index, image_format
-          begin
+
             if @filename==''
               raise 'Base file name is not specified'
             end
@@ -108,9 +104,7 @@ module Aspose
             else 
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         #saves a specific auto-shape from a specific sheet as image
@@ -119,7 +113,7 @@ module Aspose
         # @param image_format
     
         def get_auto_shape worksheet_name, shape_index, image_format
-          begin
+
             if @filename==''
               raise 'Base file name is not specified'
             end
@@ -144,9 +138,7 @@ module Aspose
             else 
               return v_output
             end
-          rescue Exception=>e
-            print e
-          end
+
         end
       end
     end
