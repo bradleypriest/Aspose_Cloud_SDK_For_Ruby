@@ -6,10 +6,11 @@ module Aspose
       class Folder
 
         def initialize
-          @str_uri_folder = $product_uri + '/storage/folder/'
-          @str_uri_file = $product_uri + '/storage/file/'
-          @str_uri_exist = $product_uri + '/storage/exist/'
-          @str_uri_disc = $product_uri + '/storage/disc/'
+          @str_uri_folder = Aspose::Cloud::Common::Product.product_uri + '/storage/folder/'
+          @str_uri_folder = Aspose::Cloud::Common::Product.product_uri + '/storage/folder/'
+          @str_uri_file = Aspose::Cloud::Common::Product.product_uri + '/storage/file/'
+          @str_uri_exist = Aspose::Cloud::Common::Product.product_uri + '/storage/exist/'
+          @str_uri_disc = Aspose::Cloud::Common::Product.product_uri + '/storage/disc/'
         end
 
         # Uploads file from the local path to the remote folder.
@@ -26,9 +27,9 @@ module Aspose
               filename = File.basename(local_file)
 
               if remote_folder.empty?
-                struri = $product_uri + '/storage/file/' + filename
+                struri = Aspose::Cloud::Common::Product.product_uri + '/storage/file/' + filename
               else
-                struri = $product_uri + '/storage/file/' + remote_folder + '/' + filename
+                struri = Aspose::Cloud::Common::Product.product_uri + '/storage/file/' + remote_folder + '/' + filename
               end
 
               signeduri = Aspose::Cloud::Common::Utils.sign(struri)
@@ -38,9 +39,9 @@ module Aspose
               filename = File.basename(local_file)
 
               if remote_folder.empty?
-                struri = $product_uri + '/storage/file/' + filename + '?storage=' + storage_name
+                struri = Aspose::Cloud::Common::Product.product_uri + '/storage/file/' + filename + '?storage=' + storage_name
               else
-                struri = $product_uri + '/storage/file/' + remote_folder + '/' + filename + '?storage=' + storage_name
+                struri = Aspose::Cloud::Common::Product.product_uri + '/storage/file/' + remote_folder + '/' + filename + '?storage=' + storage_name
               end
 
               signeduri = Aspose::Cloud::Common::Utils.sign(struri)
@@ -58,7 +59,9 @@ module Aspose
         # Retrieves Files and Folder information from a remote folder. The method returns an Array of AppFile objects.
         # * :remoteFolderPath represents remote folder relative to the root. Pass empty string for the root folder.
         def get_files(remote_folder_path)
+
           str_url = @str_uri_folder + remote_folder_path
+          str_url = str_url[0..-2] if remote_folder_path.empty?
 
           signed_uri = Aspose::Cloud::Common::Utils.sign(str_url)
           response = RestClient.get(signed_uri, :accept => 'application/json')
