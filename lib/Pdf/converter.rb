@@ -18,7 +18,7 @@ module Aspose
     
         def convert_to_image_by_size(page_number, image_format, width=0, height=0)
       
-          begin
+
         
             if @filename == ''
               raise('filename not specified')
@@ -47,11 +47,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end
-      
+
         end
     
 =begin
@@ -61,7 +57,7 @@ module Aspose
 =end
     
         def convert_to_image page_number, image_format
-          begin
+
         
             if page_number == ''
               raise('page number not specified')
@@ -85,10 +81,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e        
-          end      
+
         end
 
 =begin
@@ -96,7 +89,7 @@ module Aspose
 =end
     
         def convert storage_name='', folder='', save_format=''
-          begin
+
         
             if save_format.empty? == false
               @save_format = save_format
@@ -130,10 +123,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e        
-          end      
+
         end
 
 =begin
@@ -144,7 +134,7 @@ module Aspose
 =end
     
         def convert_local_file input_file,output_filename,output_format
-          begin
+
         
             if input_file == ''
               raise('input file not specified')
@@ -189,10 +179,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e        
-          end      
+
         end    
     
       end

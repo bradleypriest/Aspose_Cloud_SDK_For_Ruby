@@ -13,7 +13,7 @@ module Aspose
 =end
     
         def get_annotations_count page_number
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -32,9 +32,7 @@ module Aspose
             return stream_hash['Annotations']['List'].length
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end
     
 =begin
@@ -44,7 +42,7 @@ module Aspose
 =end
     
         def get_annotation page_number, annotation_index
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -67,9 +65,7 @@ module Aspose
             return stream_hash['Annotation']
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end
 
 =begin
@@ -78,7 +74,7 @@ module Aspose
 =end
     
         def get_all_annotation page_number
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -103,9 +99,7 @@ module Aspose
             return all_annotations
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -113,7 +107,7 @@ module Aspose
 =end
     
         def get_bookmarks_count
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -129,9 +123,7 @@ module Aspose
             return stream_hash['Bookmarks']['List'].length
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end
 
 =begin
@@ -140,7 +132,7 @@ module Aspose
 =end
     
         def get_child_bookmarks_count parent
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -160,9 +152,7 @@ module Aspose
             return stream_hash['Bookmarks']['List'].length
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end
 
 =begin
@@ -171,7 +161,7 @@ module Aspose
 =end
     
         def get_bookmark bookmark_index
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -191,9 +181,7 @@ module Aspose
             return stream_hash['Bookmark']
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -203,7 +191,7 @@ module Aspose
 =end
     
         def get_child_bookmark parent_index, child_index
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -227,9 +215,7 @@ module Aspose
             return stream_hash['Bookmark']
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -237,7 +223,7 @@ module Aspose
 =end
     
         def get_all_bookmarks
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -259,9 +245,7 @@ module Aspose
             return all_bookmarks
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -269,7 +253,7 @@ module Aspose
 =end
     
         def get_attachments_count
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -286,9 +270,7 @@ module Aspose
             return stream_hash['Attachments']['List'].length
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -297,7 +279,7 @@ module Aspose
 =end
     
         def get_attachment attachment_index
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -317,9 +299,7 @@ module Aspose
             return stream_hash['Attachment']
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end       
 
 =begin
@@ -327,7 +307,7 @@ module Aspose
 =end
     
         def get_all_attachments
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -349,9 +329,7 @@ module Aspose
             return all_attachments
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -360,7 +338,7 @@ module Aspose
 =end
     
         def download_attachment attachment_index
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -388,9 +366,7 @@ module Aspose
             end
         
         
-          rescue Exception=>e
-            print e
-          end
+
         end     
 
 =begin
@@ -399,7 +375,7 @@ module Aspose
 =end
     
         def get_links_count page_number
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -418,10 +394,7 @@ module Aspose
         
             return stream_hash['Links']['List'].length
         
-        
-          rescue Exception=>e
-            print e
-          end
+
         end 
 
 =begin
@@ -431,7 +404,7 @@ module Aspose
 =end
     
         def get_link page_number, link_index
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -453,10 +426,7 @@ module Aspose
         
             return stream_hash['Link']
         
-        
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -465,7 +435,7 @@ module Aspose
 =end
     
         def get_all_links page_number
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -488,11 +458,7 @@ module Aspose
             end
         
             return all_links
-        
-        
-          rescue Exception=>e
-            print e
-          end
+
         end     
 
 =begin
@@ -501,7 +467,7 @@ module Aspose
 =end
     
         def is_child_bookmark bookmark_index
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -520,10 +486,7 @@ module Aspose
         
             return stream_hash['Bookmark']
         
-        
-          rescue Exception=>e
-            print e
-          end
+
         end
     
       end

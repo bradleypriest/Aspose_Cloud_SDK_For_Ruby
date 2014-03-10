@@ -14,7 +14,7 @@ module Aspose
   @param  number page_number
 =end    
         def get_image_count page_number
-          begin
+
         
             if page_number == ''
               raise 'page number not sepcified'
@@ -32,9 +32,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)        
             return stream_hash['Images']['List'].length
         
-          rescue Exception=>e
-            print e
-          end
+
         end
 
 =begin
@@ -44,7 +42,7 @@ module Aspose
 	@param string image_format
 =end    
         def get_image_default_size page_number, image_index, image_format
-          begin
+
         
             if page_number == ''
               raise 'page number not sepcified'
@@ -78,10 +76,7 @@ module Aspose
               return valid_output
             end
         
-        
-          rescue Exception=>e
-            print e
-          end
+
         end
 
 =begin
@@ -93,7 +88,7 @@ module Aspose
 	@param int height
 =end    
         def get_image_custom_size page_number, image_index, image_format, width=0, height=0
-          begin
+
         
             if page_number == ''
               raise 'page number not sepcified'
@@ -127,10 +122,7 @@ module Aspose
               return valid_output
             end
         
-        
-          rescue Exception=>e
-            print e
-          end
+
         end      
       end
     end

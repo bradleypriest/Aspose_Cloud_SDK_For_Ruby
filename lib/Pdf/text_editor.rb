@@ -13,7 +13,6 @@ module Aspose
    @param number page_number [optinal]
 =end    
         def get_text page_number = 0
-          begin
         
             if @filename == ''
               raise 'filename not specified'
@@ -32,11 +31,7 @@ module Aspose
             output_text = ''
             stream_hash['TextItems']['List'].each { |item| output_text.concat(item['Text'])  }
         
-            return output_text        
-        
-          rescue Exception=>e
-            print e
-          end
+            return output_text
         end
 
 =begin
@@ -44,7 +39,7 @@ module Aspose
    @param number page_number [optinal]
 =end    
         def get_text_items page_number = 0,fragment_number = 0
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -68,10 +63,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             return stream_hash['TextItems']['List']                
-        
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -79,7 +71,7 @@ module Aspose
    @param number page_number 
 =end    
         def get_fragment_count page_number
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -97,10 +89,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             return stream_hash['TextItems']['List'].length
-        
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -109,8 +98,6 @@ module Aspose
    @param number fragment_number 
 =end    
         def get_text_format page_number, fragment_number, segament_number = 0
-          begin
-        
             if @filename == ''
               raise 'filename not specified'
             end
@@ -131,10 +118,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             return stream_hash['TextFormat']
-        
-          rescue Exception=>e
-            print e
-          end
+
         end
 
 =begin
@@ -143,7 +127,7 @@ module Aspose
     @param string new_text 
 =end    
         def replace_text old_text, new_text, is_regular_expression = false, page_number = 0
-          begin
+
         
             if @filename == ''
               raise 'filename not specified'
@@ -184,10 +168,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end
+
         end    
 
 =begin
@@ -196,8 +177,6 @@ module Aspose
   @param number fragmentNumber
 =end    
         def get_segment_count page_number, fragment_number
-          begin
-        
             if @filename == ''
               raise 'filename not specified'
             end
@@ -217,15 +196,9 @@ module Aspose
         
             stream_hash = JSON.parse(response_stream)
         
-            return stream_hash['TextItems']['List'].length                
-        
-          rescue Exception=>e
-            print e
-          end
+            return stream_hash['TextItems']['List'].length
         end
-    
       end
     end
-    
   end
 end

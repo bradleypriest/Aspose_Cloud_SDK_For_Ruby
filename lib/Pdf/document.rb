@@ -11,7 +11,7 @@ module Aspose
         end
     
         def get_page_count
-          begin
+
       
             if(@filename == '')
               raise('Filename cannot be empty.')
@@ -25,15 +25,12 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             return stream_hash['Pages']['List'].count
-                
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         def append_document(base_pdf, new_pdf, startpage = 0, endpage = 0, sourcefolder = '')
       
-          begin
+
         
             if base_pdf == ''
               raise('Base file not specified')
@@ -70,15 +67,10 @@ module Aspose
             else
               return valid_output
             end
-               
-          rescue Exception=>e
-            print e
-          end
-      
         end
 
         def merge_documents(source_files)
-          begin
+
             _mergedfilename = @filename
       
             # Throw exception if output filename not specified
@@ -109,15 +101,13 @@ module Aspose
               return false
             end
         
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         #Gets the FormField count of the specified PDF document
     
         def get_form_field_count
-          begin
+
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
         
@@ -126,16 +116,13 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             return stream_hash['Fields']['List'].count
-        
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         #Gets the list of FormFields from the specified PDF document
     
         def get_form_fields
-          begin
+
         
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds'
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
@@ -146,9 +133,7 @@ module Aspose
         
             return stream_hash['Fields']['List']
         
-          rescue Exception=>e
-            print e
-          end
+
         end
     
         # Gets a particular form field
@@ -156,7 +141,7 @@ module Aspose
     
         def get_form_field(field_name)
       
-          begin
+
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds/' + field_name
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri) 
         
@@ -165,10 +150,6 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             return stream_hash['Field']
-        
-          rescue Exception=>e
-            print e
-          end
       
         end
     
@@ -178,7 +159,7 @@ module Aspose
     
         def create_from_html (pdf_filename, html_filename)
       
-          begin
+
         
             if(pdf_filename == '')
               raise('PDF file name not specified.')
@@ -205,10 +186,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end
+
       
         end           
     
@@ -219,7 +197,7 @@ module Aspose
 	    
         def create_from_xml (pdf_filename, xslt_filename, xml_filename)
       
-          begin
+
         
             if(pdf_filename == '')
               raise('PDF file name not specified.')
@@ -250,10 +228,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
@@ -262,7 +237,7 @@ module Aspose
 	    
         def create_empty_pdf (pdf_filename)
       
-          begin
+
         
             if(pdf_filename == '')
               raise('PDF file name not specified.')
@@ -285,10 +260,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
@@ -296,7 +268,7 @@ module Aspose
 	    
         def add_new_page
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -319,10 +291,6 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end
       
         end
     
@@ -331,7 +299,7 @@ module Aspose
 	    
         def delete_page (page_number)
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -360,10 +328,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end
+
       
         end
 
@@ -373,7 +338,7 @@ module Aspose
 	    
         def move_page (page_number, new_location)
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -406,10 +371,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
@@ -420,7 +382,7 @@ module Aspose
 	    
         def replace_image_stream (page_number, image_index, image_stream)
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -457,10 +419,7 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e
-          end      
+
         end
     
         #Replaces Image in PDF File using Local Image Stream
@@ -470,7 +429,7 @@ module Aspose
 	    
         def replace_image_file (page_number, image_index, image_filename)
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -508,9 +467,7 @@ module Aspose
               return valid_output
             end
         
-          rescue Exception=>e
-            print e
-          end      
+
         end
     
         #Get specified properity of the document
@@ -518,7 +475,7 @@ module Aspose
        
         def get_document_property property_name
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -537,9 +494,7 @@ module Aspose
         
             return stream_hash['DocumentProperty']        
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
@@ -547,7 +502,7 @@ module Aspose
        
         def get_document_properties
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -563,9 +518,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
             return stream_hash['DocumentProperties']['List']
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
@@ -575,7 +528,7 @@ module Aspose
        
         def set_document_property property_name, property_value
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -600,10 +553,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             return stream_hash['DocumentProperty']        
-        
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
@@ -611,7 +561,7 @@ module Aspose
        
         def remove_all_properties
       
-          begin
+
         
             if(@filename == '')
               raise('PDF file name not specified.')
@@ -630,9 +580,7 @@ module Aspose
               return false;
             end
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
     
