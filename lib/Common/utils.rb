@@ -35,12 +35,12 @@ module Aspose
           url = URI.escape(url)
           parsed_url = URI.parse(url)
 
-          url_to_sign = "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.path}?appSID=#{$app_sid}"
+          url_to_sign = "#{parsed_url.scheme}://#{parsed_url.host}#{parsed_url.path}?appSID=#{Aspose::Cloud::Common::AsposeApp.app_sid}"
           url_to_sign += "&#{parsed_url.query}" if parsed_url.query
 
 
           # create a signature using the private key and the URL
-          raw_signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'), $app_key, url_to_sign)
+          raw_signature = OpenSSL::HMAC.digest(OpenSSL::Digest.new('sha1'), Aspose::Cloud::Common::AsposeApp.app_key, url_to_sign)
 
           #Convert raw to encoded string
           signature = Base64.strict_encode64(raw_signature).tr('+/', '-_')

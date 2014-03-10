@@ -3,11 +3,31 @@ module Aspose
   module Cloud
     module Common
       class AsposeApp
-        def initialize(app_sid,app_key)  
-          $app_sid = app_sid
-          $app_key = app_key      
-          $out_put_location = ''
+
+        def self.app_sid
+          @@app_sid
         end
+
+        def self.app_sid= app_sid
+          @@app_sid = app_sid
+        end
+
+        def self.app_key
+          @@app_key
+        end
+
+        def self.app_key= app_key
+          @@app_key = app_key
+        end
+
+        def self.output_location
+          @@output_location
+        end
+
+        def self.output_location= output_location
+          @@output_location = output_location
+        end
+
       end
     end
   end
