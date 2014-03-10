@@ -10,7 +10,7 @@ module Aspose
           begin
             raise 'Base file is not specified' if @filename.empty?
 
-            str_uri = $product_uri + '/barcode/' + @filename + '/recognize?' + (symbology.length <= 0 ? 'type=' : 'type=' + symbology.to_s)
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/barcode/' + @filename + '/recognize?' + (symbology.length <= 0 ? 'type=' : 'type=' + symbology.to_s)
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
@@ -49,7 +49,7 @@ module Aspose
         end
 
         def uri_builder remote_image, remote_folder, read_type, format
-          uri = $product_uri + '/barcode/'
+          uri = Aspose::Cloud::Common::Product.product_uri + '/barcode/'
           uri += remote_image + '/' unless remote_image.empty?
           uri += 'recognize?type='
           uri += read_type.to_s unless read_type == 'AllSupportedTypes'
