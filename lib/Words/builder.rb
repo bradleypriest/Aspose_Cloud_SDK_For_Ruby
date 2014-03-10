@@ -18,7 +18,7 @@ module Aspose
 
         def insert_watermark_text text, rotation_angle
 
-          begin
+
 
             raise 'Text not specified.' if text.empty?
             check_angle(rotation_angle)
@@ -39,9 +39,6 @@ module Aspose
             output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
             Aspose::Cloud::Common::Utils.save_file(output_stream, output_path)
 
-          rescue Exception => e
-            print e
-          end
 
           ''
 
@@ -60,7 +57,7 @@ module Aspose
 
         def insert_watermark_image image_file, rotation_angle
 
-          begin
+
             check_angle(rotation_angle)
             raise 'Image file not specified.' if image_file.empty?
 
@@ -82,9 +79,7 @@ module Aspose
             end
 
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -98,7 +93,7 @@ module Aspose
 
         def replace_text old_value, new_value, is_match_case, is_match_whole_word
 
-          begin
+
             raise 'Old value not specified.' if old_value.empty?
             raise 'New Value not specified.' if new_value.empty?
 
@@ -116,9 +111,7 @@ module Aspose
             output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
             Aspose::Cloud::Common::Utils.save_file(output_stream, output_path)
             ''
-          rescue Exception => e
-            print e
-          end
+
 
         end
 

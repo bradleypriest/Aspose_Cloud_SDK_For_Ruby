@@ -11,7 +11,7 @@ module Aspose
 
         def convert save_format, storage_name='', folder=''
 
-          begin
+
             if @filename.empty?
               raise 'Filename cannot be empty.'
             end
@@ -34,14 +34,12 @@ module Aspose
 
             valid_output
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
         def convert_local_file input_path, output_path, output_format
-          begin
+
 
             raise 'Input File Name not specified' if input_path.empty?
             raise 'Please Specify Output Path' if output_path.empty?
@@ -64,9 +62,7 @@ module Aspose
 
             v_output
 
-          rescue Exception => e
-            print e
-          end
+
         end
       end
     end

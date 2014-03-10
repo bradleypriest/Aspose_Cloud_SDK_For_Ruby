@@ -18,7 +18,7 @@ module Aspose
     
         def execute_mail_merge str_xml
       
-          begin
+
 
             if str_xml == ''
               raise 'XML not specified.'
@@ -43,9 +43,7 @@ module Aspose
             end        
         
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end
 
@@ -57,7 +55,7 @@ module Aspose
     
         def execute_mail_merge_with_regions str_xml
       
-          begin
+
 
             if str_xml == ''
               raise 'XML not specified.'
@@ -80,9 +78,7 @@ module Aspose
             end        
         
         
-          rescue Exception=>e
-            print e
-          end
+
       
         end    
 
@@ -94,7 +90,7 @@ module Aspose
     
         def execute_template str_xml
       
-          begin
+
 
             if str_xml == ''
               raise 'XML not specified.'
@@ -116,9 +112,7 @@ module Aspose
             end        
         
         
-          rescue Exception=>e
-            print e
-          end
+          
       
         end
     

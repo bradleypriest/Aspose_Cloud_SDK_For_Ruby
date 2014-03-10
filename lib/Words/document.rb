@@ -18,7 +18,7 @@ module Aspose
 =end
 
         def append_document append_docs, import_format_modes, source_folder
-          begin
+
 
             if append_docs.length != import_format_modes.length
               raise 'Please specify complete documents and import format modes.'
@@ -48,9 +48,7 @@ module Aspose
             output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
             Aspose::Cloud::Common::Utils.save_file(output_stream, output_path)
             ''
-          rescue Exception => e
-            print e
-          end
+
         end
 
 =begin
@@ -59,7 +57,7 @@ module Aspose
 
         def get_document_info
 
-          begin
+
 
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
@@ -69,9 +67,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
             stream_hash['Code'] == 200 ? stream_hash['Document'] : false
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -82,7 +78,7 @@ module Aspose
 
         def get_property property_name
 
-          begin
+
 
             if property_name == ''
               raise 'Property name not specified.'
@@ -96,9 +92,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
             stream_hash['Code'] == 200 ? stream_hash['DocumentProperty'] : false
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -110,7 +104,7 @@ module Aspose
 
         def set_property property_name, property_value
 
-          begin
+
 
             raise 'Property name not specified.' if property_name.empty?
             raise 'Property value not specified.' if property_value.empty?
@@ -131,9 +125,7 @@ module Aspose
 
             false
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -144,7 +136,7 @@ module Aspose
 
         def delete_property property_name
 
-          begin
+
             raise 'Property name not specified.' if property_name.empty?
 
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/documentProperties/' + property_name
@@ -155,9 +147,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
             stream_hash['Code'] == 200
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -167,7 +157,7 @@ module Aspose
 
         def get_properties
 
-          begin
+
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/documentProperties'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
@@ -178,9 +168,7 @@ module Aspose
             return stream_hash['DocumentProperties']['List'] if  stream_hash['Code'] == 200
             false
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -192,7 +180,7 @@ module Aspose
 =end
 
         def convert_local_file input_file, output_filename, output_format
-          begin
+
 
             raise('input file not specified') if input_file.empty?
             raise('output file not specified') if output_filename.empty?
@@ -210,9 +198,7 @@ module Aspose
             output_path = Aspose::Cloud::Common::AsposeApp.output_location + output_filename
             Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
             ''
-          rescue Exception => e
-            print e
-          end
+
         end
 
       end

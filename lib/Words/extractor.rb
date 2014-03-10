@@ -15,7 +15,7 @@ module Aspose
 
         def get_text
 
-          begin
+
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/textItems'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
@@ -24,9 +24,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
             stream_hash['Code'] == 200 ? stream_hash['TextItems']['List'] : false
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -38,7 +36,7 @@ module Aspose
 
         def get_ole_data index, ole_format
 
-          begin
+
 
             if index == ''
               raise 'Index not specified.'
@@ -63,9 +61,7 @@ module Aspose
               return valid_output
             end
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -77,7 +73,7 @@ module Aspose
 
         def get_image_data index, render_format
 
-          begin
+
 
             if index == ''
               raise 'Index not specified.'
@@ -103,9 +99,7 @@ module Aspose
               return valid_output
             end
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -117,7 +111,7 @@ module Aspose
 
         def convert_drawing_object index, render_format
 
-          begin
+
 
             if index == ''
               raise 'Index not specified.'
@@ -143,9 +137,7 @@ module Aspose
               return valid_output
             end
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -155,7 +147,7 @@ module Aspose
 
         def get_drawing_object_list
 
-          begin
+
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/drawingObjects'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
@@ -164,9 +156,7 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
             stream_hash['Code'] == 200 ? stream_hash['DrawingObjects']['List'] : false
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -178,7 +168,7 @@ module Aspose
 
         def get_drawing_object object_uri, output_path
 
-          begin
+
 
             if object_uri == ''
               raise 'Object URI not specified.'
@@ -228,9 +218,7 @@ module Aspose
               return false
             end
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
@@ -241,7 +229,7 @@ module Aspose
 
         def get_drawing_objects output_path
 
-          begin
+
 
             if output_path == ''
               raise 'Output path not specified.'
@@ -260,9 +248,7 @@ module Aspose
               self.get_drawing_object(object['link']['Href'], output_path)
             end
 
-          rescue Exception => e
-            print e
-          end
+
 
         end
 
