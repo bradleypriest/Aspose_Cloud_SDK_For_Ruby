@@ -1,5 +1,3 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
 module Aspose
   module Cloud
 
@@ -7,6 +5,7 @@ module Aspose
       class Document
         def initialize filename
           @filename = filename
+          raise 'Base file not specified.' if @filename.empty?
         end
 
 =begin
@@ -15,29 +14,19 @@ module Aspose
         def get_slide_count(storage_type='',folder_name = '',storage_name='')
       
           begin
-        
-            if @filename == ''
-              raise 'filename not specified'
-            end
-        
-            str_uri = $product_uri + '/slides/' + @filename + '/slides'
-            if !folder_name.empty?
-              str_uri += '?folder=' + folder_name
-            end
-            if !storage_name.empty?
-              str_uri += '&storage=' + storage_name
-            end
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
+            str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/slides/#{@filename}/slides"
+            str_uri += "?folder=#{folder_name}&storage=#{storage_name}" unless folder_name.empty?
+
+            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
         
             stream_hash = JSON.parse(response_stream)
         
-            return stream_hash['Slides']['SlideList'].length
+            stream_hash['Slides']['SlideList'].length
         
           rescue Exception=>e
             print e
           end
-      
         end
 
 =begin
@@ -63,9 +52,9 @@ module Aspose
             end
         
             if(slide_number == 0)
-              str_uri = $product_uri + '/slides/' + @filename + '/replaceText?oldValue=' + old_text + '&newValue=' + new_text + '&ignoreCase=true'
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/replaceText?oldValue=' + old_text + '&newValue=' + new_text + '&ignoreCase=true'
             else
-              str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/replaceText?oldValue=' + old_text + '&newValue=' + new_text + '&ignoreCase=true'
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/replaceText?oldValue=' + old_text + '&newValue=' + new_text + '&ignoreCase=true'
             end
         
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri) 
@@ -76,7 +65,7 @@ module Aspose
             if valid_output == ''
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               output_stream = folder.get_file(@filename)
-              output_path = $out_put_location + @filename 
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -103,9 +92,9 @@ module Aspose
             end
         
             if(slide_number == 0)
-              str_uri = $product_uri + '/slides/' + @filename + '/textItems?&withEmpty='+with_empty.to_s
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/textItems?&withEmpty='+with_empty.to_s
             else
-              str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/textItems?&withEmpty='+with_empty.to_s
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/textItems?&withEmpty='+with_empty.to_s
             end
 
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
@@ -133,7 +122,7 @@ module Aspose
             end
         
         
-            str_uri = $product_uri + '/slides/' + @filename + '/slides'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides'
             if !folder_name.empty?
               str_uri += '?folder=' + folder_name
             end
@@ -149,7 +138,7 @@ module Aspose
             if valid_output == ''
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               output_stream = folder.get_file(@filename)
-              output_path = $out_put_location + @filename ;
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename ;
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -174,7 +163,7 @@ module Aspose
               raise 'Base file not specified.'
             end
         
-            str_uri = $product_uri + '/slides/' + @filename + '/documentProperties'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/documentProperties'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.get(signed_str_uri,{:accept=>'application/json'})
@@ -210,7 +199,7 @@ module Aspose
               raise 'Property name not specified.'
             end
         
-            str_uri = $product_uri + '/slides/' + @filename + '/documentProperties/' + property_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/documentProperties/' + property_name
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             
             response_stream = RestClient.get(signed_str_uri,{:accept=>'application/json'})
@@ -254,7 +243,7 @@ module Aspose
             post_hash = { 'Value' => property_value}
             json_data = post_hash.to_json  
         
-            str_uri = $product_uri + '/slides/' + @filename + '/documentProperties/' + property_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/documentProperties/' + property_name
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.put(signed_str_uri,json_data,{:accept=>'application/json'})
@@ -286,7 +275,7 @@ module Aspose
             end
                 
         
-            str_uri = $product_uri + '/slides/' + @filename + '/documentProperties'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/documentProperties'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.delete(signed_str_uri,{:accept=>'application/json'})
@@ -322,7 +311,7 @@ module Aspose
               raise 'Property name not specified.'
             end
         
-            str_uri = $product_uri + '/slides/' + @filename + '/documentProperties/' + property_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/documentProperties/' + property_name
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = RestClient.delete(signed_str_uri,{:accept=>'application/json'})
         
@@ -362,7 +351,7 @@ module Aspose
             #        post_hash = { 'Value' => property_value}
             #        json_data = post_hash.to_json  
         
-            str_uri = $product_uri + '/slides/' + @filename + '/documentProperties'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/documentProperties'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = RestClient.put(signed_str_uri,json_data,{:accept=>'application/json'})
         
@@ -407,7 +396,7 @@ module Aspose
         
         
         
-            str_uri = $product_uri + '/slides/'+@filename+'?format=' + output_format
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/'+@filename+'?format=' + output_format
             if !folder_name.empty?
               str_uri += '?folder=' + folder_name
             end
@@ -462,7 +451,7 @@ module Aspose
         
         
         
-            str_uri = $product_uri + '/slides/'+@filename+'/slides/'+slide_number.to_s+'?format=' + output_format
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/'+@filename+'/slides/'+slide_number.to_s+'?format=' + output_format
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = RestClient.get(str_signed_uri,{:accept=>'application/json'})
         
@@ -470,7 +459,7 @@ module Aspose
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
         
             if valid_output == ''                              
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + slide_number.to_s + '.' + output_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + slide_number.to_s + '.' + output_format
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return ''
             else

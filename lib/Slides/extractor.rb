@@ -16,7 +16,7 @@ module Aspose
             if @filename == ''
               raise 'No file name specified'
             end
-            str_uri = $product_uri + '/slides/' + @filename + '/images'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/images'
             if !folder_name.empty?
               str_uri += '?folder=' + folder_name
             end
@@ -40,7 +40,7 @@ module Aspose
             if @filename == ''
               raise 'No file name specified'
             end
-            str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/images'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/images'
             if !folder_name.empty?
               str_uri += '?folder=' + folder_name
             end
@@ -65,7 +65,7 @@ module Aspose
               raise 'No file name specified'
             end
          
-            str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/shapes'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/shapes'
             if !folder_name.empty?
               str_uri += '?folder=' + folder_name
             end
@@ -96,7 +96,7 @@ module Aspose
             if @filename == ''
               raise 'No file name specified'
             end
-            str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/colorScheme'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/colorScheme'
             if !storage_name.empty?
               str_uri += '?storage=' + storage_name
             end
@@ -117,7 +117,7 @@ module Aspose
             if @filename == ''
               raise 'No file name specified'
             end
-            str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/fontScheme'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/fontScheme'
             if !storage_name.empty?
               str_uri += '?storage=' + storage_name
             end
@@ -139,7 +139,7 @@ module Aspose
             if @filename == ''
               raise 'No file name specified'
             end
-            str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/formatScheme'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/formatScheme'
             if !storage_name.empty?
               str_uri += '?storage=' + storage_name
             end
@@ -160,7 +160,7 @@ module Aspose
             if @filename == ''
               raise 'No file name specified'
             end
-            str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/placeholders'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/placeholders'
             if !folder_name.empty?
               str_uri += '?folder=' + folder_name
             end
@@ -186,7 +186,7 @@ module Aspose
             if @filename == ''
               raise 'No file name specified'
             end
-            str_uri = $product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/placeholders/' + placeholder_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/placeholders/' + placeholder_index.to_s
             if !folder_name.empty?
               str_uri += '?folder=' + folder_name
             end

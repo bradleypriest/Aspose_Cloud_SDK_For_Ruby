@@ -21,7 +21,7 @@ module Aspose
             raise 'Width not specified.' if width.nil?
             raise 'Height not specified.' if height.nil?
 
-            str_uri = "#{$product_uri}/slides/#{@filename}/slides/#{slide_number}?format=#{image_format}&width=#{width}&height=#{height}"
+            str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/slides/#{@filename}/slides/#{slide_number}?format=#{image_format}&width=#{width}&height=#{height}"
         
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  
@@ -29,7 +29,7 @@ module Aspose
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
         
             if valid_output == ''
-              output_path = "#{$out_put_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}.#{image_format}"
+              output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}.#{image_format}"
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return ''
             else
@@ -49,7 +49,7 @@ module Aspose
 
             raise 'Save format not specified.' if save_format.empty?
 
-            str_uri = "#{$product_uri}/slides/#{@filename}/slides/#{slide_number}?format=#{save_format}"
+            str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/slides/#{@filename}/slides/#{slide_number}?format=#{save_format}"
             str_uri += "&storage=#{storage_name}&folder=#{folder}" unless storage_name.empty?
 
             str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
@@ -58,7 +58,7 @@ module Aspose
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
         
             if valid_output == ''
-              output_path = "#{$out_put_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}.#{save_format}"
+              output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}.#{save_format}"
               Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
               return ''
             else
