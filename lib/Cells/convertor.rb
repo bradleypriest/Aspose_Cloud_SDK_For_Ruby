@@ -25,12 +25,12 @@ module Aspose
             if @filename == ''
               raise 'Base file is not specified'
             end  
-            url_doc = $product_uri + '/cells/' + @filename + '?format=' + save_format
+            url_doc = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '?format=' + save_format
             signed_url = Aspose::Cloud::Common::Utils.sign(url_doc)
             response = RestClient.get(signed_url, :accept => 'application/json')
             validate_output = Aspose::Cloud::Common::Utils.validate_output(response)
             if validate_output!=nil || validate_output!=''
-              output = $out_put_location + local_file + '.' + save_format
+              output = Aspose::Cloud::Common::AsposeApp.output_location + local_file + '.' + save_format
               Aspose::Cloud::Common::Utils.save_file(response, output)
               return output
             else
@@ -46,12 +46,12 @@ module Aspose
             if @filename == ''
               raise 'Base File is not specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s + '?format=' + image_format.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s + '?format=' + image_format.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri,:accept => 'application/json')
             validate_output = Aspose::Cloud::Common::Utils.validate_output(response)
             if validate_output!=nil || validate_output!=''
-              output = $out_put_location + worksheet_name + '.' + image_format
+              output = Aspose::Cloud::Common::AsposeApp.output_location + worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response, output);
               return output
             else
@@ -68,12 +68,12 @@ module Aspose
             if @filename==''
               raise 'Base File is not specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '?format=' + output_format.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '?format=' + output_format.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri,:accept => 'application/json')
             validate_output = Aspose::Cloud::Common::Utils.validate_output(response)
             if validate_output==nil || validate_output==''
-              output = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '.' + output_format
+              output = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '.' + output_format
               Aspose::Cloud::Common::Utils.save_file(response, output);
               return output
             else
@@ -94,13 +94,13 @@ module Aspose
             if @worksheet_name == ''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               @worksheet_name + '?format=' + image_format.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri,:accept => 'application/json')
             v_output = Aspose::Cloud::Common::Utils.validate_output(response)
             if v_output==nil || v_output==''
-              outputpath=$out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
+              outputpath=Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response, outputpath)
               return outputpath
             else
@@ -120,7 +120,7 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               @worksheet_name + '/pictures/' + picture_index.to_s + '?format=' + image_format.to_s;
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           
@@ -128,7 +128,7 @@ module Aspose
               
             v_output = Aspose::Cloud::Common::Utils.validate_output(response)
             if v_output==nil || v_output==''
-              outputpath=$out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
+              outputpath=Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response, outputpath)
               return outputpath
             else
@@ -147,14 +147,14 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               @worksheet_name + '/oleobjects/' + object_index.to_s + '?format=' + image_format.to_s;
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
               
             v_output = Aspose::Cloud::Common::Utils.validate_output(response)
             if v_output==nil || v_output==''
-              outputpath=$out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
+              outputpath=Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response, outputpath)
               return outputpath
             else
@@ -173,7 +173,7 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               @worksheet_name + '/charts/' + chart_index.to_s + '?format=' + image_format.to_s;
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
@@ -181,7 +181,7 @@ module Aspose
               
             v_output = Aspose::Cloud::Common::Utils.validate_output(response)
             if v_output==nil || v_output==''
-              outputpath=$out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
+              outputpath=Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response, outputpath)
               return outputpath
             else
@@ -200,7 +200,7 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               @worksheet_name + '/autoshapes/' + shape_index.to_s + '?format=' + image_format.to_s;
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
@@ -208,7 +208,7 @@ module Aspose
               
             v_output = Aspose::Cloud::Common::Utils.validate_output(response)
             if v_output==nil || v_output==''
-              outputpath=$out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
+              outputpath=Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + @worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response, outputpath)
               return outputpath
             else

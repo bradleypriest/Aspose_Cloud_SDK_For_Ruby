@@ -11,7 +11,7 @@ module Aspose
             if @filename == ''
               raise 'Base file name not specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/documentProperties'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
@@ -35,7 +35,7 @@ module Aspose
             if property_name == ''
               raise 'Property name is not specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
@@ -62,7 +62,7 @@ module Aspose
             if property_value == ''
               raise 'Property Value is not specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
             put_data_arr = Hash.new
             put_data_arr['Link'] = nil
             put_data_arr['Name'] = property_name
@@ -88,7 +88,7 @@ module Aspose
             if @filename == ''
               raise 'Base file name not specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/documentProperties'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.delete(signed_uri, :accept=>'application/json')
             json = JSON.parse(response)
@@ -112,7 +112,7 @@ module Aspose
             if property_name == ''
               raise 'Property name is not specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.delete(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
@@ -130,7 +130,7 @@ module Aspose
     
         def create_empty_workbook
           begin
-            str_uri = $product_uri + '/cells/' + @filename
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri,'', :accept => 'application/json')
             json = JSON.parse(response)
@@ -146,7 +146,7 @@ module Aspose
             if template_file_name == ''
               raise 'Template file not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '?templatefile=' + template_file_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '?templatefile=' + template_file_name
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri,'', :accept => 'application/json')
             json = JSON.parse(response)
@@ -165,7 +165,7 @@ module Aspose
             if data_file == ''
               raise 'Data file not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '?templatefile=' + template_file_name + '&dataFile=' + data_file
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '?templatefile=' + template_file_name + '&dataFile=' + data_file
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri,'', :accept => 'application/json')
             json = JSON.parse(response)
@@ -181,7 +181,7 @@ module Aspose
             if data_file == ''
               raise 'Data file not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/smartmarker?xmlFile=' + data_file
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/smartmarker?xmlFile=' + data_file
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri,'', :accept => 'application/json')
             json = JSON.parse(response)
@@ -197,7 +197,7 @@ module Aspose
             if @filename == ''
               raise 'Base file name not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
@@ -212,7 +212,7 @@ module Aspose
             if @filename == ''
               raise 'Base file name not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/names'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/names'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
@@ -227,7 +227,7 @@ module Aspose
             if @filename == ''
               raise 'Base file name not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/defaultStyle'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/defaultStyle'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
@@ -247,7 +247,7 @@ module Aspose
             fields_array['KeyLength'] = key_length
             fields_array['Password'] = password
             json_data = fields_array.to_json
-            str_uri = $product_uri + '/cells/' + @filename + '/encryption'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/encryption'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri, json_data,:accept => 'application/json')
             json = JSON.parse(response)
@@ -270,7 +270,7 @@ module Aspose
             fields_array['ProtectionType'] = protection_type
             fields_array['Password'] = password
             json_data = fields_array.to_json
-            str_uri = $product_uri + '/cells/' + @filename + '/protection'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/protection'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             
             response = Aspose::Cloud::Common::Utils.process_command(signed_uri,'POST','JSON',json_data)            
@@ -294,7 +294,7 @@ module Aspose
             fields_array = Hash.new
             fields_array['Password'] = password
             json_data = fields_array.to_json
-            str_uri = $product_uri + '/cells/' + @filename + '/protection'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/protection'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = Aspose::Cloud::Common::Utils.process_command(signed_uri,'DELETE','JSON',json_data)
             
@@ -317,7 +317,7 @@ module Aspose
             fields_array = Hash.new
             fields_array['Password'] = password
             json_data = fields_array.to_json
-            str_uri = $product_uri + '/cells/' + @filename + '/writeProtection'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/writeProtection'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri, json_data,:accept => 'application/json')
             json = JSON.parse(response)
@@ -339,7 +339,7 @@ module Aspose
             fields_array = Hash.new
             fields_array['Password'] = password
             json_data = fields_array.to_json
-            str_uri = $product_uri + '/cells/' + @filename + '/writeProtection'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/writeProtection'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.delete(signed_uri,json_data, json_data,:accept => 'application/json')
             json = JSON.parse(response)
@@ -362,7 +362,7 @@ module Aspose
             fields_array = Hash.new
             fields_array['Password'] = password
             json_data = fields_array.to_json
-            str_uri = $product_uri + '/cells/' + @filename + '/encryption'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/encryption'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.delete(signed_uri,json_data,:accept => 'application/json')
             json = JSON.parse(response)
@@ -381,7 +381,7 @@ module Aspose
             if @filename == ''
               raise 'Base file name not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri, '',:accept => 'application/json')
             json = JSON.parse(response)
@@ -400,7 +400,7 @@ module Aspose
             if @filename == ''
               raise 'Base file name not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.delete(signed_uri,:accept => 'application/json')
             json = JSON.parse(response)
@@ -419,7 +419,7 @@ module Aspose
             if @filename == ''
               raise 'Base file name not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/merge?mergeWith='  + merge_file_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/merge?mergeWith='  + merge_file_name
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri,'',:accept => 'application/json')
             json = JSON.parse(response)

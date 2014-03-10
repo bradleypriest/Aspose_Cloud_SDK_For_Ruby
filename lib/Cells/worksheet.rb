@@ -16,7 +16,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
             str_uri += '/cells?offset=' + offset.to_s + '&count=' + count.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
@@ -36,7 +36,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
             str_uri += '/cells/rows?offset=' + offset.to_s + '&count=' + count.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
@@ -56,7 +56,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
             str_uri += '/cells/columns?offset=' + offset.to_s + '&count=' + count.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
@@ -76,7 +76,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
             str_uri += '/cells?offset=' + offset.to_s + '&count=' + count.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
@@ -96,7 +96,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
             str_uri += '/cells?offset=' + offset.to_s + '&count=' + count.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
@@ -117,7 +117,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
             str_uri += '/cells?offset=' + offset.to_s + '&count=' + count.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
@@ -138,7 +138,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/autoshapes'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/autoshapes'
         
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
@@ -159,7 +159,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/autoshapes/' + index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/autoshapes/' + index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -179,7 +179,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -199,7 +199,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -220,7 +220,7 @@ module Aspose
               raise 'Worksheet Name is not specified'
             end
             json_data = style.to_json
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri,json_data, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -244,7 +244,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -264,7 +264,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/hyperlinks/' + index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/hyperlinks/' + index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -284,7 +284,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/comments/' + cell_name.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/comments/' + cell_name.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -304,7 +304,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/oleobjects/' + index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/oleobjects/' + index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -323,7 +323,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures/' + index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures/' + index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -343,7 +343,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/validations/' + index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/validations/' + index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -363,7 +363,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/mergedCells/' + index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/mergedCells/' + index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -383,7 +383,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/mergedCells'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/mergedCells'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -403,7 +403,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/validations'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/validations'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -423,7 +423,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -443,7 +443,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/oleobjects'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/oleobjects'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -463,7 +463,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -483,7 +483,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/comments'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/comments'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -503,7 +503,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/hyperlinks'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/hyperlinks'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -523,7 +523,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/visible?isVisible=false'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/visible?isVisible=false'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri, '',:accept => 'application/json' )
             json = JSON.parse(response)
@@ -547,7 +547,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/visible?isVisible=true'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/visible?isVisible=true'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri, '',:accept => 'application/json' )
             json = JSON.parse(response)
@@ -575,7 +575,7 @@ module Aspose
             field_array['DestinationWorsheet'] = worksheet_name.to_s
             field_array['Position'] = position.to_s
             json_data = field_array.to_json
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/position'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/position'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri, json_data,:accept => 'application/json' )
             json = JSON.parse(response)
@@ -599,7 +599,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/formulaResult?formula=' + formula.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/formulaResult?formula=' + formula.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json' )
             json = JSON.parse(response)
@@ -619,7 +619,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
             str_uri += '/cells/' + cell_name.to_s + '?value=' + value.to_s + '&type=' + value_type.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri,'' ,:accept => 'application/json' )
@@ -644,7 +644,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
             str_uri += '/cells/rows?offset=' + offset.to_s + '&count=' + count.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri,:accept => 'application/json' )
@@ -665,7 +665,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/rows/' + row_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/rows/' + row_index.to_s
 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri,:accept => 'application/json' )
@@ -686,7 +686,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/rows/' + row_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/rows/' + row_index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.delete(signed_uri,:accept => 'application/json' )
             json = JSON.parse(response)
@@ -710,7 +710,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/sort?' + cell_area.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/sort?' + cell_area.to_s
             json_data = data_sort.to_json
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri,json_data,:accept => 'application/json' )
@@ -735,7 +735,7 @@ module Aspose
             if(@worksheet_name == '')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/columns/' + column_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/columns/' + column_index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri,:accept => 'application/json' )
             json = JSON.parse(response)
@@ -753,7 +753,7 @@ module Aspose
             if(@worksheet_name=='')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept=>'application/json')
             json = JSON.parse(response)
@@ -771,7 +771,7 @@ module Aspose
             if(@worksheet_name=='')
               raise 'Worksheet Name is not specified'
             end
-            str_uri = $product_uri+'/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
+            str_uri = Aspose::Cloud::Common::Product.product_uri+'/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
@@ -790,14 +790,14 @@ module Aspose
               raise 'Worksheet Name is not specified'
             end
             if(picture_location == 'Server' || picture_location == 'server')
-              str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures?upperLeftRow=' +upper_left_row.to_s + '&upperLeftColumn=' + upper_left_column.to_s + '&lowerRightRow=' +lower_right_row.to_s + '&lowerRightColumn=' + lower_right_column.to_s + '&picturePath=' + picture_path
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures?upperLeftRow=' +upper_left_row.to_s + '&upperLeftColumn=' + upper_left_column.to_s + '&lowerRightRow=' +lower_right_row.to_s + '&lowerRightColumn=' + lower_right_column.to_s + '&picturePath=' + picture_path
               signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
               response = RestClient.put(signed_uri, :accept=>'application/json')
             else
               if(!File.exist?(picture_path))
                 raise "File doesn't exists"
               end
-              str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures?upperLeftRow=' +upper_left_row.to_s + '&upperLeftColumn=' + upper_left_column.to_s + '&lowerRightRow=' +lower_right_row.to_s + '&lowerRightColumn=' + lower_right_column.to_s 
+              str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures?upperLeftRow=' +upper_left_row.to_s + '&upperLeftColumn=' + upper_left_column.to_s + '&lowerRightRow=' +lower_right_row.to_s + '&lowerRightColumn=' + lower_right_column.to_s 
               stream = File.new(picture_path,'rb')
               signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
               response = RestClient.put(signed_uri,stream, :accept=>'application/json')

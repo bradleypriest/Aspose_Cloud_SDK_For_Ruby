@@ -11,7 +11,7 @@ module Aspose
             if @filename == ''
               raise 'Base File Name is not Specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/findText?text=' + text.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/findText?text=' + text.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post signed_uri, '' , {:accept => 'application/json'}
             json = JSON.parse(response)
@@ -25,7 +25,7 @@ module Aspose
             if @filename == ''
               raise 'Base File Name is not Specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s +  '/findText?text=' + text.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s +  '/findText?text=' + text.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post signed_uri, '' , {:accept => 'application/json'}
             json = JSON.parse(response)
@@ -40,7 +40,7 @@ module Aspose
             if @filename == ''
               raise 'Base File Name is not Specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s +  '/textItems' 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s +  '/textItems' 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get signed_uri, {:accept => 'application/json'}
             json = JSON.parse(response)
@@ -55,7 +55,7 @@ module Aspose
             if @filename == ''
               raise 'Base File Name is not Specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/replaceText?oldValue=' + old_text.to_s + '&newValue=' + new_text.to_s 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/replaceText?oldValue=' + old_text.to_s + '&newValue=' + new_text.to_s 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post signed_uri,'', {:accept => 'application/json'}
             v_output = Aspose::Cloud::Common::Utils.validate_output(response)
@@ -63,7 +63,7 @@ module Aspose
               # Save doc on server
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               output_stream = folder.get_file(@filename);
-              output_path = $out_put_location + @filename;
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;
               Aspose::Cloud::Common::Utils.save_file(output_stream, output_path);
               return 'Value is changed';
             end
@@ -77,7 +77,7 @@ module Aspose
             if(@filename == '')
               raise 'Base File Name is not Specified.'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s + '/replaceText?oldValue=' + old_text.to_s + '&newValue=' + new_text.to_s 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s + '/replaceText?oldValue=' + old_text.to_s + '&newValue=' + new_text.to_s 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post signed_uri,'', {:accept => 'application/json'}
             v_output = Aspose::Cloud::Common::Utils.validate_output(response)
@@ -85,7 +85,7 @@ module Aspose
               # Save doc on server
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               output_stream = folder.get_file(@filename);
-              output_path = $out_put_location + @filename;
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;
               Aspose::Cloud::Common::Utils.save_file(output_stream, output_path);
               return 'Value is changed';
             end

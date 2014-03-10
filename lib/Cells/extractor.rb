@@ -15,7 +15,7 @@ module Aspose
             if @filename==''
               raise 'Base file name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               worksheet_name.to_s + '/pictures/' + picture_index.to_s + '?format=' + image_format.to_s
 			
             #Sign URI
@@ -29,7 +29,7 @@ module Aspose
  
             if v_output == ''
               #Save output file
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
                 '_' + worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
               return output_path
@@ -51,7 +51,7 @@ module Aspose
             if @filename==''
               raise 'Base file name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               worksheet_name.to_s + '/oleobjects/' + object_index.to_s + '?format=' + image_format.to_s
 			
             #Sign URI
@@ -65,7 +65,7 @@ module Aspose
  
             if v_output == ''
               #Save output file
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
                 '_' + worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
               return output_path
@@ -87,7 +87,7 @@ module Aspose
             if @filename==''
               raise 'Base file name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               worksheet_name.to_s + '/charts/' + chart_index.to_s + '?format=' + image_format.to_s
 			
             #Sign URI
@@ -101,7 +101,7 @@ module Aspose
  
             if v_output == ''
               #Save output file
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
                 '_' + worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
               return output_path
@@ -123,7 +123,7 @@ module Aspose
             if @filename==''
               raise 'Base file name is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + 
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
               worksheet_name.to_s + '/autoshapes/' + shape_index.to_s + '?format=' + image_format.to_s
 			
             #Sign URI
@@ -137,7 +137,7 @@ module Aspose
  
             if v_output == ''
               #Save output file
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
                 '_' + worksheet_name + '.' + image_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
               return output_path

@@ -23,7 +23,7 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts?chartType=' +
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts?chartType=' +
               chart_type.to_s + '&upperLeftRow=' + upper_left_row.to_s + '&upperLeftColumn=' +
               upper_left_column.to_s + '&lowerRightRow=' + lower_right_row.to_s + 
               '&lowerRightColumn=' + lower_right_column.to_s
@@ -34,7 +34,7 @@ module Aspose
             if v_output==nil || v_output==''
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               outputstream = folder.get_file(@filename)              
-              outputpath = $out_put_location + @filename
+              outputpath = Aspose::Cloud::Common::AsposeApp.output_location + @filename
               Aspose::Cloud::Common::Utils.save_file(outputstream, outputpath)
               return 'Chart added'
             else
@@ -56,7 +56,7 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + chart_index.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + chart_index.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           
             response = RestClient.delete signed_uri, {:accept => 'application/json'}
@@ -64,7 +64,7 @@ module Aspose
             if v_output==nil || v_output==''
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               outputstream = folder.get_file(@filename)              
-              outputpath = $out_put_location + @filename
+              outputpath = Aspose::Cloud::Common::AsposeApp.output_location + @filename
               Aspose::Cloud::Common::Utils.save_file(outputstream, outputpath)
               return 'Chart deleted'
             else
@@ -86,7 +86,7 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + chart_index.to_s + '/chartArea'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + chart_index.to_s + '/chartArea'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)         
             response = RestClient.get signed_uri, {:accept => 'application/json'}
             json = JSON.parse(response)
@@ -107,7 +107,7 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + chart_index.to_s + '/chartArea/fillFormat'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + chart_index.to_s + '/chartArea/fillFormat'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)    
             response = RestClient.get signed_uri, {:accept => 'application/json'}
             json = JSON.parse(response)
@@ -128,7 +128,7 @@ module Aspose
             if @worksheet_name==''
               raise 'Worksheet is not specified'
             end
-            str_uri = $product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + chart_index.to_s + '/chartArea/border'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + chart_index.to_s + '/chartArea/border'
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
             response = RestClient.get signed_uri, {:accept => 'application/json'}
             json = JSON.parse(response)
