@@ -6,7 +6,6 @@ module Aspose
           case args.size
           when 2
             image_file_name,folder = *args
-            begin
               str_uri = ''
               if(folder=='' || folder==nil)
                 str_uri += Aspose::Cloud::Common::Product.product_uri + '/ocr/' + image_file_name.to_s + '/recognize'
@@ -18,14 +17,9 @@ module Aspose
 
               response = RestClient.get(signed_uri, :accept=> 'application/json')
               json = JSON.parse(response)
-              return json         
-            rescue Exception=>e
-              print e
-              return nil
-            end
+              return json
           when 4
             image_file_name,folder,language,use_default_dictionaries = *args
-            begin
               str_uri = ''
               if(folder=='' || folder==nil)
                 str_uri += Aspose::Cloud::Common::Product.product_uri + '/ocr/' + image_file_name.to_s + '/recognize?language=' + language.to_s + '&useDefaultDictionaries=' + use_default_dictionaries.to_s
@@ -37,26 +31,16 @@ module Aspose
         
               response = RestClient.get(signed_uri, :accept=> 'application/json')
               json = JSON.parse(response)
-              return json         
-            rescue Exception=>e
-              print e
-              return nil
-            end
+              return json
           when 1
             image_file_name = args[0]
-            begin
               str_uri = Aspose::Cloud::Common::Product.product_uri + '/ocr/'	+ image_file_name + '/recognize?useDefaultDictionaries=true'
               signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
               response = RestClient.get(signed_uri, :accept=> 'application/json')
               json = JSON.parse(response)
-              return json         
-            rescue Exception=>e
-              print e
-              return nil
-            end
+              return json
           when 8
             image_file_name, language , use_default_dictionaries, x , y, height, width, folder = *args
-            begin
               str_uri = Aspose::Cloud::Common::Product.product_uri
               str_uri	+= '/ocr/'
               str_uri	+= image_file_name
@@ -71,53 +55,34 @@ module Aspose
 
               response = RestClient.get(signed_uri, :accept=> 'application/json')
               json = JSON.parse(response)
-              return json         
-            rescue Exception=>e
-              print e
-              return nil
-            end
+              return json
           when 3
             stream,language,use_default_dictionaries = *args
-            begin
               str_uri = Aspose::Cloud::Common::Product.product_uri + '/ocr/recognize?language=' + language.to_s + '&useDefaultDictionaries=' + use_default_dictionaries.to_s
               signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
               response = RestClient.post(signed_uri,stream, :accept=> 'application/json')
               json = JSON.parse(response)
-              return json         
-            rescue Exception=>e
-              print e
-              return nil
-            end
+              return json
           end
         end
 
 
         def extract_text_from_local_file(local_file,language,use_default_dictionaries)
-          begin
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/ocr/recognize?language=' + language.to_s + '&useDefaultDictionaries=' + use_default_dictionaries.to_s
             file_stream = File.binread(local_file)
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri,file_stream, :accept=> 'application/json')
             json = JSON.parse(response)
-            return json         
-          rescue Exception=>e
-            print e
-            return nil
-          end
+            return json
         end
         def extract_text_from_url(url,language,use_default_dictionaries)
-          begin
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/ocr/recognize?url=' + url + '&language=' + language + '&useDefaultDictionaries=' + use_default_dictionaries
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.post(signed_uri,:accept => 'application/json')
             json=JSON.parse(response)
             return json
-          rescue Exception=>e
-            print e
-          end
         end
       end
     end
-    
   end
 end
