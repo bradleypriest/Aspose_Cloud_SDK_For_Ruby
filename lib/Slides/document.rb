@@ -12,8 +12,6 @@ module Aspose
   Finds the slide count of the specified PowerPoint document
 =end    
         def get_slide_count(storage_type='',folder_name = '',storage_name='')
-      
-          begin
             str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/slides/#{@filename}/slides"
             str_uri += "?folder=#{folder_name}&storage=#{storage_name}" unless folder_name.empty?
 
@@ -23,10 +21,6 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             stream_hash['Slides']['SlideList'].length
-        
-          rescue Exception=>e
-            print e
-          end
         end
 
 =begin
@@ -36,9 +30,7 @@ module Aspose
   @param number slide_number
 =end    
         def replace_text old_text, new_text, slide_number = 0
-      
-          begin
-        
+
             if @filename == ''
               raise 'filename not specified'
             end
@@ -71,11 +63,6 @@ module Aspose
             else
               return valid_output
             end        
-        
-          rescue Exception=>e
-            print e
-          end
-      
         end
 
 =begin
@@ -84,9 +71,6 @@ module Aspose
   @param boolean with_empty
 =end    
         def get_all_text_items slide_number=0, with_empty=false
-      
-          begin
-        
             if @filename == ''
               raise 'filename not specified'
             end
@@ -103,20 +87,12 @@ module Aspose
             stream_hash = JSON.parse(response_stream)
         
             return stream_hash['TextItems']['Items']
-        
-          rescue Exception=>e
-            print e
-          end
-      
         end
     
 =begin
   Deletes all slides from a presentation
 =end    
         def delete_all_slides storage_type='Aspose', folder_name='',storage_name=''
-      
-          begin
-        
             if @filename == ''
               raise 'filename not specified'
             end
@@ -144,11 +120,6 @@ module Aspose
             else
               return valid_output
             end        
-        
-          rescue Exception=>e
-            print e
-          end
-      
         end
     
 =begin
@@ -156,9 +127,6 @@ module Aspose
 =end     
     
         def get_properties
-      
-          begin
-        
             if @filename == ''
               raise 'Base file not specified.'
             end
@@ -175,11 +143,6 @@ module Aspose
             else
               return false
             end
-        
-          rescue Exception=>e
-            print e
-          end
-      
         end
 
 =begin
@@ -188,9 +151,6 @@ module Aspose
 =end     
     
         def get_property property_name
-      
-          begin
-        
             if @filename == ''
               raise 'Base file not specified.'
             end
@@ -211,12 +171,7 @@ module Aspose
             else
               return false
             end
-        
-          rescue Exception=>e
-            print e
-          end
-      
-        end 
+        end
 
 =begin
    Set document property
@@ -225,9 +180,6 @@ module Aspose
 =end     
     
         def set_property property_name, property_value
-      
-          begin
-        
             if @filename == ''
               raise 'Base file not specified.'
             end
@@ -255,11 +207,6 @@ module Aspose
             else
               return false
             end
-        
-          rescue Exception=>e
-            print e
-          end
-      
         end
 
 =begin
@@ -267,9 +214,6 @@ module Aspose
 =end     
     
         def remove_all_properties
-      
-          begin
-        
             if @filename == ''
               raise 'Base file not specified.'
             end
@@ -287,11 +231,6 @@ module Aspose
             else
               return false
             end
-        
-          rescue Exception=>e
-            print e
-          end
-      
         end
     
 =begin
@@ -300,9 +239,6 @@ module Aspose
 =end     
     
         def delete_property property_name
-      
-          begin
-        
             if @filename == ''
               raise 'Base file not specified.'
             end
@@ -322,11 +258,6 @@ module Aspose
             else
               return false
             end
-        
-          rescue Exception=>e
-            print e
-          end
-      
         end
 
 =begin
@@ -335,9 +266,6 @@ module Aspose
 =end     
     
         def add_custom_property property_list
-      
-          begin
-        
             if @filename == ''
               raise 'Base file not specified.'
             end
@@ -362,11 +290,6 @@ module Aspose
             else
               return false
             end
-        
-          rescue Exception=>e
-            print e
-          end
-      
         end
 
 =begin
@@ -376,8 +299,6 @@ module Aspose
 =end
     
         def save_as output_path,output_format , storage_type='Aspose',folder_name='',storage_name=''
-          begin
-        
             if @filename == ''
               raise('input file not specified')
             end                
@@ -413,10 +334,6 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e        
-          end      
         end
     
 =begin
@@ -427,8 +344,6 @@ module Aspose
 =end
     
         def save_slide_as slide_number,output_path,output_format
-          begin
-        
             if @filename == ''
               raise('input file not specified')
             end                
@@ -465,10 +380,6 @@ module Aspose
             else
               return valid_output
             end
-        
-          rescue Exception=>e
-            print e        
-          end      
         end    
     
       end

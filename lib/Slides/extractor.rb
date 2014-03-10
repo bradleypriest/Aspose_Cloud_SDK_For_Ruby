@@ -12,7 +12,7 @@ module Aspose
   Gets total number of images in a presentation
 =end
         def get_image_count storage_type = '',storage_name='',folder_name  =''
-          begin
+
             if @filename == ''
               raise 'No file name specified'
             end
@@ -27,16 +27,13 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['Images']['List'].count
-          rescue Exception=>e
-            print e
-          end
         end
 =begin
   Gets number of images in the specified slide
 	@param number slide_number
 =end
         def get_slide_image_count(slide_number,storage_type='',storage_name='',folder_name='')
-          begin
+
             if @filename == ''
               raise 'No file name specified'
             end
@@ -51,16 +48,12 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['Images']['List'].count
-          rescue Exception=>e
-            print e
-          end
         end
 =begin
   Gets all shapes from the specified slide
 	@param number slide_number
 =end
         def get_shapes(slide_number,storage_type = '',storage_name='',folder_name='')
-          begin
             if @filename == ''
               raise 'No file name specified'
             end
@@ -83,16 +76,12 @@ module Aspose
               shapes = JSON.parse(response)
             }
             return shapes
-          rescue Exception=>e
-            print e
-          end
         end
 =begin
   Get color scheme from the specified slide
 	@param number slide_number
 =end
         def get_color_scheme(slide_number,storage_type='',storage_name='')
-          begin
             if @filename == ''
               raise 'No file name specified'
             end
@@ -104,16 +93,12 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['ColorScheme']
-          rescue Exception=>e
-            print e
-          end
         end
 =begin
   Get font scheme from the specified slide
 	@param number slide_number
 =end   
         def get_font_scheme(slide_number,storage_type='',storage_name='')
-          begin
             if @filename == ''
               raise 'No file name specified'
             end
@@ -125,9 +110,6 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['FontScheme']
-          rescue Exception=>e
-            print e
-          end
         end
 
 =begin
@@ -135,7 +117,6 @@ module Aspose
 	@param number slide_number
 =end
         def get_format_scheme(slide_number,storage_type='',storage_name='')
-          begin
             if @filename == ''
               raise 'No file name specified'
             end
@@ -147,16 +128,12 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['FormatScheme']
-          rescue Exception=>e
-            print e
-          end
         end
 =begin
   Gets placeholder count from a particular slide
 	@param number $slideNumber
 =end
         def get_placeholder_count(slide_number,storage_type='',storage_name='',folder_name='')
-          begin
             if @filename == ''
               raise 'No file name specified'
             end
@@ -171,9 +148,6 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['Placeholders']['PlaceholderLinks'].count
-          rescue Exception=>e
-            print e
-          end
         end
 
 =begin
@@ -182,7 +156,6 @@ module Aspose
 	@param number $placeholderIndex
 =end
         def get_placeholder(slide_number,placeholder_index,storage_type = '',storage_name='',folder_name = '')
-          begin
             if @filename == ''
               raise 'No file name specified'
             end
@@ -197,9 +170,6 @@ module Aspose
             response = RestClient.get(signed_uri, :accept => 'application/json')
             json = JSON.parse(response)
             return json['Placeholder']
-          rescue Exception=>e
-            print e
-          end
         end
       end
     end

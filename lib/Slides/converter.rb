@@ -15,7 +15,6 @@ module Aspose
   @param number height
 =end    
         def convert_to_image slide_number, image_format, width, height
-          begin
             raise 'Slide number not specified.' if slide_number.nil?
             raise 'Image format not specified.' if image_format.empty?
             raise 'Width not specified.' if width.nil?
@@ -35,18 +34,12 @@ module Aspose
             else
               return valid_output
             end
-
-          rescue Exception=>e
-            print e
-          end
         end
 
 =begin
   convert a document to SaveFormat
 =end    
         def convert save_format, slide_number, storage_name='', folder=''
-          begin
-
             raise 'Save format not specified.' if save_format.empty?
 
             str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/slides/#{@filename}/slides/#{slide_number}?format=#{save_format}"
@@ -64,9 +57,6 @@ module Aspose
             else
               return valid_output
             end
-          rescue Exception=>e
-            print e
-          end
         end
       end
     end
