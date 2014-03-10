@@ -24,7 +24,7 @@ module Aspose
               raise 'XML not specified.'
             end
 
-            str_uri = $product_uri + '/words/' + @filename + '/executeMailMerge'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/executeMailMerge'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
         
             response_stream = RestClient.post(signed_str_uri,str_xml,{:accept=>:json})
@@ -35,7 +35,7 @@ module Aspose
             if valid_output == ''                              
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               output_stream = folder.get_file(stream_hash['Document']['FileName'])
-              output_path = $out_put_location + @filename
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -63,7 +63,7 @@ module Aspose
               raise 'XML not specified.'
             end
 
-            str_uri = $product_uri + '/words/' + @filename + '/executeMailMerge?withRegions=true'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/executeMailMerge?withRegions=true'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = RestClient.post(signed_str_uri,str_xml,{:accept=>:json})
             stream_hash = JSON.parse(response_stream)
@@ -72,7 +72,7 @@ module Aspose
             if valid_output == ''                              
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               output_stream = folder.get_file(stream_hash['Document']['FileName'])                   
-              output_path = $out_put_location + @filename
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else
@@ -99,7 +99,7 @@ module Aspose
             if str_xml == ''
               raise 'XML not specified.'
             end
-            str_uri = $product_uri + '/words/' + @filename + '/executeTemplate'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/executeTemplate'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = RestClient.post(signed_str_uri,str_xml,{:accept=>:json})
             stream_hash = JSON.parse(response_stream)
@@ -108,7 +108,7 @@ module Aspose
             if valid_output == ''                              
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               output_stream = folder.get_file(stream_hash['Document']['FileName'])                   
-              output_path = $out_put_location + @filename
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
               Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
               return ''
             else

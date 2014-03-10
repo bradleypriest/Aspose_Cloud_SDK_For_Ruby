@@ -23,7 +23,7 @@ module Aspose
             raise 'Text not specified.' if text.empty?
             check_angle(rotation_angle)
 
-            str_uri = $product_uri + '/words/' + @filename + '/insertWatermarkText'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/insertWatermarkText'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             post_hash = {'Text' => text, 'RotationAngle' => rotation_angle}
             json_data = post_hash.to_json
@@ -36,7 +36,7 @@ module Aspose
 
             folder = Aspose::Cloud::AsposeStorage::Folder.new
             output_stream = folder.get_file(@filename)
-            output_path = $out_put_location + @filename
+            output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
             Aspose::Cloud::Common::Utils.save_file(output_stream, output_path)
 
           rescue Exception => e
@@ -64,7 +64,7 @@ module Aspose
             check_angle(rotation_angle)
             raise 'Image file not specified.' if image_file.empty?
 
-            str_uri = $product_uri + '/words/' + @filename + '/insertWatermarkImage?imageFile=' + image_file.to_s + '&rotationAngle=' + rotation_angle.to_s
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/insertWatermarkImage?imageFile=' + image_file.to_s + '&rotationAngle=' + rotation_angle.to_s
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
             response_stream = RestClient.post(signed_str_uri, '', {:content_type => :json})
@@ -74,7 +74,7 @@ module Aspose
             if valid_output == ''
               folder = Aspose::Cloud::AsposeStorage::Folder.new
               output_stream = folder.get_file(@filename)
-              output_path = $out_put_location + @filename
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
               Aspose::Cloud::Common::Utils.save_file(output_stream, output_path)
               return ''
             else
@@ -104,7 +104,7 @@ module Aspose
 
             post_hash = {'OldValue' => old_value, 'NewValue' => new_value, 'IsMatchCase' => is_match_case, 'IsMatchWholeWord' => is_match_whole_word}
             json_data = post_hash.to_json
-            str_uri = $product_uri + '/words/' + @filename + '/replaceText'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/replaceText'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = RestClient.post signed_str_uri, json_data, {:content_type => :json}
 
@@ -113,7 +113,7 @@ module Aspose
             return valid_output unless  valid_output.empty?
             folder = Aspose::Cloud::AsposeStorage::Folder.new
             output_stream = folder.get_file(@filename)
-            output_path = $out_put_location + @filename
+            output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
             Aspose::Cloud::Common::Utils.save_file(output_stream, output_path)
             ''
           rescue Exception => e

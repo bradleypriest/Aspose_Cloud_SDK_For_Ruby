@@ -16,7 +16,7 @@ module Aspose
         def get_text
 
           begin
-            str_uri = $product_uri + '/words/' + @filename + '/textItems'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/textItems'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
             response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
@@ -48,7 +48,7 @@ module Aspose
               raise 'OLE Format not specified.'
             end
 
-            str_uri = $product_uri + '/words/' + @filename + '/drawingObjects/' + index.to_s + '/oleData'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/drawingObjects/' + index.to_s + '/oleData'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
 
@@ -56,7 +56,7 @@ module Aspose
 
             if valid_output == ''
 
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + index.to_s + '.' + ole_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + index.to_s + '.' + ole_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
               return output_path
             else
@@ -87,7 +87,7 @@ module Aspose
               raise 'Render Format not specified.'
             end
 
-            str_uri = $product_uri + '/words/' + @filename + '/drawingObjects/' + index.to_s + '/imagedata'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/drawingObjects/' + index.to_s + '/imagedata'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
             response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
@@ -96,7 +96,7 @@ module Aspose
 
             if valid_output == ''
 
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + index.to_s + '.' + render_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + index.to_s + '.' + render_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
               return output_path
             else
@@ -127,7 +127,7 @@ module Aspose
               raise 'Render Format not specified.'
             end
 
-            str_uri = $product_uri + '/words/' + @filename + '/drawingObjects/' + index.to_s + '?format=' + render_format
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/drawingObjects/' + index.to_s + '?format=' + render_format
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
             response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
@@ -136,7 +136,7 @@ module Aspose
 
             if valid_output == ''
 
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + index.to_s + '.' + render_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + index.to_s + '.' + render_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
               return output_path
             else
@@ -156,7 +156,7 @@ module Aspose
         def get_drawing_object_list
 
           begin
-            str_uri = $product_uri + '/words/' + @filename + '/drawingObjects'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/drawingObjects'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
             response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
@@ -217,7 +217,7 @@ module Aspose
 
               if valid_output == ''
 
-                # output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + index.to_s + '.' + render_format
+                # output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + index.to_s + '.' + render_format
                 Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
                 return output_path
               else
@@ -247,7 +247,7 @@ module Aspose
               raise 'Output path not specified.'
             end
 
-            str_uri = $product_uri + '/words/' + @filename + '/drawingObjects'
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/drawingObjects'
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
             response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})

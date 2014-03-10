@@ -16,7 +16,7 @@ module Aspose
               raise 'Filename cannot be empty.'
             end
 
-            str_uri = $product_uri + '/words/' + @filename + '?format=' + save_format
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '?format=' + save_format
             unless storage_name.empty?
               str_uri += '&storage=' + storage_name + '&folder=' + folder
             end
@@ -27,7 +27,7 @@ module Aspose
             valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
 
             if valid_output.empty?
-              output_path = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '.' + save_format
+              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '.' + save_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
               return ''
             end
@@ -47,7 +47,7 @@ module Aspose
             raise 'Please Specify Output Path' if output_path.empty?
             raise 'Please Specify Output Format' if output_format.empty?
 
-            str_uri =$product_uri + '/words/convert?format=' + output_format
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/convert?format=' + output_format
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response_stream = Aspose::Cloud::Common::Utils.upload_file_binary(input_path, signed_uri)
             v_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
@@ -57,7 +57,7 @@ module Aspose
               else
                 save_format = output_format
               end
-              output_file = $out_put_location + Aspose::Cloud::Common::Utils.get_filename(input_path) + '.' + save_format
+              output_file = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(input_path) + '.' + save_format
               Aspose::Cloud::Common::Utils.save_file(response_stream, output_file)
               return output_file
             end
