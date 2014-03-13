@@ -32,6 +32,7 @@ module Aspose
         # * :url describes the URL to sign
 
         def self.sign(url)
+          url = url[0..-2] if url.eql? '/'
           url = URI.escape(url)
           parsed_url = URI.parse(url)
 
@@ -91,7 +92,7 @@ module Aspose
         # * :localfile holds the local file path along with name
         # * :url holds the required url to use while uploading the file to Aspose Storage		 
         def self.upload_file_binary(localfile, url)
-          RestClient.put(url, File.new(localfile, 'rb'))
+          RestClient.put(url, File.new(localfile, 'rb'), :accept => 'application/json')
         end
 
         # Gets the count of a particular field in the response
@@ -117,7 +118,6 @@ module Aspose
         def self.get_filename(file)
           File.basename(file, File.extname(file))
         end
-
       end
     end
   end
