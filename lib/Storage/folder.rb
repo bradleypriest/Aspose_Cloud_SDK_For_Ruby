@@ -17,12 +17,41 @@ module Aspose
         # * :remoteFolderPath represents remote folder relative to the root. Pass empty string for the root folder.		 
         def upload_file(local_file, remote_folder='', storage_type='Aspose', storage_name='')
 
-          struri = build_file_name local_file, remote_folder
-          struri += append_storage(storage_name) unless storage_type == 'Aspose'
+          begin
 
-          signeduri = Aspose::Cloud::Common::Utils.sign(struri)
-          Aspose::Cloud::Common::Utils.upload_file_binary(local_file, signeduri)
+            raise 'Local file not specified' if local_file.empty?
 
+            if storage_type == 'Aspose'
+
+              filename = File.basename(local_file)
+
+              if remote_folder.empty?
+                struri = $product_uri + '/storage/file/' + filename
+              else
+                struri = $product_uri + '/storage/file/' + remote_folder + '/' + filename
+              end
+
+              signeduri = Aspose::Cloud::Common::Utils.sign(struri)
+
+            else
+
+              filename = File.basename(local_file)
+
+              if remote_folder.empty?
+                struri = $product_uri + '/storage/file/' + filename + '?storage=' + storage_name
+              else
+                struri = $product_uri + '/storage/file/' + remote_folder + '/' + filename + '?storage=' + storage_name
+              end
+
+              signeduri = Aspose::Cloud::Common::Utils.sign(struri)
+
+            end
+
+            Aspose::Cloud::Common::Utils.upload_file_binary(local_file, signeduri)
+
+          rescue Exception => e
+            print e
+          end
         end
 
 
@@ -41,8 +70,8 @@ module Aspose
           #      urlExist = ''
           #      urlDisc = ''
           #      if not remoteFolderPath.empty?
-          #        urlFile = $product_uri + '/storage/folder/' + remoteFolderPath
-          #      end
+          #        urlFile = $product_uri + '/storage/folder/' + remoteFolderPath 
+          #      end             
           #      signedURL = Aspose::Cloud::Common::Utils.sign(urlFolder)
           #      response = RestClient.get(signedURL, :accept => 'application/json')
           #      result = JSON.parse(response.body)
@@ -55,89 +84,108 @@ module Aspose
           #        apps[i].Size = result['Files'][i]['Size']
           #        apps[i].ModifiedDate = Aspose::Cloud::Common::Utils.parse_date(result['Files'][i]['ModifiedDate'])
           #      end
-          #      return apps
+          #      return apps	 
         end
 
-        def file_exists(file_name, storage_type = 'Aspose', storage_name = '')
+        def file_exists(filename, storage_type = 'Aspose', storage_name = '')
+          begin
 
-          signed_str_uri = build_file_uri(file_name, storage_name)
+            raise('Filename cannot be empty') if filename.empty?
 
-          response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
-          JSON.parse(response_stream)['FileExist']['IsExist']
+            str_uri = @str_uri_exist + filename
+            str_uri += '?storage=' + storage_name unless storage_name.empty?
 
+            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+            response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
+            JSON.parse(response_stream)['FileExist']['IsExist']
+
+          rescue Exception => e
+            print e
+          end
         end
 
-        def delete_file(file_name, storage_type = 'Aspose', storage_name = '')
+        def delete_file(filename, storage_type = 'Aspose', storage_name = '')
+          begin
 
-          signed_str_uri = build_file_uri(file_name, storage_name)
-          response_stream = RestClient.delete(signed_str_uri, {:accept => 'application/json'})
-          JSON.parse(response_stream)['Code'] == 200
+            raise 'File name cannot be empty' if filename.empty?
+
+            str_uri = @str_uri_file + filename
+            str_uri += '?storage=' + storage_name unless storage_name.empty?
+
+            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+            response_stream = RestClient.delete(signed_str_uri, {:accept => 'application/json'})
+
+            stream_hash = JSON.parse(response_stream)
+            stream_hash['Code'] == 200
+
+          rescue Exception => e
+            print e
+          end
         end
 
         def create_folder (folder_name, storage_type = 'Aspose', storage_name='')
+          begin
+            raise 'Folder name cannot be empty' if folder_name.empty?
+            folder_uri = URI.join(@str_uri_folder, folder_name)
+            unless storage_name.empty?
+              storage_query = URI.decode_www_form(folder_uri.query || []) << ["storage", storage_name] 
+              folder_uri.query = URI.encode_www_form(storage_query)
+            end
+            signed_uri = Aspose::Cloud::Common::Utils.sign(folder_uri.to_s)
+            response = RestClient.put(signed_uri, nil, :accept => :json)
+            JSON.parse(response)['Code'] == 200
 
-          raise 'Folder name cannot be empty' if folder_name.blank?
-          folder_uri = URI.join(@str_uri_folder, folder_name)
-          unless storage_name.empty?
-            storage_query = URI.decode_www_form(folder_uri.query || []) << ["storage", storage_name]
-            folder_uri.query = URI.encode_www_form(storage_query)
+          rescue Exception => e
+            print e
           end
-          signed_uri = Aspose::Cloud::Common::Utils.sign(folder_uri.to_s)
-          response = RestClient.put(signed_uri, nil, :accept => :json)
-          JSON.parse(response)['Code'] == 200
         end
 
         def delete_folder (folder_name)
+          begin
 
-          raise 'Folder name cannot be empty' if folder_name.blank?
+            raise 'Folder name cannot be empty' if folder_name.empty?
 
-          str_uri = URI.join(@str_uri_folder, folder_name)
-          signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          response = RestClient.delete(signed_uri, :accept => 'application/json')
-          JSON.parse(response)['Code'] == 200
+            str_uri = @str_uri_folder + folder_name
+            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+            response = RestClient.delete(signed_uri, :accept => 'application/json')
+            JSON.parse(response)['Code'] == 200
 
+          rescue Exception => e
+            print e
+          end
         end
 
         def get_disc_usage (storage_type = 'Aspose', storage_name = '')
+          begin
+            str_uri = @str_uri_disc
+            str_uri += '?storage=' + storage_name unless storage_name.empty?
 
-          str_uri = @str_uri_disc
-          str_uri += append_storage(storage_name)
+            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+            response = RestClient.get(signed_uri, :accept => 'application/json')
+            JSON.parse(response)['DiscUsage']
 
-          signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          response = RestClient.get(signed_uri, :accept => 'application/json')
-          JSON.parse(response)['DiscUsage']
-
+          rescue Exception => e
+            print e
+          end
         end
 
         # Get file from Aspose server
         def get_file (file_name, storage_type = 'Aspose', storage_name = '')
-          signed_uri = build_file_uri(file_name, storage_name)
-          RestClient.get(signed_uri, :accept => 'application/json')
-        end
+          begin
 
-        private
+            raise 'Filename cannot be empty' if file_name.empty?
 
-        def build_file_uri file_name, storage_name
-          raise 'Filename cannot be empty' if file_name.blank?
-          str_uri = @str_uri_file + file_name
-          str_uri += append_storage(storage_name)
+            str_uri = @str_uri_file + file_name
+            str_uri += '?storage=' + storage_name unless storage_name.empty?
 
-          Aspose::Cloud::Common::Utils.sign(str_uri)
+            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+            RestClient.get(signed_uri, :accept => 'application/json')
 
-        end
-
-        def append_storage storage_name
-          storage_name.blank? ? '' : "?storage=#{ storage_name }"
-        end
-
-
-        def build_file_name local_file, remote_folder
-          raise 'Local file not specified' if local_file.blank?
-
-          struri = $product_uri + '/storage/file/'
-          struri += remote_folder + '/' unless remote_folder.blank?
-          struri += File.basename(local_file)
-
+          rescue Exception => e
+            print e
+          end
         end
 
       end #Class Ends Here
