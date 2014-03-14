@@ -1,128 +1,87 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
 module Aspose
   module Cloud
-
     module Pdf
       class Extractor
-        def initialize filename
+        def initialize(filename)
           @filename = filename
+          raise 'filename not specified.' if filename.empty?
+          @base_uri =  Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename
         end
-
 =begin
   Gets number of images in a specified page
   @param  number page_number
-=end    
-        def get_image_count page_number
+  @param  string folder_name
+  @param  string storage_type
+  @param  string storage_name
+=end
+        def get_image_count(page_number=1, folder_name='', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/pages/#{page_number}/images"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
 
-        
-            if page_number == ''
-              raise 'page number not sepcified'
-            end
-        
-            if @filename == ''
-              raise 'filename not sepcified'
-            end
-        
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})        
-            stream_hash = JSON.parse(response_stream)        
-            return stream_hash['Images']['List'].length
-        
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          stream_hash = JSON.parse(response_stream)
+          stream_hash['Images']['List'].length
         end
-
 =begin
   Get the particular image from the specified page with the default image size
 	@param number page_number
 	@param number image_index
 	@param string image_format
+  @param  string folder_name
+  @param  string storage_type
+  @param  string storage_name
 =end    
-        def get_image_default_size page_number, image_index, image_format
+        def get_image_default_size(page_number=1, image_index=0, image_format='png', folder_name='', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/pages/#{page_number}/images/#{image_index}?"
+          str_uri = "#{str_uri}format=#{image_format}" unless image_format.empty?
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          str_uri = str_uri[0..-2] if str_uri[-1].eql?('?')
 
-        
-            if page_number == ''
-              raise 'page number not sepcified'
-            end
-        
-            if image_index == ''
-              raise 'image index not sepcified'
-            end
-        
-            if image_format == ''
-              raise 'image format not sepcified'
-            end
-        
-            if @filename == ''
-              raise 'filename not sepcified'
-            end
-                
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '?format=' + image_format
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-       
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})        
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + image_index.to_s + '.' + image_format
-              Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-        
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+
+          if valid_output.empty?
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}_#{image_index}.#{image_format}"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+          end
+          valid_output
         end
 
 =begin
   Get the particular image from the specified page with the default image size
-	@param int page_number
-	@param int image_index
-	@param string image_format
-	@param int width
-	@param int height
+	@param  int page_number
+	@param  int image_index
+	@param  string image_format
+	@param  int width
+	@param  int height
+  @param  string folder_name
+  @param  string storage_type
+  @param  string storage_name
 =end    
-        def get_image_custom_size page_number, image_index, image_format, width=0, height=0
+        def get_image_custom_size(page_number=1, image_index=0, image_format='png', width=100, height=100, folder_name='', storage_type = 'Aspose', storage_name = '')
+          qry = Hash.new()
+          str_uri = "#{@base_uri}/pages/#{page_number}/images/#{image_index}"
+          qry[:format] = image_format unless image_format.empty?
+          qry[:width] = width
+          qry[:height] = height
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          str_uri = str_uri[0..-2] if str_uri[-1].eql?('?')
 
-        
-            if page_number == ''
-              raise 'page number not sepcified'
-            end
-        
-            if image_index == ''
-              raise 'image index not sepcified'
-            end
-        
-            if image_format == ''
-              raise 'image format not sepcified'
-            end
-        
-            if @filename == ''
-              raise 'filename not sepcified'
-            end
-                
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '?format=' + image_format + '&width=' + width.to_s + '&height=' + height.to_s
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})        
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename) + '_' + image_index.to_s + '.' + image_format
-              Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-        
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+
+          if valid_output.empty?
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}_#{image_index}.#{image_format}"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+          end
+          valid_output
         end      
       end
     end

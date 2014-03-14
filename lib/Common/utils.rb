@@ -128,6 +128,14 @@ module Aspose
           tmp_uri.nil? ? uri : uri + tmp_uri
         end
 
+        # build uri
+        def self.build_uri(path,qry_data=nil)
+          qry_str = ''
+          qry_data.each { |key,value| qry_str = "#{qry_str}#{key}=#{value}&" }
+          uri = qry_str.empty? ? "#{path}" : "#{path}?#{qry_str}"
+          uri[-1].eql?('&') ? uri[0..-2] : uri
+        end
+
       end
     end
   end
