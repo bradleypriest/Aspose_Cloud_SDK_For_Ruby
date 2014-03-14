@@ -18,23 +18,23 @@ module Aspose
           raise 'Local file not specified' if local_file.empty?
 
           filename = File.basename(local_file)
-          struri = "#{ Aspose::Cloud::Common::Product.product_uri }/storage/file/#{ storage_name + '/' unless remote_folder.empty? }#{ filename }"
-          struri += append_storage(storage_name) unless storage_type == 'Aspose'
+          str_uri = "#{ Aspose::Cloud::Common::Product.product_uri }/storage/file/#{ remote_folder + '/' unless remote_folder.empty? }#{ filename }"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
-          signeduri = Aspose::Cloud::Common::Utils.sign(struri)
+          signeduri = Aspose::Cloud::Common::Utils.sign(str_uri)
           response = JSON.parse(Aspose::Cloud::Common::Utils.upload_file_binary(local_file, signeduri))
-          response["Status"].eql? "OK"
+          response['Status'].eql? 'OK'
         end
 
 
         # Retrieves Files and Folder information from a remote folder. The method returns an Array of AppFile objects.
         # * :remoteFolderPath represents remote folder relative to the root. Pass empty string for the root folder.
         def get_files(remote_folder_path='', storage_type='Aspose', storage_name='')
-          str_url = @str_uri_folder + remote_folder_path
-          str_url = str_url[0..-2] if str_url[-1].eql? "/"
-          str_url += append_storage(storage_name) unless storage_type == 'Aspose'
+          str_uri = @str_uri_folder + remote_folder_path
+          str_uri = str_uri[0..-2] if str_uri[-1].eql? '/'
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
-          signed_uri = Aspose::Cloud::Common::Utils.sign(str_url)
+          signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           response = RestClient.get(signed_uri, :accept => 'application/json')
 
           JSON.parse(response)['Files']
@@ -45,7 +45,7 @@ module Aspose
             raise('Filename cannot be empty') if filename.empty?
 
             str_uri = @str_uri_exist + filename
-            str_uri += append_storage(storage_name) unless storage_type == 'Aspose'
+            str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
@@ -57,18 +57,18 @@ module Aspose
             raise 'File name cannot be empty' if filename.empty?
 
             str_uri = @str_uri_file + filename
-            str_uri += append_storage(storage_name) unless storage_type == 'Aspose'
+            str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
             response_stream = RestClient.delete(signed_str_uri, {:accept => 'application/json'})
-            JSON.parse(response_stream)["Code"].eql? 200
+            JSON.parse(response_stream)['Code'].eql? 200
         end
 
         def create_folder (folder_name, storage_type = 'Aspose', storage_name='')
             raise 'Folder name cannot be empty' if folder_name.empty?
             str_uri = @str_uri_folder + folder_name
-            str_uri += append_storage(storage_name) unless storage_type == 'Aspose'
+            str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.put(signed_uri, nil, :accept => :json)
@@ -78,7 +78,7 @@ module Aspose
         def delete_folder (folder_name, storage_type = 'Aspose', storage_name='')
             raise 'Folder name cannot be empty' if folder_name.empty?
             str_uri = @str_uri_folder + folder_name
-            str_uri += append_storage(storage_name) unless storage_type == 'Aspose'
+            str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.delete(signed_uri, :accept => 'application/json')
@@ -87,7 +87,7 @@ module Aspose
 
         def get_disc_usage (storage_type = 'Aspose', storage_name = '')
             str_uri = @str_uri_disc
-            str_uri += append_storage(storage_name) unless storage_type == 'Aspose'
+            str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             response = RestClient.get(signed_uri, :accept => 'application/json')
@@ -99,15 +99,11 @@ module Aspose
             raise 'Filename cannot be empty' if file_name.empty?
 
             str_uri = @str_uri_file + file_name
-            str_uri += append_storage(storage_name) unless storage_type == 'Aspose'
+            str_uri += append_storage(storage_name) unless storage_type.eql? 'Aspose'
+            str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
             RestClient.get(signed_uri, :accept => 'application/json')
-        end
-
-        # appends storage name to the uri
-        def append_storage storage_name
-          storage_name.empty? ? '' : "?storage=#{ storage_name }"
         end
       end #Class Ends Here
     end

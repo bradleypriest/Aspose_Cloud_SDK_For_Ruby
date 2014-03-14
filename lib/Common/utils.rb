@@ -32,7 +32,7 @@ module Aspose
         # * :url describes the URL to sign
 
         def self.sign(url)
-          url = url[0..-2] if url.eql? '/'
+          url = url[0..-2] if url[-1].eql? '/'
           url = URI.escape(url)
           parsed_url = URI.parse(url)
 
@@ -118,6 +118,16 @@ module Aspose
         def self.get_filename(file)
           File.basename(file, File.extname(file))
         end
+
+        # appends storage name to the uri
+        def self.append_storage uri, remote_folder='', storage_name='', storage_type='Aspose'
+          tmp_uri = "folder=#{remote_folder}&" unless remote_folder.empty?
+          tmp_uri = "#{tmp_uri}storage=#{storage_name}" unless storage_name.empty? unless storage_type.eql? "Aspose"
+          tmp_uri = uri.include?('?') ? "&#{tmp_uri}" : "?#{tmp_uri}" unless tmp_uri.nil?
+          tmp_uri = tmp_uri[0..-2] if tmp_uri[-1].eql?('&') unless tmp_uri.nil?
+          tmp_uri.nil? ? uri : uri + tmp_uri
+        end
+
       end
     end
   end
