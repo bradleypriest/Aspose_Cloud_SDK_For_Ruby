@@ -4,121 +4,64 @@ module Aspose
   module Cloud
     module Pdf
       class TextEditor
-        def initialize filename
+        def initialize(filename)
           @filename = filename
+          raise 'filename not specified.' if filename.empty?
+          @base_uri =  Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename
         end
 
 =begin
    Gets raw text from the whole PDF file or a specific page
    @param number page_number [optinal]
 =end    
-        def get_text page_number = 0
-        
-            if @filename == ''
-              raise 'filename not specified'
-            end
-        
-            if page_number > 0
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/textitems'
-            else
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/textitems';
-            end
-        
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  
-        
-            stream_hash = JSON.parse(response_stream)
-            output_text = ''
-            stream_hash['TextItems']['List'].each { |item| output_text.concat(item['Text'])  }
-        
-            return output_text
+        def get_text(page_number = 0, folder_name='', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/#{ page_number > 0 ? 'pages/' + page_number.to_s + '/' : '' }textitems"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))
+          output_text = ''
+          response['TextItems']['List'].each { |item| output_text.concat(item['Text'])  }
+          output_text
         end
 
 =begin
    Gets text items from the whole PDF file or a specific page 
-   @param number page_number [optinal]
+   @param number page_number
 =end    
-        def get_text_items page_number = 0,fragment_number = 0
-
-        
-            if @filename == ''
-              raise 'filename not specified'
-            end
-        
-            if page_number > 0
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/textitems'
-            else
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/textitems';
-            end
-            if fragment_number > 0
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/fragments/' + fragment_number.to_s + '/textitems'
-            else
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/textitems';
-            end
-        
-        
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  
-        
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['TextItems']['List']                
-
-        end    
+        def get_text_items(page_number, fragment_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          raise 'fragment_number not specified.' if fragment_number.nil?
+          str_uri = "#{@base_uri}/pages/#{page_number}/fragments/#{fragment_number}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['TextItems']['List']
+        end
 
 =begin
    Gets count of the fragments from a particular page 
    @param number page_number 
 =end    
-        def get_fragment_count page_number
+        def get_fragment_count(page_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          str_uri = "#{@base_uri}/pages/#{page_number}/fragments"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
 
-        
-            if @filename == ''
-              raise 'filename not specified'
-            end
-        
-            if page_number == ''
-              raise 'page number not specified'
-            end
-        
-       
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments'        
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  
-        
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['TextItems']['List'].length
-
-        end    
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['TextItems']['List'].length
+        end
 
 =begin
    Gets TextFormat of a particular Fragment
    @param number page_number 
    @param number fragment_number 
-=end    
-        def get_text_format page_number, fragment_number, segament_number = 0
-            if @filename == ''
-              raise 'filename not specified'
-            end
-        
-            if page_number == ''
-              raise 'page number not specified'
-            end
-        
-            if fragment_number == ''
-              raise 'fragment number not specified'
-            end
-        
-       
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments/' + fragment_number.to_s + (!segament_number.nil? ?  '/segments/' + segament_number.to_s : '') + '/textformat'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  
-        
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['TextFormat']
-
+=end
+        def get_text_format(page_number, fragment_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          raise 'fragment_number not specified.' if fragment_number.nil?
+          str_uri = "#{@base_uri}/pages/#{page_number}/fragments/#{fragment_number}/textformat"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['TextFormat']
         end
 
 =begin
@@ -126,77 +69,34 @@ module Aspose
     @param string old_text
     @param string new_text 
 =end    
-        def replace_text old_text, new_text, is_regular_expression = false, page_number = 0
+        def replace_text(old_text, new_text, is_regular_expression = false, page_number = 0, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'old_text not specified.' if old_text.empty?
+          raise 'new_text not specified.' if new_text.empty?
 
-        
-            if @filename == ''
-              raise 'filename not specified'
-            end
-        
-            if old_text == ''
-              raise 'old text not specified'
-            end
-        
-            if new_text == ''
-              raise 'new text not specified'
-            end        
-        
-               
-            post_hash = { 'OldValue' => old_text, 'NewValue'=> new_text, 'Regex'=> 'false' }
-            json_data = post_hash.to_json    
-        
-        
-            if page_number > 0
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/replaceText'
-            else
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/replaceText'
-            end
+          json_data = { 'OldValue' => old_text, 'NewValue'=> new_text, 'Regex'=> is_regular_expression }.to_json
+          str_uri = page_number > 0 ? "#{@base_uri}/pages/#{page_number}/replaceText" : "#{@base_uri}/replaceText"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
 
-        
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
-        
-            response_stream = RestClient.post(str_signed_uri,json_data,{:content_type=>'application/json',:accept=>'application/json'})  
-               
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new           
-              output_stream = folder.get_file(@filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri,json_data,{ :content_type => 'application/json', :accept => 'application/json' })
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? true : valid_output
         end    
 
 =begin
   Gets count of the segments in a fragment
   @param number pageNumber
   @param number fragmentNumber
-=end    
-        def get_segment_count page_number, fragment_number
-            if @filename == ''
-              raise 'filename not specified'
-            end
-        
-            if page_number == ''
-              raise 'page number not specified'
-            end
-        
-            if fragment_number == ''
-              raise 'page number not specified'
-            end
-               
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/fragments/' + fragment_number.to_s       
-        
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})  
-        
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['TextItems']['List'].length
+=end
+        def get_segment_count(page_number, fragment_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          raise 'fragment_number not specified.' if fragment_number.nil?
+
+          str_uri = "#{@base_uri}/pages/#{page_number}/fragments/#{fragment_number}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['TextItems']['List'].length
         end
       end
     end
