@@ -1,123 +1,48 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
 module Aspose
   module Cloud
-
     module Words
       class MailMerge
-        def initialize filename
+        def initialize(filename)
           @filename = filename
-          raise 'Base file not specified.' if filename.empty?
+          raise 'filename not specified.' if filename.empty?
+          @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/words/#{@filename}"
         end
     
 =begin
-   Executes mail merge without regions.
+   Executes mail merge with/without regions.
    @param string filename
    @param string str_xml
-=end     
-    
-        def execute_mail_merge str_xml
-      
+=end
+        def execute_mail_merge(str_xml, with_regions=false, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'str_xml not specified.' if str_xml.empty?
 
+          str_uri = "#{@base_uri}/executeMailMerge"
+          str_uri = "#{str_uri}?withRegions=true" if with_regions
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri, str_xml, {:accept=>'application/json'})
 
-            if str_xml == ''
-              raise 'XML not specified.'
-            end
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/executeMailMerge'
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.post(signed_str_uri,str_xml,{:accept=>:json})
-            stream_hash = JSON.parse(response_stream)
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''                              
-              folder = Aspose::Cloud::AsposeStorage::Folder.new
-              output_stream = folder.get_file(stream_hash['Document']['FileName'])
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end        
-        
-        
-
-      
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(JSON.parse(response_stream)['Document']['FileName'],@filename,folder_name,storage_name,storage_type) : valid_output
         end
 
-=begin
-   Executes mail merge with regions.
-   @param string filename
-   @param string str_xml
-=end     
-    
-        def execute_mail_merge_with_regions str_xml
-      
-
-
-            if str_xml == ''
-              raise 'XML not specified.'
-            end
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/executeMailMerge?withRegions=true'
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response_stream = RestClient.post(signed_str_uri,str_xml,{:accept=>:json})
-            stream_hash = JSON.parse(response_stream)
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''                              
-              folder = Aspose::Cloud::AsposeStorage::Folder.new
-              output_stream = folder.get_file(stream_hash['Document']['FileName'])                   
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end        
-        
-        
-
-      
-        end    
 
 =begin
-   Executes mail merge with regions.
-   @param string filename
+   Executes mail merge with template.
    @param string str_xml
-=end     
-    
-        def execute_template str_xml
-      
+=end
+        def execute_template(str_xml, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'str_xml not specified.' if str_xml.empty?
 
+          str_uri = "#{@base_uri}/executeTemplate"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri, str_xml, {:accept=>'application/json'})
 
-            if str_xml == ''
-              raise 'XML not specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/executeTemplate'
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response_stream = RestClient.post(signed_str_uri,str_xml,{:accept=>:json})
-            stream_hash = JSON.parse(response_stream)
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''                              
-              folder = Aspose::Cloud::AsposeStorage::Folder.new
-              output_stream = folder.get_file(stream_hash['Document']['FileName'])                   
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end        
-        
-        
-          
-      
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(JSON.parse(response_stream)['Document']['FileName'],@filename,folder_name,storage_name,storage_type) : valid_output
         end
-    
       end
     end
-    
   end
 end
