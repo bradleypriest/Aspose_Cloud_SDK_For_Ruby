@@ -1,591 +1,203 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
 module Aspose
   module Cloud
-
     module Pdf
-      class Document       
-    
+      class Document
         def initialize(filename)
           @filename = filename
-        end
-    
-        def get_page_count
-
-      
-            if(@filename == '')
-              raise('Filename cannot be empty.')
-            end
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages'
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.get(signed_str_uri,{:accept=>'application/json'})
-        
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['Pages']['List'].count
-
-        end
-    
-        def append_document(base_pdf, new_pdf, startpage = 0, endpage = 0, sourcefolder = '')
-      
-
-        
-            if base_pdf == ''
-              raise('Base file not specified')
-            end
-        
-            if new_pdf == ''
-              raise('File to merge is not specified')
-            end       
-        
-            if sourcefolder == ''
-              struri = "#{Aspose::Cloud::Common::Product.product_uri}/pdf/#{base_pdf}/appenddocument?appendfile=#{new_pdf}"+(startpage > 0 ? '&startPage=' + startpage.to_str : '' )  + (endpage > 0 ? '&endPage=' + endpage : '' )          
-            else
-              struri = "#{Aspose::Cloud::Common::Product.product_uri}/pdf/#{base_pdf}/appenddocument?appendfile=#{sourcefolder}/#{new_pdf}"+ (startpage > 0 ? '&startPage=' + startpage.to_str : '' )  + (endpage > 0 ? '&endPage=' + endpage : '' )
-            end
-        
-            signeduri = Aspose::Cloud::Common::Utils.sign(struri)
-                
-            response_stream = RestClient.post signeduri,'', {:accept => 'application/json'}
-                
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-              if(sourcefolder == '')
-                output_stream = folder.get_file(base_pdf)
-              else
-                output_stream = folder.get_file(sourcefolder + '/' + base_pdf)
-              end
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + base_pdf;
-          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
+          raise 'filename not specified.' if filename.empty?
+          @base_uri =  Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename
         end
 
-        def merge_documents(source_files)
+        def get_page_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/pages"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
 
-            _mergedfilename = @filename
-      
-            # Throw exception if output filename not specified
-            if _mergedfilename == ''
-              raise('Output file not specified')        
-            end
-      
-            # Throw exception if source files are not provided
-            if source_files.empty? || source_files.length < 2
-              raise('File to merge are not specified')        
-            end
-      
-            # Build JSON to post
-            json_data = JSON.generate('List'=>source_files)
-        
-            struri = "#{Aspose::Cloud::Common::Product.product_uri}/pdf/#{_mergedfilename}/merge"
-      
-            signeduri = Aspose::Cloud::Common::Utils.sign(struri)
-        
-            responsexml = RestClient.put signeduri, json_data, {:content_type => :json}
-           
-      
-            xmldoc = REXML::Document.new(responsexml)
-      
-            if xmldoc.elements.to_a('SaaSposeResponse/Status').first.text == 'OK'
-              return true
-            else
-              return false
-            end
-        
-
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Pages']['List'].length
         end
     
-        #Gets the FormField count of the specified PDF document
-    
-        def get_form_field_count
+        def append_document(append_file, startpage = 0, endpage = 0, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'append_file not specified.' if append_file.empty?
+          str_uri = "#{@base_uri}/appendDocument"
+          qry = Hash.new
+          qry[:appendFile] = append_file
+          qry[:startPage] = startpage unless startpage == 0
+          qry[:endPage] = endpage unless endpage == 0
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
-        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
-                
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['Fields']['List'].count
-
-        end
-    
-        #Gets the list of FormFields from the specified PDF document
-    
-        def get_form_fields
-
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)        
-        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
-                
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['Fields']['List']
-        
-
-        end
-    
-        # Gets a particular form field
-        # field_name
-    
-        def get_form_field(field_name)
-      
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/feilds/' + field_name
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri) 
-        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
-                
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['Field']
-      
-        end
-    
-        #Creates a PDF from HTML
-        #@param string $pdfFileName (name of the PDF file to create)
-        #@param string $htmlFileName (name of the HTML template file)
-    
-        def create_from_html (pdf_filename, html_filename)
-      
-
-        
-            if(pdf_filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            if(html_filename == '')
-              raise('HTML file name not specified.')
-            end
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + pdf_filename + '?templatefile=' + html_filename + '&templatetype=html'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.put(str_signed_uri, '', {:accept=>'application/json'})
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-          
-              output_stream = folder.get_file(pdf_filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + pdf_filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-
-      
-        end           
-    
-        #Creates a PDF from XML
-        #@param string $pdfFileName (name of the PDF file to create)
-        #@param string $xsltFileName (name of the XSLT template file)
-        #@param string $xmlFileName (name of the XML file)
-	    
-        def create_from_xml (pdf_filename, xslt_filename, xml_filename)
-      
-
-        
-            if(pdf_filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            if(xslt_filename == '')
-              raise('XSLT file name not specified.')
-            end
-        
-            if(xml_filename == '')
-              raise('XML file name not specified.')
-            end        
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + pdf_filename + '?templatefile=' + xslt_filename + '&datafile=' + xml_filename + '&templatetype=xml'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.put(str_signed_uri, '', {:accept=>'application/json'})
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-          
-              output_stream = folder.get_file(pdf_filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + pdf_filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-
-      
-        end
-    
-        #Creates an Empty Pdf document
-        #@param string $pdfFileName (name of the PDF file to create)	  
-	    
-        def create_empty_pdf (pdf_filename)
-      
-
-        
-            if(pdf_filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + pdf_filename
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.put(str_signed_uri, '', {:accept=>'application/json'})
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-          
-              output_stream = folder.get_file(pdf_filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + pdf_filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-
-      
-        end
-    
-        #Add new page to opend pdf file	  
-	    
-        def add_new_page
-      
-
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.put(str_signed_uri, '', {:accept=>'application/json'})
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-          
-              output_stream = folder.get_file(@filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-      
-        end
-    
-        #Deletes selected page from Pdf document
-        #@param page_number
-	    
-        def delete_page (page_number)
-      
-
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            if(page_number == '')
-              raise('page number not specified.')
-            end
-        
-        
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-                
-            response_stream = RestClient.delete(str_signed_uri, {:accept=>'application/json'})
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-          
-              output_stream = folder.get_file(@filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-
-      
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          Aspose::Cloud::Common::Utils.validate_output(response_stream)
         end
 
-        #Moves selected page in Pdf document to new location
-        #@param page_number
-        #@param new_location
-	    
-        def move_page (page_number, new_location)
-      
+        def merge_documents(merged_filename, source_files, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'merged_filename not specified.' if merged_filename.empty?
+          raise 'source_files not specified.' if source_files.nil? || source_files.length < 2
 
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            if(page_number == '')
-              raise('page number not specified.')
-            end
-        
-            if(new_location == '')
-              raise('new location not specified.')
-            end
-        
-        
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/movepage?newindex=' + new_location.to_s
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-                       
-            response_stream = RestClient.post(str_signed_uri, '', {:accept=>'application/json'})
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-          
-              output_stream = folder.get_file(@filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
+          json_data = JSON.generate( 'List'=>source_files )
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/pdf/#{merged_filename}/merge"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
-      
+          JSON.parse(RestClient.put(signed_str_uri,json_data,{ :content_type=>:json, :accept=>'application/json' }))['Status'] == 'OK' ? true : false
         end
     
-        #Replaces Image in PDF File using Local Image Stream
-        #@param page_number
-        #@param image_index
-        #@param image_stream
-	    
-        def replace_image_stream (page_number, image_index, image_stream)
-      
-
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            if(page_number == '')
-              raise('page number not specified.')
-            end
-        
-            if(image_index == '')
-              raise('image index not specified.')
-            end
-        
-            if(image_stream == '')
-              raise('image stream not specified.')
-            end
-        
-        
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-                       
-            response_stream = RestClient.post(str_signed_uri, image_stream, {:accept=>'application/json'})
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-          
-              output_stream = folder.get_file(@filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-
+        def get_form_field_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/fields"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Fields']['List'].length
         end
-    
-        #Replaces Image in PDF File using Local Image Stream
-        #@param page_number
-        #@param image_index
-        #@param image_filename
-	    
-        def replace_image_file (page_number, image_index, image_filename)
-      
 
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            if(page_number == '')
-              raise('page number not specified.')
-            end
-        
-            if(image_index == '')
-              raise('image index not specified.')
-            end
-        
-            if(image_filename == '')
-              raise('image filename not specified.')
-            end
-        
-        
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/pages/' + page_number.to_s + '/images/' + image_index.to_s + '/imagefile=' + image_filename
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-   
-            response_stream = RestClient.post(str_signed_uri, '', {:accept=>'application/json'})
-        
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-        
-            if valid_output == ''
-              folder = Aspose::Cloud::AsposeStorage::Folder.new 
-          
-              output_stream = folder.get_file(@filename)          
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;          
-              Aspose::Cloud::Common::Utils.save_file(output_stream,output_path)
-              return ''
-            else
-              return valid_output
-            end
-        
-
+        def get_form_fields(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/fields"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Fields']['List']
         end
-    
-        #Get specified properity of the document
-        #@param string propertyName
-       
-        def get_document_property property_name
-      
 
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            if(property_name == '')
-              raise('property name not specified.')
-            end
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/documentProperties/' + property_name
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.get(str_signed_uri, {:accept=>'application/json'})
-        
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['DocumentProperty']        
-        
+        def get_form_field(field_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'field_name not specified.' if field_name.empty?
 
-      
+          str_uri = "#{@base_uri}/fields/#{field_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Field']
         end
-    
-        #Get specified properity of the document   
-       
-        def get_document_properties
-      
 
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-        
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/documentProperties'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-       
-            response_stream = RestClient.get(str_signed_uri,  {:accept=>'application/json'})
-        
-            stream_hash = JSON.parse(response_stream)
-            return stream_hash['DocumentProperties']['List']
-        
+        def create_from_html (html_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'html_filename not specified.' if html_filename.empty?
 
-      
+          str_uri = "#{@base_uri}"
+          qry = Hash.new
+          qry[:templatefile] = html_filename
+          qry[:templatetype] = 'html'
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
+          Aspose::Cloud::Common::Utils.validate_output(response_stream)
         end
-    
-        #Set specified properity of the document
-        #@param string propertyName
-        #@param string propertyValue
-       
-        def set_document_property property_name, property_value
-      
 
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end
-        
-            if(property_name == '')
-              raise('property name not specified.')
-            end
-        
-            if(property_value == '')
-              raise('property value not specified.')
-            end
-        
-            # Build JSON to post
-            json_data = JSON.generate('Value'=>property_value)
+        def create_from_xml (xslt_filename, xml_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'xslt_filename not specified.' if xslt_filename.empty?
+          raise 'xml_filename not specified.' if xml_filename.empty?
 
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/documentProperties/' + property_name
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-
-            response_stream = RestClient.put(str_signed_uri, json_data, {:accept=>'application/json'})
-        
-            stream_hash = JSON.parse(response_stream)
-        
-            return stream_hash['DocumentProperty']        
-
-      
+          str_uri = "#{@base_uri}"
+          qry = Hash.new
+          qry[:templatefile] = xslt_filename
+          qry[:datafile] = xml_filename
+          qry[:templatetype] = 'xml'
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
+          Aspose::Cloud::Common::Utils.validate_output(response_stream)
         end
-    
-        #Remove All properties of a document    
-       
-        def remove_all_properties
-      
 
-        
-            if(@filename == '')
-              raise('PDF file name not specified.')
-            end                                       
-        
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/pdf/' + @filename + '/documentProperties/'
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-        
-            response_stream = RestClient.delete(str_signed_uri, {:accept=>'application/json'})
-        
-            stream_hash = JSON.parse(response_stream)
-        
-            if stream_hash['Code'] == 200
-              return true;
-            else
-              return false;
-            end
-        
-
-      
+        def create_empty_pdf(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
         end
-    
+
+        def add_new_page(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/pages"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def delete_page(page_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+
+          str_uri = "#{@base_uri}/pages/#{page_number}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.delete(signed_str_uri,{:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def move_page(page_number, new_location, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          raise 'new_location not specified.' if new_location.nil?
+
+          str_uri = "#{@base_uri}/pages/#{page_number}/movepage?newindex=#{new_location}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def replace_image_stream(page_number, image_index, image_stream, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          raise 'image_index not specified.' if image_index.nil?
+          raise 'image_stream not specified.' if image_stream.nil?
+
+          str_uri = "#{@base_uri}/pages/#{page_number}/images/#{image_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri, image_stream, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def replace_image_file(page_number, image_index, image_file, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          raise 'image_index not specified.' if image_index.nil?
+          raise 'image_file not specified.' if image_file.nil?
+
+          str_uri = "#{@base_uri}/pages/#{page_number}/images/#{image_index}?imagefile=#{image_file}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def get_document_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'property_name not specified.' if property_name.empty?
+
+          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperty']
+        end
+
+        def get_document_properties(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/documentProperties"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperties']['List']
+        end
+
+        def set_document_property(property_name, property_value, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'property_name not specified.' if property_name.empty?
+          raise 'property_value not specified.' if property_value.empty?
+
+          json_data = JSON.generate('Value'=>property_value)
+
+          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'}))['DocumentProperty']
+        end
+
+        def remove_all_properties(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/documentProperties"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
       end
     end
-    
   end
 end

@@ -120,7 +120,7 @@ module Aspose
         end
 
         # appends storage name to the uri
-        def self.append_storage uri, remote_folder='', storage_name='', storage_type='Aspose'
+        def self.append_storage(uri, remote_folder='', storage_name='', storage_type='Aspose')
           tmp_uri = "folder=#{remote_folder}&" unless remote_folder.empty?
           tmp_uri = "#{tmp_uri}storage=#{storage_name}" unless storage_name.empty? unless storage_type.eql? "Aspose"
           tmp_uri = uri.include?('?') ? "&#{tmp_uri}" : "?#{tmp_uri}" unless tmp_uri.nil?
@@ -136,6 +136,12 @@ module Aspose
           uri[-1].eql?('&') ? uri[0..-2] : uri
         end
 
+        def self.download_file(remote_filename, output_filename, remote_folder='', storage_name='', storage_type='Aspose')
+          folder = Aspose::Cloud::AsposeStorage::Folder.new
+          remote_filename = "#{remote_folder}/#{remote_filename}" unless remote_folder.empty?
+          output_stream = folder.get_file(remote_filename,storage_type,storage_name)
+          Aspose::Cloud::Common::Utils.save_file(output_stream,"#{Aspose::Cloud::Common::AsposeApp.output_location}#{output_filename}")
+        end
       end
     end
   end
