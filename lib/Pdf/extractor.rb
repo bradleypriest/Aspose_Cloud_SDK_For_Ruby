@@ -63,7 +63,7 @@ module Aspose
   @param  string storage_name
 =end    
         def get_image_custom_size(page_number=1, image_index=0, image_format='png', width=100, height=100, folder_name='', storage_type = 'Aspose', storage_name = '')
-          qry = Hash.new()
+          qry = Hash.new
           str_uri = "#{@base_uri}/pages/#{page_number}/images/#{image_index}"
           qry[:format] = image_format unless image_format.empty?
           qry[:width] = width
