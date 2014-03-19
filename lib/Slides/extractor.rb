@@ -1,153 +1,101 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
 module Aspose
   module Cloud
-
     module Slides
       class Extractor
         def initialize (filename)
           @filename = filename
+          raise 'filename not specified.' if filename.empty?
+          @base_uri =  Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename
         end
 =begin
   Gets total number of images in a presentation
 =end
-        def get_image_count storage_type = '',storage_name='',folder_name  =''
-
-            if @filename == ''
-              raise 'No file name specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/images'
-            if !folder_name.empty?
-              str_uri += '?folder=' + folder_name
-            end
-            if !storage_name.empty?
-              str_uri += '&storage=' + storage_name
-            end
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['Images']['List'].count
+        def get_image_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/images"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Images']['List'].length
         end
+
 =begin
   Gets number of images in the specified slide
 	@param number slide_number
 =end
-        def get_slide_image_count(slide_number,storage_type='',storage_name='',folder_name='')
+        def get_slide_image_count(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
 
-            if @filename == ''
-              raise 'No file name specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/images'
-            if !folder_name.empty?
-              str_uri += '?folder=' + folder_name
-            end
-            if !storage_name.empty?
-              str_uri += '&storage=' + storage_name
-            end
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['Images']['List'].count
+          str_uri = "#{@base_uri}/slides/#{slide_number}/images"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Images']['List'].length
         end
 =begin
   Gets all shapes from the specified slide
 	@param number slide_number
 =end
-        def get_shapes(slide_number,storage_type = '',storage_name='',folder_name='')
-            if @filename == ''
-              raise 'No file name specified'
-            end
-         
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/shapes'
-            if !folder_name.empty?
-              str_uri += '?folder=' + folder_name
-            end
-            if !storage_name.empty?
-              str_uri += '&storage=' + storage_name
-            end
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            shapes = Hash.new
-            json['ShapeList']['ShapesLinks'].each { |item| 
-          
-              signed_uri = Aspose::Cloud::Common::Utils.sign(item['Uri']['Href'])
-              response = RestClient.get(signed_uri, :accept => 'application/json')
-              shapes = JSON.parse(response)
-            }
-            return shapes
+        def get_shapes(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}/shapes"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          shapes = Hash.new
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['ShapeList']['ShapesLinks'].each { |item|
+            signed_str_uri = Aspose::Cloud::Common::Utils.sign(item['Uri']['Href'])
+            shapes.push(JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'})))
+          }
+          shapes
         end
+
 =begin
   Get color scheme from the specified slide
 	@param number slide_number
 =end
-        def get_color_scheme(slide_number,storage_type='',storage_name='')
-            if @filename == ''
-              raise 'No file name specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/colorScheme'
-            if !storage_name.empty?
-              str_uri += '?storage=' + storage_name
-            end
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['ColorScheme']
+        def get_color_scheme(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}/theme/colorScheme"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['ColorScheme']
         end
 =begin
   Get font scheme from the specified slide
 	@param number slide_number
-=end   
-        def get_font_scheme(slide_number,storage_type='',storage_name='')
-            if @filename == ''
-              raise 'No file name specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/fontScheme'
-            if !storage_name.empty?
-              str_uri += '?storage=' + storage_name
-            end
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['FontScheme']
+=end
+        def get_font_scheme(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}/theme/fontScheme"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['FontScheme']
         end
 
 =begin
   Get format scheme from the specified slide
 	@param number slide_number
 =end
-        def get_format_scheme(slide_number,storage_type='',storage_name='')
-            if @filename == ''
-              raise 'No file name specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/theme/formatScheme'
-            if !storage_name.empty?
-              str_uri += '?storage=' + storage_name
-            end
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['FormatScheme']
+        def get_format_scheme(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}/theme/formatScheme"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['FormatScheme']
         end
+
 =begin
   Gets placeholder count from a particular slide
 	@param number $slideNumber
 =end
-        def get_placeholder_count(slide_number,storage_type='',storage_name='',folder_name='')
-            if @filename == ''
-              raise 'No file name specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/placeholders'
-            if !folder_name.empty?
-              str_uri += '?folder=' + folder_name
-            end
-            if !storage_name.empty?
-              str_uri += '&storage=' + storage_name
-            end
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['Placeholders']['PlaceholderLinks'].count
+        def get_placeholder_count(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}/placeholders"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Placeholders']['PlaceholderLinks'].length
         end
 
 =begin
@@ -155,24 +103,16 @@ module Aspose
 	@param number $slideNumber
 	@param number $placeholderIndex
 =end
-        def get_placeholder(slide_number,placeholder_index,storage_type = '',storage_name='',folder_name = '')
-            if @filename == ''
-              raise 'No file name specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/slides/' + @filename + '/slides/' + slide_number.to_s + '/placeholders/' + placeholder_index.to_s
-            if !folder_name.empty?
-              str_uri += '?folder=' + folder_name
-            end
-            if !storage_name.empty?
-              str_uri += '&storage=' + storage_name
-            end
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['Placeholder']
+        def get_placeholder(slide_number, placeholder_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
+          raise 'placeholder_index not specified.' if placeholder_index.nil?
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}/placeholders/#{placeholder_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Placeholder']
         end
       end
     end
-    
   end
 end
