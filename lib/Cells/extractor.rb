@@ -2,146 +2,68 @@ module Aspose
   module Cloud
     module Cells
       class Extractor
-        def initialize filename
+        def initialize(filename)
           @filename = filename
+          raise 'filename not specified.' if filename.empty?
+          @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/cells/#{@filename}"
         end
-    
-        # saves a specific picture from a specific sheet as image
-        # @param worksheet_name
-        # @param picture_index
-        # @param image_format
-        def get_picture worksheet_name, picture_index, image_format
 
-            if @filename==''
-              raise 'Base file name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
-              worksheet_name.to_s + '/pictures/' + picture_index.to_s + '?format=' + image_format.to_s
-			
-            #Sign URI
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+        def get_picture(worksheet_name, picture_index, image_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'picture_index not specified.' if picture_index.nil?
+          raise 'image_format not specified.' if image_format.empty?
 
-            #Send request and receive response stream
-            response_stream = RestClient.get signed_uri, {:accept=>'application/json'}
-
-            #Validate output
-            v_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
- 
-            if v_output == ''
-              #Save output file
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
-                '_' + worksheet_name + '.' + image_format
-              Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
-              return output_path
-            else 
-              return v_output
-            end
-
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/pictures/#{picture_index}?format=#{image_format}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}_#{worksheet_name}.#{image_format}"
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.save_file(response_stream,output_path) : valid_output
         end
-    
-        # saves a specific OleObject from a specific sheet as image
-        # @param worksheet_name
-        # @param object_index
-        # @param image_format
-    
-        def get_ole_object worksheet_name, object_index, image_format
 
-            if @filename==''
-              raise 'Base file name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
-              worksheet_name.to_s + '/oleobjects/' + object_index.to_s + '?format=' + image_format.to_s
-			
-            #Sign URI
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+        def get_ole_object(worksheet_name, object_index, image_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'object_index not specified.' if object_index.nil?
+          raise 'image_format not specified.' if image_format.empty?
 
-            #Send request and receive response stream
-            response_stream = RestClient.get signed_uri, {:accept=>'application/json'}
-
-            #Validate output
-            v_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
- 
-            if v_output == ''
-              #Save output file
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
-                '_' + worksheet_name + '.' + image_format
-              Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
-              return output_path
-            else 
-              return v_output
-            end
-
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/oleobjects/#{object_index}?format=#{image_format}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}_#{worksheet_name}.#{image_format}"
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.save_file(response_stream,output_path) : valid_output
         end
-    
-        # saves a specific chart from a specific sheet as image
-        # @param worksheet_name
-        # @param chart_index
-        # @param image_format
-    
-        def get_chart worksheet_name, chart_index, image_format
 
-            if @filename==''
-              raise 'Base file name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
-              worksheet_name.to_s + '/charts/' + chart_index.to_s + '?format=' + image_format.to_s
-			
-            #Sign URI
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+        def get_chart(worksheet_name, chart_index, image_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'chart_index not specified.' if chart_index.nil?
+          raise 'image_format not specified.' if image_format.empty?
 
-            #Send request and receive response stream
-            response_stream = RestClient.get signed_uri, {:accept=>'application/json'}
-
-            #Validate output
-            v_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
- 
-            if v_output == ''
-              #Save output file
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
-                '_' + worksheet_name + '.' + image_format
-              Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
-              return output_path
-            else 
-              return v_output
-            end
-
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts/#{chart_index}?format=#{image_format}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}_#{worksheet_name}.#{image_format}"
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.save_file(response_stream,output_path) : valid_output
         end
-    
-        #saves a specific auto-shape from a specific sheet as image
-        # @param worksheet_name
-        # @param shape_index
-        # @param image_format
-    
-        def get_auto_shape worksheet_name, shape_index, image_format
 
-            if @filename==''
-              raise 'Base file name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + 
-              worksheet_name.to_s + '/autoshapes/' + shape_index.to_s + '?format=' + image_format.to_s
-			
-            #Sign URI
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+        def get_auto_shape(worksheet_name, shape_index, image_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'shape_index not specified.' if shape_index.nil?
+          raise 'image_format not specified.' if image_format.empty?
 
-            #Send request and receive response stream
-            response_stream = RestClient.get signed_uri, {:accept=>'application/json'}
-
-            #Validate output
-            v_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
- 
-            if v_output == ''
-              #Save output file
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + Aspose::Cloud::Common::Utils.get_filename(@filename)+ 
-                '_' + worksheet_name + '.' + image_format
-              Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
-              return output_path
-            else 
-              return v_output
-            end
-
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/autoshapes/#{shape_index}?format=#{image_format}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}_#{worksheet_name}.#{image_format}"
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.save_file(response_stream,output_path) : valid_output
         end
       end
     end
-    
   end
 end 
