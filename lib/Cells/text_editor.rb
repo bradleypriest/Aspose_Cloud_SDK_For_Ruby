@@ -2,86 +2,74 @@ module Aspose
   module Cloud
     module Cells
       class TextEditor
-        def initialize filename
+        def initialize(filename)
           @filename = filename
+          raise 'filename not specified.' if filename.empty?
+          @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/cells/#{@filename}"
         end
-    
-        def find_text text
 
-            if @filename == ''
-              raise 'Base File Name is not Specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/findText?text=' + text.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post signed_uri, '' , {:accept => 'application/json'}
-            json = JSON.parse(response)
-            return json['TextItems']['TextItemList']
+        def find_text(text, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'text not specified.' if text.empty?
 
+          str_uri = "#{@base_uri}/findText?text=#{text}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, '', {:accept=>'application/json'}))['TextItems']['TextItemList']
         end
-        def find_text_in_worksheet worksheet_name,text
 
-            if @filename == ''
-              raise 'Base File Name is not Specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s +  '/findText?text=' + text.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post signed_uri, '' , {:accept => 'application/json'}
-            json = JSON.parse(response)
-            return json['TextItems']['TextItemList']
+        def find_text_in_worksheet(text, worksheet_name, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'text not specified.' if text.empty?
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
 
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/findText?text=#{text}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, '', {:accept=>'application/json'}))['TextItems']['TextItemList']
         end
-    
-        def get_text_items worksheet_name
 
-            if @filename == ''
-              raise 'Base File Name is not Specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s +  '/textItems' 
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get signed_uri, {:accept => 'application/json'}
-            json = JSON.parse(response)
-            return json['TextItems']['TextItemList']
+        def get_text_items(worksheet_name, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'text not specified.' if text.empty?
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
 
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/textItems"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['TextItems']['TextItemList']
         end
-    
-        def replace_text old_text,new_text
 
-            if @filename == ''
-              raise 'Base File Name is not Specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/replaceText?oldValue=' + old_text.to_s + '&newValue=' + new_text.to_s 
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post signed_uri,'', {:accept => 'application/json'}
-            v_output = Aspose::Cloud::Common::Utils.validate_output(response)
-            if v_output==nil || v_output==''
-              # Save doc on server
-              folder = Aspose::Cloud::AsposeStorage::Folder.new
-              output_stream = folder.get_file(@filename);
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;
-              Aspose::Cloud::Common::Utils.save_file(output_stream, output_path);
-              return 'Value is changed';
-            end
+        def replace_text(old_text, new_text, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'old_text not specified.' if old_text.empty?
+          raise 'new_text not specified.' if new_text.empty?
 
+          str_uri = "#{@base_uri}/replaceText"
+          qry = Hash.new
+          qry[:oldValue] = old_text
+          qry[:newValue] = new_text
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri,'',{ :accept => 'application/json' })
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? true : valid_output
         end
-    
-        def replace_text_in_worksheet worksheet_name, old_text, new_text
 
-            if(@filename == '')
-              raise 'Base File Name is not Specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name.to_s + '/replaceText?oldValue=' + old_text.to_s + '&newValue=' + new_text.to_s 
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post signed_uri,'', {:accept => 'application/json'}
-            v_output = Aspose::Cloud::Common::Utils.validate_output(response)
-            if v_output==nil || v_output==''
-              # Save doc on server
-              folder = Aspose::Cloud::AsposeStorage::Folder.new
-              output_stream = folder.get_file(@filename);
-              output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename;
-              Aspose::Cloud::Common::Utils.save_file(output_stream, output_path);
-              return 'Value is changed';
-            end
+        def replace_text_in_worksheet(worksheet_name, old_text, new_text, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'old_text not specified.' if old_text.empty?
+          raise 'new_text not specified.' if new_text.empty?
 
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/replaceText"
+          qry = Hash.new
+          qry[:oldValue] = old_text
+          qry[:newValue] = new_text
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri,'',{ :accept => 'application/json' })
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? true : valid_output
         end
       end
     end
