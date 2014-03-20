@@ -1,13 +1,11 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
 module Aspose
   module Cloud
-
     module Words
       class Document
-        def initialize filename
+        def initialize(filename)
           @filename = filename
-          raise 'Base file not specified.' if filename.empty?
+          raise 'filename not specified.' if filename.empty?
+          @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/words/#{@filename}"
         end
 
 =begin
@@ -16,84 +14,45 @@ module Aspose
   @param import_format_modes
   @param source_folder
 =end
+        def append_document(append_docs, import_format_modes, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'append_docs not specified.' if append_docs.empty?
+          raise 'import_format_modes not specified.' if import_format_modes.empty?
 
-        def append_document append_docs, import_format_modes, source_folder
+          docs = Array.new
+          append_docs.to_enum.with_index(0).each { |item,i|
+            docs.push({ :Href => folder_name.empty? ? item : "#{folder_name}/#{item}", :ImportFormatMode => import_format_modes[i] })
+          }
+          json_data = JSON.generate({:DocumentEntries => docs})
 
-
-            if append_docs.length != import_format_modes.length
-              raise 'Please specify complete documents and import format modes.'
-            end
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/appendDocument'
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-
-            objs = []
-
-            i = 0
-            append_docs.each do |val|
-              objs << {"Href" => source_folder.empty? ? val : source_folder + "\\" + val, "ImportFormatMode" => import_format_modes[i]}
-              i = i+1
-            end
-
-            json_data = JSON.generate({'DocumentEntries' => objs})
-
-            response_stream = RestClient.post(signed_str_uri, json_data, {:content_type => :json})
-
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-
-            return valid_output unless valid_output.empty?
-            folder = Aspose::Cloud::AsposeStorage::Folder.new
-
-            output_stream = folder.get_file(source_folder.empty? ? @filename : (source_folder + '/' + @filename))
-            output_path = Aspose::Cloud::Common::AsposeApp.output_location + @filename
-            Aspose::Cloud::Common::Utils.save_file(output_stream, output_path)
-            ''
-
+          str_uri = "#{@base_uri}/appendDocument"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
         end
 
 =begin
    Get Resource Properties information like document source format, IsEncrypted, IsSigned and document properties   
 =end
 
-        def get_document_info
-
-
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-
-            response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
-
-            stream_hash = JSON.parse(response_stream)
-            stream_hash['Code'] == 200 ? stream_hash['Document'] : false
-
-
-
+        def get_document_info(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(@base_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept => 'application/json'}))['Document']
         end
 
 =begin
    Get Resource Properties information like document source format, IsEncrypted, IsSigned and document properties
    @param string property_name
 =end
+        def get_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'property_name not specified.' if property_name.empty?
 
-        def get_property property_name
-
-
-
-            if property_name == ''
-              raise 'Property name not specified.'
-            end
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/documentProperties/' + property_name
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-
-            response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
-
-            stream_hash = JSON.parse(response_stream)
-            stream_hash['Code'] == 200 ? stream_hash['DocumentProperty'] : false
-
-
-
+          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperty']
         end
 
 =begin
@@ -101,108 +60,41 @@ module Aspose
    @param string property_name
    @param string property_value
 =end
+        def set_property(property_name, property_value, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'property_name not specified.' if property_name.empty?
+          raise 'property_value not specified.' if property_value.empty?
 
-        def set_property property_name, property_value
+          json_data = JSON.generate('Value'=>property_value)
 
-
-
-            raise 'Property name not specified.' if property_name.empty?
-            raise 'Property value not specified.' if property_value.empty?
-
-            post_hash = {'Value' => property_value}
-            json_data = post_hash.to_json
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/documentProperties/' + property_name
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-
-            response_stream = RestClient.put(signed_str_uri, json_data, {:content_type => :json})
-
-            xmldoc = REXML::Document.new(response_stream)
-
-            if xmldoc.elements.to_a('SaaSposeResponse/Status').first.text == 'OK'
-              return xmldoc.elements.to_a('SaaSposeResponse/DocumentProperty')
-            end
-
-            false
-
-
-
+          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'}))['DocumentProperty']
         end
 
 =begin
    Delete a document property
    @param string property_name
 =end
+        def delete_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'property_name not specified.' if property_name.empty?
 
-        def delete_property property_name
-
-
-            raise 'Property name not specified.' if property_name.empty?
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/documentProperties/' + property_name
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-
-            response_stream = RestClient.delete(signed_str_uri, {:accept => 'application/json'})
-
-            stream_hash = JSON.parse(response_stream)
-            stream_hash['Code'] == 200
-
-
-
+          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
         end
 
 =begin
    Get Document's properties
 =end
-
-        def get_properties
-
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename + '/documentProperties'
-            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-
-            response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
-
-            stream_hash = JSON.parse(response_stream)
-
-            return stream_hash['DocumentProperties']['List'] if  stream_hash['Code'] == 200
-            false
-
-
-
+        def get_properties(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/documentProperties"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperties']['List']
         end
-
-=begin
-     Convert Word to different file format without using storage
-     @param string inputFile
-     @param string outputFilename
-     @param string outputFormat
-=end
-
-        def convert_local_file input_file, output_filename, output_format
-
-
-            raise('input file not specified') if input_file.empty?
-            raise('output file not specified') if output_filename.empty?
-            raise('output format not specified') if output_format.empty?
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/words/convert?format=' + output_format
-            str_signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-
-            response_stream = Aspose::Cloud::Common::Utils.upload_file_binary(input_file, str_signed_uri)
-
-            valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
-
-            return valid_output unless valid_output.empty?
-
-            output_path = Aspose::Cloud::Common::AsposeApp.output_location + output_filename
-            Aspose::Cloud::Common::Utils.save_file(response_stream, output_path)
-            ''
-
-        end
-
       end
     end
-
   end
 end
