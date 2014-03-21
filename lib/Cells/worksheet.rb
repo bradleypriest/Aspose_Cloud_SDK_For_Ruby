@@ -1,705 +1,356 @@
 module Aspose
   module Cloud
-
     module Cells
       class Worksheet
-        def initialize(filename,worksheet_name)
+        def initialize(filename, worksheet_name)
           @filename = filename
           @worksheet_name = worksheet_name
-        end
-    
-        def get_cells_list(offset,count)
-
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
-            str_uri += '/cells?offset=' + offset.to_s + '&count=' + count.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Cells']['CellList']
-                      
-
-        end
-    
-        def get_row_list(offset,count)
-
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
-            str_uri += '/cells/rows?offset=' + offset.to_s + '&count=' + count.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Rows']['RowsList']
-                      
-
-        end
-    
-        def get_columns_list(offset,count)
-
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
-            str_uri += '/cells/columns?offset=' + offset.to_s + '&count=' + count.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Columns']['ColumnsList']
-                      
-
-        end
-    
-        def get_max_columns(offset,count)
-
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
-            str_uri += '/cells?offset=' + offset.to_s + '&count=' + count.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Cells']['MaxColumn']
-                      
-
+          raise 'filename not specified.' if filename.empty?
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/cells/#{@filename}/worksheets/#{@worksheet_name}"
         end
 
-        def get_max_row(offset,count)
+        def get_cells_list(offset, count, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'offset not specified.' if offset.nil?
+          raise 'count not specified.' if count.nil?
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
-            str_uri += '/cells?offset=' + offset.to_s + '&count=' + count.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Cells']['MaxRow']
-                      
-
+          str_uri = "#{@base_uri}/cells"
+          qry = { :offset => offset, :count => count}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Cells']['CellList']
         end
-    
-        def get_cells_count(offset,count)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
-            str_uri += '/cells?offset=' + offset.to_s + '&count=' + count.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Cells']['CellCount']
-                      
+        def get_row_list(offset, count, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'offset not specified.' if offset.nil?
+          raise 'count not specified.' if count.nil?
 
+          str_uri = "#{@base_uri}/cells/rows"
+          qry = { :offset => offset, :count => count}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Rows']['RowsList']
         end
-    
-        def get_auto_shapes_count
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/autoshapes'
-        
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['AutoShapes']['AuotShapeList'].count
-                      
+        def get_columns_list(offset, count, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'offset not specified.' if offset.nil?
+          raise 'count not specified.' if count.nil?
 
+          str_uri = "#{@base_uri}/cells/columns"
+          qry = { :offset => offset, :count => count}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Columns']['ColumnsList']
         end
-    
-        def get_auto_shapes_by_index(index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/autoshapes/' + index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['AutoShapes']
-                      
+        def get_max_columns(offset, count, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'offset not specified.' if offset.nil?
+          raise 'count not specified.' if count.nil?
 
+          str_uri = "#{@base_uri}/cells"
+          qry = { :offset => offset, :count => count}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Cells']['MaxColumn']
         end
-    
-        def get_cell(cell_name)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Cell']
-                      
+        def get_max_row(offset, count, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'offset not specified.' if offset.nil?
+          raise 'count not specified.' if count.nil?
 
+          str_uri = "#{@base_uri}/cells"
+          qry = { :offset => offset, :count => count}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Cells']['MaxRow']
         end
-    
-        def get_cell_style(cell_name='')
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Style']
-                      
+        def get_cells_count(offset, count, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'offset not specified.' if offset.nil?
+          raise 'count not specified.' if count.nil?
 
+          str_uri = "#{@base_uri}/cells"
+          qry = { :offset => offset, :count => count}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Cells']['CellCount']
         end
-    
-        def set_cell_style(cell_name='',style)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            json_data = style.to_json
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post(signed_uri,json_data, :accept => 'application/json' )
-            json = JSON.parse(response)
-            if(json['Code'] == 200)
-              return true
-            else
-              return false
-            end
-                      
-
+        def get_auto_shapes_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/autoshapes"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['AutoShapes']['AuotShapeList'].length
         end
-    
-        def get_chart_by_index(index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts/' + index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Chart']
-                      
+        def get_auto_shapes_by_index(shape_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'count not specified.' if count.nil?
 
+          str_uri = "#{@base_uri}/autoshapes/#{shape_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['AutoShapes']
         end
-    
-        def get_hyperlink_by_index(index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/hyperlinks/' + index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Hyperlink']
-                      
+        def get_cell(cell_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'cell_name not specified.' if cell_name.empty?
 
+          str_uri = "#{@base_uri}/cells/#{cell_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Cell']
         end
-    
-        def get_comment(cell_name='')
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/comments/' + cell_name.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Comment']
-                      
+        def get_cell_style(cell_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'cell_name not specified.' if cell_name.empty?
 
+          str_uri = "#{@base_uri}/cells/#{cell_name}/style"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Style']
         end
-    
-        def get_oleobject_by_index(index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/oleobjects/' + index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['OleObject']
-                      
+        def set_cell_style(cell_name, style, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'cell_name not specified.' if cell_name.empty?
+          raise 'style not specified.' if style.empty?
 
+          str_uri = "#{@base_uri}/cells/#{cell_name}/style"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, style.to_json, { :content_type => :json, :accept=>'application/json'}))['Code'] == 200 ? true : false
         end
-        def get_picture_by_index(index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures/' + index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Picture']
-                      
+        def get_chart_by_index(chart_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'chart_index not specified.' if chart_index.nil?
 
+          str_uri = "#{@base_uri}/charts/#{chart_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Chart']
         end
-    
-        def get_validation_by_index(index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/validations/' + index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Validation']
-                      
+        def get_hyperlink_by_index(link_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'link_index not specified.' if link_index.nil?
 
+          str_uri = "#{@base_uri}/hyperlinks/#{link_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Hyperlink']
         end
-    
-        def get_mergedcell_by_index(index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/mergedCells/' + index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['MergedCell']
-                      
+        def get_comment(cell_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'cell_name not specified.' if cell_name.empty?
 
+          str_uri = "#{@base_uri}/comments/#{cell_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Comment']
         end
-    
-        def get_mergedcells_count
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/mergedCells'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['MergedCells']['Count']
+        def get_oleobject_by_index(ole_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'ole_index not specified.' if ole_index.nil?
 
+          str_uri = "#{@base_uri}/oleobjects/#{ole_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['OleObject']
         end
-    
-        def get_validations_count
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/validations'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Validations']['Count']
-                      
+        def get_picture_by_index(image_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'image_index not specified.' if image_index.nil?
 
+          str_uri = "#{@base_uri}/pictures/#{image_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Picture']
         end
-    
-        def get_pictures_count
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Pictures']['PictureList'].count
+        def get_validation_by_index(index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'index not specified.' if index.nil?
 
+          str_uri = "#{@base_uri}/validations/#{index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Validation']
         end
-    
-        def get_oleobjects_count
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/oleobjects'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['OleObjects']['OleOjectList'].count
-                      
+        def get_mergedcell_by_index(index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'index not specified.' if index.nil?
 
+          str_uri = "#{@base_uri}/mergedCells/#{index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['MergedCell']
         end
-    
-        def get_charts_count
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/charts'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Charts']['ChartList'].count
-
+        def get_mergedcells_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/mergedCells"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['MergedCell']['Count']
         end
-    
-        def get_comments_count
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/comments'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Comments']['CommentList'].count
-                      
-
+        def get_validations_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/validations"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Validations']['Count']
         end
-    
-        def get_hyperlinks_count
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/hyperlinks'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Hyperlinks']['HyperlinkList'].count
-                      
-
+        def get_pictures_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/pictures"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Pictures']['PictureList'].length
         end
-    
-        def hide_worksheet
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/visible?isVisible=false'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri, '',:accept => 'application/json' )
-            json = JSON.parse(response)
-            if(json['Code']==200)
-              return true
-            else
-              return false
-            end
-
+        def get_oleobjects_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/oleobjects"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['OleObjects']['OleOjectList'].length
         end
-    
-        def unhide_worksheet
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/visible?isVisible=true'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri, '',:accept => 'application/json' )
-            json = JSON.parse(response)
-            if(json['Code']==200)
-              return true
-            else
-              return false
-            end
-                      
-
+        def get_charts_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/oleobjects"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Charts']['ChartList'].length
         end
-    
-        def move_worksheet(worksheet_name = '',position)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            field_array = Hash.new
-            field_array['DestinationWorsheet'] = worksheet_name.to_s
-            field_array['Position'] = position.to_s
-            json_data = field_array.to_json
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/position'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post(signed_uri, json_data,:accept => 'application/json' )
-            json = JSON.parse(response)
-            if(json['Code']==200)
-              return true
-            else
-              return false
-            end
-                      
-
+        def get_comments_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/comments"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Comments']['CommentList'].length
         end
-    
-        def calculate_formula(formula = '')
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/formulaResult?formula=' + formula.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Value']
-                      
-
+        def get_hyperlinks_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/hyperlinks"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Hyperlinks']['HyperlinkList'].length
         end
-    
-        def set_cell_value(cell_name='',value_type='',value='')
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
-            str_uri += '/cells/' + cell_name.to_s + '?value=' + value.to_s + '&type=' + value_type.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post(signed_uri,'' ,:accept => 'application/json' )
-            json = JSON.parse(response)
-            if(json['Code']==200)
-              return true
-            else 
-              return false
-            end
-                      
-
+        def hide_worksheet(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/visible?isVisible=false"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, '', {:accept=>'application/json'}))['Code'] == 200 ? true : false
         end
-    
-        def get_rows_count(offset,count)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name 
-            str_uri += '/cells/rows?offset=' + offset.to_s + '&count=' + count.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri,:accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Rows']['RowsCount']
-                      
-
+        def unhide_worksheet(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/visible?isVisible=true"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, '', {:accept=>'application/json'}))['Code'] == 200 ? true : false
         end
-    
-        def get_rows(row_index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/rows/' + row_index.to_s
+        def get_rows_count(offset, count, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'offset not specified.' if offset.nil?
+          raise 'count not specified.' if count.nil?
 
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri,:accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Row']
-                      
-
+          str_uri = "#{@base_uri}/cells/rows"
+          qry = { :offset => offset, :count => count}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Rows']['RowsCount']
         end
-    
-        def delete_row(row_index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/rows/' + row_index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.delete(signed_uri,:accept => 'application/json' )
-            json = JSON.parse(response)
-            if(json['Code']==200)
-              return true
-            else
-              return false
-            end
-                      
+        def get_row(index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'index not specified.' if index.nil?
 
+          str_uri = "#{@base_uri}/cells/rows/#{index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Row']
         end
-    
-        def sort_data(data_sort,cell_area = '')
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/sort?' + cell_area.to_s
-            json_data = data_sort.to_json
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post(signed_uri,json_data,:accept => 'application/json' )
-            json = JSON.parse(response)
-            if(json['Code']==200)
-              return true
-            else
-              return false
-            end
-                      
+        def delete_row(index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'index not specified.' if index.nil?
 
+          str_uri = "#{@base_uri}/cells/rows/#{index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
         end
-    
-        def get_column(column_index)
 
-            if(@filename == '')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name == '')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/columns/' + column_index.to_s
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri,:accept => 'application/json' )
-            json = JSON.parse(response)
-            return json['Column']                    
+        def sort_data(data_sort, cell_area, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'data_sort not specified.' if data_sort.nil?
+          raise 'cell_area not specified.' if cell_area.nil?
 
+          str_uri = "#{@base_uri}/sort"
+          qry = { :CellArea => cell_area }
+
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, data_sort.to_json, { :content_type => :json, :accept=>'application/json'}))['Code'] == 200 ? true : false
         end
-        def get_cell(cell_name)
 
-            if(@filename=='')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name=='')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept=>'application/json')
-            json = JSON.parse(response)
-            return json['Cell']
+        def get_column(index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'index not specified.' if index.nil?
 
+          str_uri = "#{@base_uri}/cells/columns/#{index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Column']
         end
-        def get_cell_style(cell_name)
 
-            if(@filename=='')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name=='')
-              raise 'Worksheet Name is not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri+'/cells/' + @filename + '/worksheets/' + @worksheet_name + '/cells/' + cell_name + '/style'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['Style']
 
+        def move_worksheet(position, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'position not specified.' if position.nil?
+
+          json_data = { :DestinationWorksheet => @worksheet_name, :Position => position }
+          str_uri = "#{@base_uri}/position"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, json_data, { :content_type => :json, :accept=>'application/json'}))['Code'] == 200 ? true : false
         end
-    
-        def add_picture(picture_path,picture_location, upper_left_row, upper_left_column, lower_right_row, lower_right_column)
 
-            if(@filename=='')
-              raise 'Base File Name is not specified'
-            end
-            if(@worksheet_name=='')
-              raise 'Worksheet Name is not specified'
-            end
-            if(picture_location == 'Server' || picture_location == 'server')
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures?upperLeftRow=' +upper_left_row.to_s + '&upperLeftColumn=' + upper_left_column.to_s + '&lowerRightRow=' +lower_right_row.to_s + '&lowerRightColumn=' + lower_right_column.to_s + '&picturePath=' + picture_path
-              signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-              response = RestClient.put(signed_uri, :accept=>'application/json')
-            else
-              if(!File.exist?(picture_path))
-                raise "File doesn't exists"
-              end
-              str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + @worksheet_name + '/pictures?upperLeftRow=' +upper_left_row.to_s + '&upperLeftColumn=' + upper_left_column.to_s + '&lowerRightRow=' +lower_right_row.to_s + '&lowerRightColumn=' + lower_right_column.to_s 
-              stream = File.new(picture_path,'rb')
-              signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-              response = RestClient.put(signed_uri,stream, :accept=>'application/json')
-            end
-            json = JSON.parse(response)
-            if(json['Code'] == 200)
-              return true
-            else
-              return false
-            end
-         
-      
+        def calculate_formula(formula, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'formula not specified.' if formula.empty?
+
+          str_uri = "#{@base_uri}/formulaResult?formula=#{formula}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Value']
+        end
+
+        def set_cell_value(cell_name, value_type, value, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'cell_name not specified.' if cell_name.empty?
+          raise 'value_type not specified.' if value_type.empty?
+          raise 'value not specified.' if value.empty?
+
+          str_uri = "#{@base_uri}/cells/#{cell_name}"
+          qry = { :value => value, :type => value_type }
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, '', { :accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
+
+        def add_picture(picture_path, upper_left_row, upper_left_column, lower_right_row, lower_right_column, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'picture_file not specified.' if picture_path.empty?
+          raise 'upper_left_row not specified.' if upper_left_row.empty?
+          raise 'upper_left_column not specified.' if upper_left_column.empty?
+          raise 'lower_right_row not specified.' if lower_right_row.empty?
+          raise 'lower_right_column not specified.' if lower_right_column.empty?
+
+          qry = { :upperLeftRow => upper_left_row, :upperLeftColumn => upper_left_column, :lowerRightRow => lower_right_row,
+          :lowerRightColumn => lower_right_column, :picturePath => picture_path}
+          str_uri = "#{@base_uri}/pictures"
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, '', { :accept=>'application/json'}))['Code'] == 200 ? true : false
         end
       end
     end
