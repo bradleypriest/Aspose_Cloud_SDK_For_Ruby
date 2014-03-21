@@ -2,397 +2,206 @@ module Aspose
   module Cloud
     module Cells
       class Workbook
-        def initialize filename
+        def initialize(filename)
           @filename = filename
+          raise 'filename not specified.' if filename.empty?
+          @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/cells/#{@filename}"
+        end
+
+        def get_properties(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/documentProperties"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperties']['List']
+        end
+
+        def get_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'property_name not specified.' if property_name.empty?
+
+          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperty']
+        end
+
+        def set_property(property_name, property_value, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'property_name not specified.' if property_name.empty?
+          raise 'property_value not specified.' if property_value.empty?
+
+          json_data = JSON.generate('Value'=>property_value)
+
+          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'}))['DocumentProperty']
+        end
+
+        def remove_all_properties(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/documentProperties"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
+
+        def remove_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'property_name not specified.' if property_name.empty?
+
+          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
         end
     
-        def get_properties
-
-            if @filename == ''
-              raise 'Base file name not specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code'] == 200
-              return json['DocumentProperties']['DocumentPropertyList']
-            else
-              return false
-            end
-        
-
-      
-        end
-    
-        def get_property property_name
-
-            if @filename == ''
-              raise 'Base file name not specified.'
-            end
-            if property_name == ''
-              raise 'Property name is not specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code'] == 200
-              return json['DocumentProperty']
-            else
-              return false
-            end
-        
-
-      
-        end
-    
-        def set_property property_name='',property_value=''
-
-            if @filename == ''
-              raise 'Base file name not specified.'
-            end
-            if property_name == ''
-              raise 'Property name is not specified.'
-            end
-            if property_value == ''
-              raise 'Property Value is not specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
-            put_data_arr = Hash.new
-            put_data_arr['Link'] = nil
-            put_data_arr['Name'] = property_name
-            put_data_arr['Value'] = property_value
-            put_data_arr['BuiltIn'] = 'False'
-            json_data = put_data_arr.to_json
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri,json_data, :accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code'] == 200
-              return json['DocumentProperty']
-            else
-              return false
-            end
-        
-
-      
-        end
-        def remove_all_properties
-
-            if @filename == ''
-              raise 'Base file name not specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.delete(signed_uri, :accept=>'application/json')
-            json = JSON.parse(response)
-            if json['Code'] == 200
-              return true
-            else
-              return false
-            end
-        
-
-      
-        end
-    
-        def remove_property property_name
-
-            if @filename == ''
-              raise 'Base file name not specified.'
-            end
-            if property_name == ''
-              raise 'Property name is not specified.'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/documentProperties/' + property_name
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.delete(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code'] == 200
-              return true
-            else
-              return false
-            end
-        
-
-      
-        end
-    
-        def create_empty_workbook
-
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri,'', :accept => 'application/json')
-            json = JSON.parse(response)
-            return json  
-
-      
-        end
-    
-        def create_workbook_from_template template_file_name
-
-            if template_file_name == ''
-              raise 'Template file not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '?templatefile=' + template_file_name
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri,'', :accept => 'application/json')
-            json = JSON.parse(response)
-            return json  
-
-      
-        end
-    
-        def create_workbook_from_smart_marker_template template_file_name ='',data_file=''
-
-            if template_file_name == ''
-              raise 'Template file not specified'
-            end
-            if data_file == ''
-              raise 'Data file not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '?templatefile=' + template_file_name + '&dataFile=' + data_file
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri,'', :accept => 'application/json')
-            json = JSON.parse(response)
-            return json  
-
-      
-        end
-    
-        def process_smart_marker data_file=''
-
-            if data_file == ''
-              raise 'Data file not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/smartmarker?xmlFile=' + data_file
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post(signed_uri,'', :accept => 'application/json')
-            json = JSON.parse(response)
-            return json  
-
-      
-        end
-    
-        def get_worksheets_count
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['Worksheets']['WorksheetList'].size
-
-        end
-    
-        def get_name_count
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/names'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['Names'].count
-
-        end
-    
-        def get_default_style
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/defaultStyle'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.get(signed_uri, :accept => 'application/json')
-            json = JSON.parse(response)
-            return json['Style']
-
-        end
-    
-        def encrypt_workbook encryption_type='XOR',password='',key_length=''
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            fields_array = Hash.new
-            fields_array['EncriptionType'] = encryption_type
-            fields_array['KeyLength'] = key_length
-            fields_array['Password'] = password
-            json_data = fields_array.to_json
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/encryption'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post(signed_uri, json_data,:accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code']==200
-              return true
-            else
-              return false
-            end
-
-        end
-    
-        def protect_workbook protection_type = 'all',password=''
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            fields_array = Hash.new
-            fields_array['ProtectionType'] = protection_type
-            fields_array['Password'] = password
-            json_data = fields_array.to_json
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/protection'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            
-            response = Aspose::Cloud::Common::Utils.process_command(signed_uri,'POST','JSON',json_data)            
-                        
-            json = JSON.parse( response )
-            if json['Code']==200
-              return true
-            else
-              return false
-            end
-
-        end
-    
-        def unprotect_workbook password
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            fields_array = Hash.new
-            fields_array['Password'] = password
-            json_data = fields_array.to_json
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/protection'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = Aspose::Cloud::Common::Utils.process_command(signed_uri,'DELETE','JSON',json_data)
-            
-            json = JSON.parse(response)
-            if json['Code']==200
-              return true
-            else
-              return false
-            end
-
+        def create_empty_workbook(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, '', {:accept=>'application/json'}))
         end
 
-        def set_modify_password password=''
+        def create_workbook_from_template(template_file_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'template_file_name not specified.' if template_file_name.empty?
 
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            fields_array = Hash.new
-            fields_array['Password'] = password
-            json_data = fields_array.to_json
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/writeProtection'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri, json_data,:accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code']==200
-              return true
-            else
-              return false
-            end
-
-        end 
-    
-        def clear_modify_password password=''
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            fields_array = Hash.new
-            fields_array['Password'] = password
-            json_data = fields_array.to_json
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/writeProtection'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.delete(signed_uri,json_data, json_data,:accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code']==200
-              return true
-            else
-              return false
-            end
-
-        end 
-
-
-        def decrypt_password password
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            fields_array = Hash.new
-            fields_array['Password'] = password
-            json_data = fields_array.to_json
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/encryption'
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.delete(signed_uri,json_data,:accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code']==200
-              return true
-            else
-              return false
-            end
-
-        end 
-
-        def add_worksheet worksheet_name=''
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri, '',:accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code']==201
-              return true
-            else
-              return false
-            end
-
-        end 
-   
-        def remove_worksheet worksheet_name=''
-
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/worksheets/' + worksheet_name
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.delete(signed_uri,:accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code']==200
-              return true
-            else
-              return false
-            end
-
+          str_uri = "#{@base_uri}?templatefile=#{template_file_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, '', {:accept=>'application/json'}))
         end
-    
-        def merge_workbook merge_file_name =''
 
-            if @filename == ''
-              raise 'Base file name not specified'
-            end
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/cells/' + @filename + '/merge?mergeWith='  + merge_file_name
-            signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post(signed_uri,'',:accept => 'application/json')
-            json = JSON.parse(response)
-            if json['Code']==200
-              return true
-            else
-              return false
-            end
+        def create_from_smart_template(template_file_name, data_file, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'template_file_name not specified.' if template_file_name.empty?
+          raise 'data_file not specified.' if data_file.empty?
 
+          str_uri = "#{@base_uri}"
+          qry = { :templateFile => template_file_name, :dataFile => data_file}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, '', {:accept=>'application/json'}))
         end
-   
+
+        def process_smart_marker(data_file, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'data_file not specified.' if data_file.empty?
+
+          str_uri = "#{@base_uri}"
+          qry = { :xmlFile => data_file}
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, '', {:accept=>'application/json'}))
+        end
+
+        def get_worksheets_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/worksheets"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Worksheets']['WorksheetList'].length
+        end
+
+        def get_name_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/names"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Names'].length
+        end
+
+        def get_default_style(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/defaultStyle"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Style']
+        end
+
+        def encrypt_workbook(encryption_type, password, key_length, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'encryption_type not specified.' if encryption_type.empty?
+          raise 'password not specified.' if password.empty?
+          raise 'key_length not specified.' if key_length.nil?
+
+          json_data = { :EncryptionType => encryption_type, :KeyLength => key_length, :Password => password }.to_json
+          str_uri = "#{@base_uri}/encryption"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
+
+        def protect_workbook(protection_type, password, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'protection_type not specified.' if protection_type.empty?
+          raise 'password not specified.' if password.empty?
+
+          json_data = { :ProtectionType => protection_type, :Password => password }.to_json
+          str_uri = "#{@base_uri}/protection"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
+
+        def unprotect_workbook(password, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'password not specified.' if password.empty?
+
+          json_data = { :Password => password }.to_json
+          str_uri = "#{@base_uri}/protection"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'DELETE','JSON',json_data))['Code'] == 200 ? true : false
+        end
+
+        def set_modify_password(password, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'password not specified.' if password.empty?
+
+          json_data = { :Password => password }.to_json
+          str_uri = "#{@base_uri}/writeProtection"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
+
+        def clear_modify_password(password, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'password not specified.' if password.empty?
+
+          json_data = { :Password => password }.to_json
+          str_uri = "#{@base_uri}/writeProtection"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'DELETE','JSON',json_data))['Code'] == 200 ? true : false
+        end
+
+        def decrypt_password(password, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'password not specified.' if password.empty?
+
+          json_data = { :Password => password }.to_json
+          str_uri = "#{@base_uri}/encryption"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'DELETE','JSON',json_data))['Code'] == 200 ? true : false
+        end
+
+        def add_worksheet(worksheet_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, '', {:accept=>'application/json'}))['Code'] == 201 ? true : false
+        end
+
+        def remove_worksheet(worksheet_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 201 ? true : false
+        end
+
+        def merge_workbook(merge_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'merge_filename not specified.' if merge_filename.empty?
+
+          str_uri = "#{@base_uri}/merge?mergeWith=#{merge_filename}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, '', {:accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
       end
     end
-    
   end
 end
