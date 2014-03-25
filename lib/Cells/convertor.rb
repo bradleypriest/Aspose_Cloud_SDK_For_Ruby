@@ -1,7 +1,7 @@
 module Aspose
   module Cloud
     module Cells
-      class Convertor
+      class Converter
         def initialize(filename)
           @filename = filename
           raise 'filename not specified.' if filename.empty?
