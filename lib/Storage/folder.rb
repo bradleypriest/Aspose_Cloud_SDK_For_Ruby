@@ -71,7 +71,7 @@ module Aspose
             str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
 
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.put(signed_uri, nil, :accept => :json)
+            response = RestClient.put(signed_uri, '', :accept => :json)
             JSON.parse(response)['Code'].eql? 200
         end
 
