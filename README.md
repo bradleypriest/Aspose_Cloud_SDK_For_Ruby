@@ -2,6 +2,9 @@
 
 This repository contains Aspose Cloud SDK for Ruby source code. This SDK allows you to work with Aspose REST API in your Ruby applications quickly and easily. 
 
+##What's New
+An improved version of Aspose Cloud SDK for Ruby is avaialable under 'revamp' branch. This new version is much more enhanced and streamlined.
+https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
 ##What's included in this SDK repository?
 
