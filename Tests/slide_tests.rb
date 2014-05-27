@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative '../lib/asposesdk'
+require_relative '../lib/asposecloudsdk'
 
 class SlideTests < Test::Unit::TestCase
   def test_convert_slide
