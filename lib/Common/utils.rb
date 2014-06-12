@@ -159,7 +159,10 @@ module Aspose
           output_stream   = folder.get_file(remote_filename,storage_type,storage_name)
           dst_path        = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{output_filename}"
           Aspose::Cloud::Common::Utils.save_file(output_stream, dst_path)
-          return dst_path
+          return {
+            local_path: dst_path,
+            remote_path: remote_filename
+          }
         end
       end
     end
