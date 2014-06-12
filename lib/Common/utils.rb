@@ -130,6 +130,8 @@ module Aspose
           open(local_file, 'wb') do |file|
             file.write(response_stream.body)
           end
+          
+          return local_file
         end
 
         def self.get_filename(file)
