@@ -38,8 +38,9 @@ module Aspose
           if valid_output.empty?
             output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}.#{save_format}"
             Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+          else
+            valid_output
           end
-          valid_output
         end
 
         def convert_local_file(input_file_path, output_filename, save_format)
