@@ -16,7 +16,7 @@
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
 # Require asposecloudsdk
-require File.dirname(File.dirname(File.dirname(__FILE__))) + '/lib/asposecloudsdk'
+require File.dirname(File.dirname(File.dirname(__FILE__))) + '/lib/asposecloud'
 
 app_sid = '****'
 app_key = '****'

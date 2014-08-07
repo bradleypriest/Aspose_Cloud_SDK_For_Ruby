@@ -1,5 +1,5 @@
 require 'test/unit'
-require_relative '../lib/asposecloudsdk'
+require_relative '../lib/asposecloud'
 
 class TasksTests < Test::Unit::TestCase
   def test_convert_storage_file

@@ -16,7 +16,7 @@
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
 require 'test/unit'
-require_relative '../lib/asposecloudsdk'
+require_relative '../lib/asposecloud'
 
 class CellTests < Test::Unit::TestCase
   def test_convert_storage_file
