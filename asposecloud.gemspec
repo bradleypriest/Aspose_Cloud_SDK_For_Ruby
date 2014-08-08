@@ -5,7 +5,7 @@ require 'asposecloud/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "asposecloud"
-  spec.version       = Asposecloudsdk::VERSION
+  spec.version       = Asposecloud::VERSION
   spec.authors       = ["Assad Mahmood Qazi"]
   spec.email         = ["assadvirgo@gmail.com"]
   spec.description   = "Aspose Cloud SDK for Ruby allows you to use Aspose API in your Ruby applications"
