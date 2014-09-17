@@ -19,6 +19,27 @@ require 'test/unit'
 require_relative '../lib/asposecloud'
 
 class WordTests < Test::Unit::TestCase
+
+  def test_document_properties
+    Aspose::Cloud::Common::AsposeApp.app_key = '****'
+    Aspose::Cloud::Common::AsposeApp.app_sid = '****'
+    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
+    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
+
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_uploadfile.docx'
+    assert_equal true, response
+
+    document = Aspose::Cloud::Words::Document.new('test_uploadfile.docx')
+    document.set_property('Author', 'Kevin')
+
+    auther = document.get_property('Author')
+
+    assert_equal 'Kevin', auther['Value']
+
+  end
+
   def test_convert_local_file
     Aspose::Cloud::Common::AsposeApp.app_key = '****'
     Aspose::Cloud::Common::AsposeApp.app_sid = '****'
