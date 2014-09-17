@@ -44,8 +44,8 @@ class PdfTests < Test::Unit::TestCase
   end
 
   def test_create_empty_pdf
-    Aspose::Cloud::Common::AsposeApp.app_key = '****'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '****'
+    Aspose::Cloud::Common::AsposeApp.app_key = 'e8dd1b027459a0a2144c6b47ae203a2f'
+    Aspose::Cloud::Common::AsposeApp.app_sid = '3395ba5c-3442-4146-9c9d-e9630d8d3611'
     Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
     Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
 
