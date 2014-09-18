@@ -19,12 +19,18 @@ require 'test/unit'
 require_relative '../lib/asposecloud'
 
 class BarcodeTests < Test::Unit::TestCase
-  def test_save_barcode
-    Aspose::Cloud::Common::AsposeApp.app_key = '****'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '****'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
 
+  def setup
+    file = File.read('setup.json')
+    data = JSON.parse(file)
+
+    Aspose::Cloud::Common::AsposeApp.app_key = data['app_key']
+    Aspose::Cloud::Common::AsposeApp.app_sid = data['app_sid']
+    Aspose::Cloud::Common::AsposeApp.output_location = data['output_location']
+    Aspose::Cloud::Common::Product.set_base_product_uri(data['product_uri'])
+  end
+
+  def test_save_barcode
     # Create object of barcode builder class
     builder = Aspose::Cloud::Barcode::Builder.new
     builder.save('Text to generate barcode','QR','png')
@@ -32,11 +38,6 @@ class BarcodeTests < Test::Unit::TestCase
   end
 
   def test_read_barcode_local
-    Aspose::Cloud::Common::AsposeApp.app_key = '****'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '****'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
-
     # Create object of barcode reader class
     reader = Aspose::Cloud::Barcode::Reader.new('storage_file_name.png')
     response = reader.read_from_local_image('./Data/barcodeQR.png')

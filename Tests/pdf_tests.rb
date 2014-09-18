@@ -20,12 +20,17 @@ require_relative '../lib/asposecloud'
 
 class PdfTests < Test::Unit::TestCase
 
-  def test_page_count
-    Aspose::Cloud::Common::AsposeApp.app_key = 'e8dd1b027459a0a2144c6b47ae203a2f'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '3395ba5c-3442-4146-9c9d-e9630d8d3611'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
+  def setup
+    file = File.read('setup.json')
+    data = JSON.parse(file)
 
+    Aspose::Cloud::Common::AsposeApp.app_key = data['app_key']
+    Aspose::Cloud::Common::AsposeApp.app_sid = data['app_sid']
+    Aspose::Cloud::Common::AsposeApp.output_location = data['output_location']
+    Aspose::Cloud::Common::Product.set_base_product_uri(data['product_uri'])
+  end
+
+  def test_page_count
     # Create Object of Pdf Document Class
     document = Aspose::Cloud::Pdf::Document.new('dummyfile.pdf')
     document.create_empty_pdf()
@@ -44,11 +49,6 @@ class PdfTests < Test::Unit::TestCase
   end
 
   def test_create_empty_pdf
-    Aspose::Cloud::Common::AsposeApp.app_key = 'e8dd1b027459a0a2144c6b47ae203a2f'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '3395ba5c-3442-4146-9c9d-e9630d8d3611'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
-
     # Create Object of Pdf Document Class
     document = Aspose::Cloud::Pdf::Document.new('dummyfile.pdf')
     document.create_empty_pdf()
@@ -58,11 +58,6 @@ class PdfTests < Test::Unit::TestCase
   end
 
   def test_convert_local_file
-    Aspose::Cloud::Common::AsposeApp.app_key = '****'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '****'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
-
     # Create object of pdf converter class
     converter = Aspose::Cloud::Pdf::Converter.new('file_on_storage.pdf')
 
@@ -71,11 +66,6 @@ class PdfTests < Test::Unit::TestCase
   end
 
   def test_convert_storage_file
-    Aspose::Cloud::Common::AsposeApp.app_key = '****'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '****'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
-
     # Create Object of folder class
     folder = Aspose::Cloud::AsposeStorage::Folder.new
     response = folder.upload_file './Data/test_file_on_storage.pdf'
@@ -91,11 +81,6 @@ class PdfTests < Test::Unit::TestCase
   end
 
   def test_replace_text
-    Aspose::Cloud::Common::AsposeApp.app_key = '****'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '****'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
-
     # Create Object of folder class
     folder = Aspose::Cloud::AsposeStorage::Folder.new
     response = folder.upload_file './Data/test_replace_text.pdf'
@@ -109,6 +94,4 @@ class PdfTests < Test::Unit::TestCase
 
     assert_equal true, response
   end
-
-
 end

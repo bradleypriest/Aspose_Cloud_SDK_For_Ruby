@@ -20,12 +20,17 @@ require_relative '../lib/asposecloud'
 
 class StorageTests < Test::Unit::TestCase
 
-  def test_get_files
-    Aspose::Cloud::Common::AsposeApp.app_key = '****'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '****'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://api.aspose.com/v1.1')
+  def setup
+    file = File.read('setup.json')
+    data = JSON.parse(file)
 
+    Aspose::Cloud::Common::AsposeApp.app_key = data['app_key']
+    Aspose::Cloud::Common::AsposeApp.app_sid = data['app_sid']
+    Aspose::Cloud::Common::AsposeApp.output_location = data['output_location']
+    Aspose::Cloud::Common::Product.set_base_product_uri(data['product_uri'])
+  end
+
+  def test_get_files
     # Create object of folder class
     folder = Aspose::Cloud::AsposeStorage::Folder.new
 
@@ -34,11 +39,6 @@ class StorageTests < Test::Unit::TestCase
   end
 
   def test_file_exists
-    Aspose::Cloud::Common::AsposeApp.app_key = '8356c76c7412f32bb85ae7472e842da4'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '8EB6E644-4A40-4B50-8012-135D1F8F7513'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://test.aspose.com/v1.1')
-
     # Create object of folder class
     folder = Aspose::Cloud::AsposeStorage::Folder.new
     assert_nothing_thrown 'Error' do
@@ -47,11 +47,6 @@ class StorageTests < Test::Unit::TestCase
   end
 
   def test_create_folder
-    Aspose::Cloud::Common::AsposeApp.app_key = '8356c76c7412f32bb85ae7472e842da4'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '8EB6E644-4A40-4B50-8012-135D1F8F7513'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://test.aspose.com/v1.1')
-
     # Create object of folder class
     folder = Aspose::Cloud::AsposeStorage::Folder.new
     response = folder.create_folder('testing123')
@@ -59,11 +54,6 @@ class StorageTests < Test::Unit::TestCase
   end
 
   def test_upload_file
-    Aspose::Cloud::Common::AsposeApp.app_key = '8356c76c7412f32bb85ae7472e842da4'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '8EB6E644-4A40-4B50-8012-135D1F8F7513'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://test.aspose.com/v1.1')
-
     # Create object of folder class
     folder = Aspose::Cloud::AsposeStorage::Folder.new
     response = folder.upload_file './Data/test_uploadfile.docx'
@@ -71,11 +61,6 @@ class StorageTests < Test::Unit::TestCase
   end
 
   def test_get_file
-    Aspose::Cloud::Common::AsposeApp.app_key = '8356c76c7412f32bb85ae7472e842da4'
-    Aspose::Cloud::Common::AsposeApp.app_sid = '8EB6E644-4A40-4B50-8012-135D1F8F7513'
-    Aspose::Cloud::Common::AsposeApp.output_location = './Output/'
-    Aspose::Cloud::Common::Product.set_base_product_uri('http://test.aspose.com/v1.1')
-
     # Create object of folder class
     folder = Aspose::Cloud::AsposeStorage::Folder.new
     response = folder.get_file 'testfile.jpeg'
