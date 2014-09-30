@@ -30,6 +30,143 @@ class WordTests < Test::Unit::TestCase
     Aspose::Cloud::Common::Product.set_base_product_uri(data['product_uri'])
   end
 
+  def test_get_mail_merge_fields
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    extractor = Aspose::Cloud::Words::Extractor.new('test_multi_pages.docx')
+    info = extractor.get_mail_merge_fields
+    assert_kind_of(Hash, info)
+  end
+
+  def test_update_page_setup
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    document = Aspose::Cloud::Words::Document.new('test_multi_pages.docx')
+    xml = '<PageSetup>
+    <LeftMargin>99</LeftMargin>
+    <Orientation>Landscape</Orientation>
+    <PaperSize>A5</PaperSize>
+  </PageSetup>'
+    info = document.update_page_setup(0,xml)
+    assert_kind_of(Hash, info)
+    puts info
+  end
+
+  def test_get_page_setup
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    document = Aspose::Cloud::Words::Document.new('test_multi_pages.docx')
+    info = document.get_page_setup(0)
+    assert_kind_of(Hash, info)
+  end
+
+  def test_get_paragraph_run_font
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    extractor = Aspose::Cloud::Words::Extractor.new('test_multi_pages.docx')
+    font = extractor.get_paragraph_run_font(0,0)
+    assert_kind_of(Hash, font)
+  end
+
+  def test_get_paragraph_run
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    extractor = Aspose::Cloud::Words::Extractor.new('test_multi_pages.docx')
+    run = extractor.get_paragraph_run(0,0)
+    assert_kind_of(Hash, run)
+  end
+
+  def test_get_paragraph
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    extractor = Aspose::Cloud::Words::Extractor.new('test_multi_pages.docx')
+    para = extractor.get_paragraph(0)
+    assert_kind_of(Hash, para)
+  end
+
+  def test_get_paragraphs
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    extractor = Aspose::Cloud::Words::Extractor.new('test_multi_pages.docx')
+    paras = extractor.get_paragraphs
+    assert_kind_of(Hash, paras)
+  end
+
+  def test_get_section
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    extractor = Aspose::Cloud::Words::Extractor.new('test_multi_pages.docx')
+    section = extractor.get_section(0)
+    assert_kind_of(Hash, section)
+  end
+
+  def test_get_sections
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    extractor = Aspose::Cloud::Words::Extractor.new('test_multi_pages.docx')
+    sections = extractor.get_sections
+    assert_kind_of(Hash, sections)
+  end
+
+
+  def test_split_document
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_multi_pages.docx'
+    assert_equal true, response
+
+    document = Aspose::Cloud::Words::Document.new('test_multi_pages.docx')
+    response = document.split_document(1,2,'pdf');
+    assert_kind_of(Hash, response)
+  end
+
+  def test_save_as
+    # Create object of folder class
+    folder = Aspose::Cloud::AsposeStorage::Folder.new
+    response = folder.upload_file './Data/test_uploadfile.docx'
+    assert_equal true, response
+
+    document = Aspose::Cloud::Words::Document.new('test_uploadfile.docx')
+    xml_str = '<PdfSaveOptions>
+                 <SaveFormat>pdf</SaveFormat>
+                 <FileName>test_file_options.pdf</FileName>
+                 <ImageCompression>Jpeg</ImageCompression>
+                 <JpegQuality>70</JpegQuality>
+                 <TextCompression>Flate</TextCompression>
+                </PdfSaveOptions>'
+    document.save_as(xml_str)
+
+    assert_equal true, File.exist?('./output/test_file_options.pdf')
+
+  end
+
   def test_document_properties
 
     # Create object of folder class

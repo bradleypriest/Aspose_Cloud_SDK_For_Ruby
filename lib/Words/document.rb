@@ -24,6 +24,55 @@ module Aspose
           raise 'filename not specified.' if filename.empty?
           @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/words/#{@filename}"
         end
+        
+        def save_as(options_xml, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'options not specified.' if options_xml.empty?
+
+          str_uri = "#{@base_uri}/saveAs"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri, folder_name, storage_name, storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri, options_xml, {:content_type=>'application/xml', :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+
+          return valid_output unless valid_output.empty?
+
+          json_response = JSON.parse(response_stream)
+          Aspose::Cloud::Common::Utils.download_file(json_response['SaveResult']['DestDocument']['Href'],
+                                                     json_response['SaveResult']['DestDocument']['Href'],
+                                                     folder_name,storage_name,storage_type)
+
+        end
+
+        def split_document(from, to, save_format='pdf', folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'from page not specified.' if from.nil?
+          raise 'to page not specified.' if to.nil?
+
+          str_uri = "#{@base_uri}/split"
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri, {:from=>from, :to=>to, :format=>save_format})
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, nil, {:content_type=>:json, :accept=>'application/json'}))['SplitResult']
+        end
+
+        def get_page_setup(section_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'section_index not specified.' if section_index.nil?
+
+          str_uri = "#{@base_uri}/sections/#{section_index}/pageSetup"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['PageSetup']
+        end
+
+        def update_page_setup(section_index, options_xml, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'section_index not specified.' if section_index.nil?
+          raise 'options_xml not specified.' if options_xml.empty?
+
+          str_uri = "#{@base_uri}/sections/#{section_index}/pageSetup"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.post(signed_str_uri, options_xml, {:content_type=>'application/xml', :accept=>'application/json'}))['PageSetup']
+        end
+
 
 =begin
   Appends a list of documents to this one.

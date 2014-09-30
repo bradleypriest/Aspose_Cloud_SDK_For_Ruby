@@ -25,6 +25,66 @@ module Aspose
           @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/words/#{@filename}"
         end
 
+        def get_sections(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/sections"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Sections']
+        end
+
+        def get_section(section_id, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'section_id not specified.' if section_id.nil?
+
+          str_uri = "#{@base_uri}/sections/#{section_id}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Section']
+        end
+
+        def get_paragraphs(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/paragraphs"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Paragraphs']
+        end
+
+        def get_paragraph(para_id, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'para_id not specified.' if para_id.nil?
+
+          str_uri = "#{@base_uri}/paragraphs/#{para_id}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Paragraph']
+        end
+
+        def get_paragraph_run(para_id, run_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'para_id not specified.' if para_id.nil?
+          raise 'run_index not specified.' if run_index.nil?
+
+          str_uri = "#{@base_uri}/paragraphs/#{para_id}/runs/#{run_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Run']
+        end
+
+        def get_paragraph_run_font(para_id, run_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'para_id not specified.' if para_id.nil?
+          raise 'run_index not specified.' if run_index.nil?
+
+          str_uri = "#{@base_uri}/paragraphs/#{para_id}/runs/#{run_index}/font"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Font']
+        end
+
+
+        def get_mail_merge_fields(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/mailMergeFieldNames"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['FieldNames']
+        end
+
 =begin
    Gets Text items list from document
 =end
