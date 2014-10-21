@@ -15,16 +15,6 @@
 # @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
-#this file refers all the other necessary files of the aspose.sdk for Ruby.
-
-require_relative 'aspose_common'
 require_relative 'aspose_storage'
-require_relative 'aspose_cells'
-require_relative 'aspose_pdf'
-require_relative 'aspose_slides'
-require_relative 'aspose_words'
-require_relative 'aspose_barcode'
-require_relative 'aspose_ocr'
-require_relative 'aspose_email'
-require_relative 'aspose_tasks'
-require_relative 'aspose_imaging'
+require_relative 'imaging/converter'
+require_relative 'imaging/document'
