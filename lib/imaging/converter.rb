@@ -46,6 +46,23 @@ convert an image file to a different format
           end
           valid_output
         end
+
+        def convert_tiff_to_fax(folder_name = '', storage_type = 'Aspose', storage_name = '')
+
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/tiff/#{@filename}/toFax"
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+
+          if valid_output.empty?
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{@filename}"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+          end
+          valid_output
+
+        end
+
       end
     end
   end

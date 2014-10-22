@@ -18,3 +18,4 @@
 require_relative 'aspose_storage'
 require_relative 'imaging/converter'
 require_relative 'imaging/document'
+require_relative 'imaging/image'
