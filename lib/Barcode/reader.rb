@@ -58,6 +58,61 @@ module Aspose
           json = JSON.parse(response)
           json['Code'] == 200 ? json['Barcodes'] : nil
         end
+
+        def read_from_url(url, symbology)
+          raise 'URL not provided.' if url.empty?
+          raise 'Symbology not provided.' if symbology.empty?
+
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/barcode/recognize"
+          str_uri = "#{str_uri}?type=#{symbology}&url=#{url}"
+
+          signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.post(signed_uri, '', {:accept => 'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Barcodes'] : nil
+        end
+
+        def read_specific_region(symbology, rectX, rectY, rectWidth, rectHeight)
+          raise 'Symbology not provided.' if symbology.empty?
+          raise 'X position not provided.' if rectX.nil?
+          raise 'Y position not provided.' if rectY.nil?
+          raise 'Width not provided.' if rectWidth.nil?
+          raise 'Height not provided.' if rectHeight.nil?
+
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/barcode/#{@filename}/recognize"
+          str_uri = "#{str_uri}?type=#{symbology}&rectX=#{rectX}&rectY=#{rectY}&rectWidth=#{rectWidth}&rectHeight=#{rectHeight}"
+
+          signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.get(signed_uri, {:accept => 'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Barcodes'] : nil
+        end
+
+        def read_with_checksum(symbology, checksumValidation)
+          raise 'Symbology not provided.' if symbology.empty?
+          raise 'Checksum not provided.' if checksumValidation.empty?
+
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/barcode/#{@filename}/recognize"
+          str_uri = "#{str_uri}?type=#{symbology}&checksumValidation=#{checksumValidation}"
+
+          signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.get(signed_uri, {:accept => 'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Barcodes'] : nil
+        end
+
+        def read_barcode_count(symbology, barcodesCount)
+          raise 'Symbology not provided.' if symbology.empty?
+          raise 'Barcode count not provided.' if barcodesCount.nil?
+
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/barcode/#{@filename}/recognize"
+          str_uri = "#{str_uri}?type=#{symbology}&barcodesCount=#{barcodesCount}"
+
+          signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.get(signed_uri, {:accept => 'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Barcodes'] : nil
+        end
       end
     end
 
