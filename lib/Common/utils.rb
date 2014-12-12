@@ -38,8 +38,10 @@ module Aspose
 
           if header_type == 'XML'
             request.add_field('Content-Type', 'application/xml')
+            request.add_field('x-aspose-client', 'RubySDK/v1.0')
           elsif header_type == 'JSON'
             request.add_field('Content-Type', 'application/json')
+            request.add_field('x-aspose-client', 'RubySDK/v1.0')
           end
 
           http.request(request).body
