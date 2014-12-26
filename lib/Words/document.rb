@@ -160,6 +160,84 @@ module Aspose
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperties']['List']
         end
+
+=begin
+   Get all Hyperlinks from a Word
+=end
+        def get_hyperlinks(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/hyperlinks"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Hyperlinks']['HyperlinkList']
+        end
+
+=begin
+   Get a Particular Hyperlink from a Word
+=end
+        def get_hyperlink(hyperlink_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'Hyperlink index not provided.' if hyperlink_index.nil?
+
+          str_uri = "#{@base_uri}/hyperlinks/#{hyperlink_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Hyperlink']
+        end
+
+=begin
+   Get Hyperlinks Count from a Word
+=end
+        def get_hyperlinks_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/hyperlinks"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Hyperlinks']['HyperlinkList'].count : nil
+        end
+
+=begin
+   Get all Bookmarks from a Word
+=end
+        def get_bookmarks(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/bookmarks"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Bookmarks']['BookmarkList']
+        end
+
+=begin
+   Get a Particular Bookmark from a Word
+=end
+        def get_bookmark(bookmark_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'Bookmark name not specified.' if bookmark_name.empty?
+
+          str_uri = "#{@base_uri}/bookmarks/#{bookmark_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Bookmark']
+        end
+
+=begin
+   Get Bookmarks Count from a Word
+=end
+        def get_bookmarks_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/bookmarks"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Bookmarks']['BookmarkList'].count : nil
+        end
+
+=begin
+   Remove all Headers and Footers
+=end
+        def delete_headers_footers(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/headersFooters"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
       end
     end
   end
