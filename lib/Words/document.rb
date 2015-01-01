@@ -162,6 +162,53 @@ module Aspose
         end
 
 =begin
+   Get the Current Protection of the Word document
+=end
+        def get_protection(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/protection"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['ProtectionData']['ProtectionType']
+        end
+
+=begin
+   Protect a Word Document
+=end
+        def protect_document(password, protection_type = 'AllowOnlyComments', folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'password not specified.' if password.empty?
+
+          str_uri = "#{@base_uri}/protection"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          data = Hash['Password' => password, 'ProtectionType' => protection_type]
+          json_data = JSON.generate(data)
+
+          response_stream = RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+=begin
+   Modify Protection of the Word Document
+=end
+        def update_protection(old_password, new_password, protection_type = 'AllowOnlyComments', folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'old_password not specified.' if old_password.empty?
+          raise 'new_password not specified.' if new_password.empty?
+
+          str_uri = "#{@base_uri}/protection"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          data = Hash['Password' => old_password, 'NewPassword' => new_password, 'ProtectionType' => protection_type]
+          json_data = JSON.generate(data)
+
+          response_stream = RestClient.post(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+=begin
    Get all Hyperlinks from a Word
 =end
         def get_hyperlinks(folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -238,6 +285,66 @@ module Aspose
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
         end
+
+=begin
+   Accept All Tracking Changes in the Document
+=end
+        def accept_tracking_changes(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/revisions/acceptAll"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, {:content_type=>:json, :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+=begin
+   Reject All Tracking Changes in the Document
+=end
+        def reject_tracking_changes(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/revisions/rejectAll"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, {:content_type=>:json, :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+=begin
+   Insert Page Number Field into the Document
+=end
+        def insert_page_number(alignment, format, is_top = false, set_page_number_on_first_page = false, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'alignment not specified.' if alignment.empty?
+          raise 'format not specified.' if format.empty?
+          #raise 'is_top not specified.' if is_top.empty?
+          #raise 'set_page_number_on_first_page not specified.' if set_page_number_on_first_page.empty?
+
+          str_uri = "#{@base_uri}/insertPageNumbers"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          data = Hash['Format' => format, 'Alignment' => alignment, 'IsTop' => is_top, 'SetPageNumberOnFirstPage' => set_page_number_on_first_page]
+          json_data = JSON.generate(data)
+
+          response_stream = RestClient.post(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+=begin
+   Update All Fields in the World Document
+=end
+        def update_fields(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/updateFields"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? true : false
+        end
+
       end
     end
   end
