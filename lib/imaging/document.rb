@@ -156,6 +156,53 @@ module Aspose
           valid_output
         end
 
+        def update_tiff_properties(compression, resolution_unit, new_width, new_height, horizontal_resolution, vertical_resolution, output_path,
+                                  folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/tiff"
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri, {:resolutionUnit=> resolution_unit,
+                                                                     :compression=> compression,
+                                                                     :newWidth=> new_width,
+                                                                     :newHeight=> new_height,
+                                                                     :horizontalResolution=> horizontal_resolution,
+                                                                     :verticalResolution=> vertical_resolution,
+                                                                     :outPath=> output_path})
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri, folder_name, storage_name, storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:content_type=>'application/json',
+                                                            :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+
+          if valid_output.empty?
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}_updated.tiff"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+          end
+          valid_output
+        end
+
+        def update_tiff_properties_local(input_file_path, resolution_unit, new_width, new_height, horizontal_resolution, vertical_resolution, output_path,
+                                         folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/tiff"
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri, {:resolutionUnit=> resolution_unit,
+                                                                     :newWidth=> new_width,
+                                                                     :newHeight=> new_height,
+                                                                     :horizontalResolution=> horizontal_resolution,
+                                                                     :verticalResolution=> vertical_resolution,
+                                                                     :outPath=> output_path})
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri, folder_name, storage_name, storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, File.new(input_file_path, 'rb'),
+                                            {:content_type=>'application/json', :accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+
+          if valid_output.empty?
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(input_file_path)}_updated.tiff"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+          end
+          valid_output
+        end
+
         def update_psd_properties(channels_count, compression_method, output_path,
                                   folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/psd"

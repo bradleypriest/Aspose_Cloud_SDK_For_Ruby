@@ -94,6 +94,17 @@ module Aspose
           valid_output
         end
 
+        def append_tiff(append_file)
+          raise 'append_file not specified.' if append_file.empty?
+
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/tiff/#{@filename}/appendTiff?appendFile=#{append_file}"
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          json = JSON.parse(response_stream)
+          json['Code'] == 200 ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename) : nil
+        end
+
       end
     end
   end
