@@ -161,6 +161,50 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Hyperlink']
         end
 
+        def add_hyperlink(first_row, first_column, total_rows, total_colunms, url, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'first_row not specified.' if first_row.nil?
+          raise 'first_column not specified.' if first_column.nil?
+          raise 'total_rows not specified.' if total_rows.nil?
+          raise 'total_colunms not specified.' if total_colunms.nil?
+          raise 'url not specified.' if url.empty?
+
+          str_uri = "#{@base_uri}/hyperlinks?firstRow=#{first_row}&firstColumn=#{first_column}&totalRows=#{total_rows}&totalColumns=#{total_colunms}&address=#{url}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          
+          response_stream = RestClient.put(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def update_hyperlink(hyperlink_index, url, screen_tip, display_text, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'hyperlink_index not specified.' if hyperlink_index.nil?
+          raise 'url not specified.' if url.empty?
+          raise 'screen_tip not specified.' if screen_tip.empty?
+          raise 'display_text not specified.' if display_text.empty?          
+
+          str_uri = "#{@base_uri}/hyperlinks/#{hyperlink_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          
+          json_data = JSON.generate('address' => url, 'ScreenTip' => screen_tip, 'TextToDisplay' => display_text)
+
+          response_stream = RestClient.post(signed_str_uri, json_data, {:accept=>'application/json', :content_type=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def delete_hyperlink(hyperlink_index, folder_name='', storage_type = 'Aspose', storage_name = '')          
+          raise 'hyperlink_index not specified.' if hyperlink_index.nil?
+
+          str_uri = "#{@base_uri}/hyperlinks/#{hyperlink_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
         def get_comment(cell_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'cell_name not specified.' if cell_name.empty?
 
@@ -368,6 +412,270 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.put(signed_str_uri, '', { :accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
+
+        def update_picture(picture_index, picture_path, upper_left_row, upper_left_column, lower_right_row, lower_right_column, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'picture_index not specified.' if picture_index.nil?
+          raise 'picture_file not specified.' if picture_path.empty?
+          raise 'upper_left_row not specified.' if upper_left_row.empty?
+          raise 'upper_left_column not specified.' if upper_left_column.empty?
+          raise 'lower_right_row not specified.' if lower_right_row.empty?
+          raise 'lower_right_column not specified.' if lower_right_column.empty?
+
+          qry = { :upperLeftRow => upper_left_row, :upperLeftColumn => upper_left_column, :lowerRightRow => lower_right_row,
+          :lowerRightColumn => lower_right_column, :picturePath => picture_path}
+          str_uri = "#{@base_uri}/pictures/#{picture_index}"
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.put(signed_str_uri, '', { :accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
+
+        def delete_pictures(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/pictures"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def delete_picture(picture_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'picture_index not specified.' if picture_index.nil?
+
+          str_uri = "#{@base_uri}/pictures/#{picture_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def copy_worksheet(new_worksheet_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'new_worksheet_name not specified.' if new_worksheet_name.empty?      
+        
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/cells/#{@filename}/worksheets/#{new_worksheet_name}/copy?sourcesheet=#{@worksheet_name}"          
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def rename_worksheet(new_worksheet_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'new_worksheet_name not specified.' if new_worksheet_name.empty?      
+        
+          str_uri = "#{@base_uri}/Rename?newname=#{new_worksheet_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def set_background(background_image, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'background_image not specified.' if background_image.empty?      
+        
+          str_uri = "#{@base_uri}/Background?imageFile=#{background_image}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def delete_background(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/Background"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def freeze_panes(row, column, freezed_rows, freezed_columns, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'row not specified.' if row.nil?
+          raise 'column not specified.' if column.nil?
+          raise 'freezed_rows not specified.' if freezed_rows.nil?
+          raise 'freezed_columns not specified.' if freezed_columns.nil?
+        
+          str_uri = "#{@base_uri}/FreezePanes?row=#{row}&column=#{column}&freezedRows=#{freezed_rows}&freezedColumns=#{freezed_columns}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.put(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def unfreeze_panes(row, column, freezed_rows, freezed_columns, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'row not specified.' if row.nil?
+          raise 'column not specified.' if column.nil?
+          raise 'freezed_rows not specified.' if freezed_rows.nil?
+          raise 'freezed_columns not specified.' if freezed_columns.nil?
+        
+          str_uri = "#{@base_uri}/FreezePanes?row=#{row}&column=#{column}&freezedRows=#{freezed_rows}&freezedColumns=#{freezed_columns}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def add_empty_row(row_id, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'row_id not specified.' if row_id.nil?
+
+          str_uri = "#{@base_uri}/cells/rows/#{row_id}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.put(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def copy_row(source_row_index, destination_row_index, row_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'source_row_index not specified.' if source_row_index.nil?
+          raise 'destination_row_index not specified.' if destination_row_index.nil?
+          raise 'row_number not specified.' if row_number.nil?
+
+          str_uri = "#{@base_uri}/cells/rows/copy?sourceRowIndex=#{source_row_index}&destinationRowIndex=#{destination_row_index}&rowNumber=#{row_number}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def hide_rows(start_row, total_rows, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'start_row not specified.' if start_row.nil?
+          raise 'total_rows not specified.' if total_rows.nil?          
+
+          str_uri = "#{@base_uri}/cells/rows/hide?startrow=#{start_row}&totalRows=#{total_rows}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def unhide_rows(start_row, total_rows, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'start_row not specified.' if start_row.nil?
+          raise 'total_rows not specified.' if total_rows.nil?          
+
+          str_uri = "#{@base_uri}/cells/rows/unhide?startrow=#{start_row}&totalRows=#{total_rows}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def group_rows(first_index, last_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'first_index not specified.' if first_index.nil?
+          raise 'last_index not specified.' if last_index.nil?          
+
+          str_uri = "#{@base_uri}/cells/rows/group?firstIndex=#{first_index}&lastIndex=#{last_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def ungroup_rows(first_index, last_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'first_index not specified.' if first_index.nil?
+          raise 'last_index not specified.' if last_index.nil?          
+
+          str_uri = "#{@base_uri}/cells/rows/ungroup?firstIndex=#{first_index}&lastIndex=#{last_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def merge_cells(start_row, start_column, total_rows, total_colunms, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'start_row not specified.' if start_row.nil?
+          raise 'start_column not specified.' if start_column.nil?
+          raise 'total_rows not specified.' if total_rows.nil?
+          raise 'total_colunms not specified.' if total_colunms.nil?
+
+          str_uri = "#{@base_uri}/cells/merge?startrow=#{start_row}&startcolumn=#{start_column}&totalrows=#{total_rows}&totalcolumns=#{total_colunms}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def unmerge_cells(start_row, start_column, total_rows, total_colunms, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'start_row not specified.' if start_row.nil?
+          raise 'start_column not specified.' if start_column.nil?
+          raise 'total_rows not specified.' if total_rows.nil?
+          raise 'total_colunms not specified.' if total_colunms.nil?
+
+          str_uri = "#{@base_uri}/cells/unmerge?startrow=#{start_row}&startcolumn=#{start_column}&totalrows=#{total_rows}&totalcolumns=#{total_colunms}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def clear_cells_formatting(start_row, start_column, end_row, end_colunm, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'start_row not specified.' if start_row.nil?
+          raise 'start_column not specified.' if start_column.nil?
+          raise 'end_row not specified.' if end_row.nil?
+          raise 'end_colunm not specified.' if end_colunm.nil?
+
+          str_uri = "#{@base_uri}/cells/ClearFormats?startRow=#{start_row}&startColumn=#{start_column}&endRow=#{end_row}&endColumn=#{end_colunm}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def clear_cells_contents(range, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'range not specified.' if range.empty?          
+
+          str_uri = "#{@base_uri}/cells/clearcontents?range=#{range}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+        
+        def set_range_value(cellarea, value, type, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'cellarea not specified.' if cellarea.empty?
+          raise 'value not specified.' if value.empty?
+          raise 'type not specified.' if type.empty?
+
+          str_uri = "#{@base_uri}/cells?cellarea=#{cellarea}&value=#{value}&type=#{type}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
         end
       end
     end

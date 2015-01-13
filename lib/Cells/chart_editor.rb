@@ -44,6 +44,17 @@ module Aspose
           valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
         end
 
+        def delete_charts(worksheet_name, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?          
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
         def delete_chart(worksheet_name, chart_index, folder_name='', storage_type = 'Aspose', storage_name = '')
           raise 'worksheet_name not specified.' if worksheet_name.empty?
           raise 'chart_index not specified.' if chart_index.nil?
@@ -54,6 +65,56 @@ module Aspose
           response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json'})
           valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
           valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def show_chart_legend(worksheet_name, chart_index, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'chart_index not specified.' if chart_index.nil?          
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts/#{chart_index}/legend"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.put(signed_str_uri, '', {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def hide_chart_legend(worksheet_name, chart_index, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'chart_index not specified.' if chart_index.nil?          
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts/#{chart_index}/legend"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json', :content_type=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def update_chart_legend(worksheet_name, chart_index, str_xml, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'chart_index not specified.' if chart_index.nil?
+          raise 'str_xml not specified.' if str_xml.empty?          
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts/#{chart_index}/legend"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, str_xml, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def read_chart_legend(worksheet_name, chart_index, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'chart_index not specified.' if chart_index.nil?
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts/#{chart_index}/legend"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Legend']
         end
 
         def get_chart_area(worksheet_name, chart_index, folder_name='', storage_type = 'Aspose', storage_name = '')
@@ -84,6 +145,47 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Line']
+        end
+
+        def set_chart_title(worksheet_name, chart_index, str_xml, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'chart_index not specified.' if chart_index.nil?
+          raise 'str_xml not specified.' if str_xml.empty?
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts/#{chart_index}/title"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.put(signed_str_uri, str_xml, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def update_chart_title(worksheet_name, chart_index, str_xml, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'chart_index not specified.' if chart_index.nil?
+          raise 'str_xml not specified.' if str_xml.empty?
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts/#{chart_index}/title"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.post(signed_str_uri, str_xml, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def delete_chart_title(worksheet_name, chart_index, folder_name='', storage_type = 'Aspose', storage_name = '')
+          raise 'worksheet_name not specified.' if worksheet_name.empty?
+          raise 'chart_index not specified.' if chart_index.nil?
+
+          str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/charts/#{chart_index}/title"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.delete(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
         end
       end
     end
