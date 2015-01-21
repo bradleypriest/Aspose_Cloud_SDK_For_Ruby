@@ -29,7 +29,7 @@ module Aspose
           str_uri = "#{@base_uri}/documentProperties"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperties']['List']
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperties']['DocumentPropertyList']
         end
 
         def get_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
