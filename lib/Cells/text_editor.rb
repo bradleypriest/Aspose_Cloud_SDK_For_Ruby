@@ -44,8 +44,14 @@ module Aspose
           JSON.parse(RestClient.post(signed_str_uri, '', {:accept=>'application/json'}))['TextItems']['TextItemList']
         end
 
-        def get_text_items(worksheet_name, folder_name='', storage_type = 'Aspose', storage_name = '')
-          raise 'text not specified.' if text.empty?
+        def get_text_items(folder_name='', storage_type = 'Aspose', storage_name = '')                   
+          str_uri = "#{@base_uri}/textItems"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['TextItems']['TextItemList']
+        end
+
+        def get_text_items_in_worksheet(worksheet_name, folder_name='', storage_type = 'Aspose', storage_name = '')
           raise 'worksheet_name not specified.' if worksheet_name.empty?
 
           str_uri = "#{@base_uri}/worksheets/#{worksheet_name}/textItems"
