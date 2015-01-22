@@ -107,7 +107,7 @@ module Aspose
         end
 
         def get_auto_shapes_by_index(shape_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'count not specified.' if count.nil?
+          raise 'shape_index not specified.' if shape_index.nil?
 
           str_uri = "#{@base_uri}/autoshapes/#{shape_index}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
@@ -157,7 +157,7 @@ module Aspose
 
           str_uri = "#{@base_uri}/hyperlinks/#{link_index}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
-          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)          
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Hyperlink']
         end
 
@@ -237,7 +237,7 @@ module Aspose
 
           str_uri = "#{@base_uri}/validations/#{index}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
-          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)          
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Validation']
         end
 
@@ -254,7 +254,7 @@ module Aspose
           str_uri = "#{@base_uri}/mergedCells"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['MergedCell']['Count']
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['MergedCells']['Count']
         end
 
         def get_validations_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -279,7 +279,7 @@ module Aspose
         end
 
         def get_charts_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
-          str_uri = "#{@base_uri}/oleobjects"
+          str_uri = "#{@base_uri}/charts"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Charts']['ChartList'].length
@@ -399,11 +399,11 @@ module Aspose
         end
 
         def add_picture(picture_path, upper_left_row, upper_left_column, lower_right_row, lower_right_column, folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'picture_file not specified.' if picture_path.empty?
-          raise 'upper_left_row not specified.' if upper_left_row.empty?
-          raise 'upper_left_column not specified.' if upper_left_column.empty?
-          raise 'lower_right_row not specified.' if lower_right_row.empty?
-          raise 'lower_right_column not specified.' if lower_right_column.empty?
+          raise 'picture_path not specified.' if picture_path.empty?
+          raise 'upper_left_row not specified.' if upper_left_row.nil?
+          raise 'upper_left_column not specified.' if upper_left_column.nil?
+          raise 'lower_right_row not specified.' if lower_right_row.nil?
+          raise 'lower_right_column not specified.' if lower_right_column.nil?
 
           qry = { :upperLeftRow => upper_left_row, :upperLeftColumn => upper_left_column, :lowerRightRow => lower_right_row,
           :lowerRightColumn => lower_right_column, :picturePath => picture_path}
@@ -637,13 +637,13 @@ module Aspose
           valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
         end
 
-        def clear_cells_formatting(start_row, start_column, end_row, end_colunm, folder_name = '', storage_type = 'Aspose', storage_name = '')
+        def clear_cells_formatting(start_row, start_column, end_row, end_column, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'start_row not specified.' if start_row.nil?
           raise 'start_column not specified.' if start_column.nil?
           raise 'end_row not specified.' if end_row.nil?
-          raise 'end_colunm not specified.' if end_colunm.nil?
+          raise 'end_column not specified.' if end_column.nil?
 
-          str_uri = "#{@base_uri}/cells/ClearFormats?startRow=#{start_row}&startColumn=#{start_column}&endRow=#{end_row}&endColumn=#{end_colunm}"
+          str_uri = "#{@base_uri}/cells/ClearFormats?startRow=#{start_row}&startColumn=#{start_column}&endRow=#{end_row}&endColumn=#{end_column}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
