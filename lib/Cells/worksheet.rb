@@ -414,21 +414,14 @@ module Aspose
           JSON.parse(RestClient.put(signed_str_uri, '', { :accept=>'application/json'}))['Code'] == 200 ? true : false
         end
 
-        def update_picture(picture_index, picture_path, upper_left_row, upper_left_column, lower_right_row, lower_right_column, folder_name = '', storage_type = 'Aspose', storage_name = '')
+        def update_picture(picture_index, picture_data, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'picture_index not specified.' if picture_index.nil?
-          raise 'picture_file not specified.' if picture_path.empty?
-          raise 'upper_left_row not specified.' if upper_left_row.empty?
-          raise 'upper_left_column not specified.' if upper_left_column.empty?
-          raise 'lower_right_row not specified.' if lower_right_row.empty?
-          raise 'lower_right_column not specified.' if lower_right_column.empty?
+          raise 'picture_data not specified.' if picture_data.empty?  
 
-          qry = { :upperLeftRow => upper_left_row, :upperLeftColumn => upper_left_column, :lowerRightRow => lower_right_row,
-          :lowerRightColumn => lower_right_column, :picturePath => picture_path}
-          str_uri = "#{@base_uri}/pictures/#{picture_index}"
-          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = "#{@base_uri}/pictures/#{picture_index}"          
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.put(signed_str_uri, '', { :accept=>'application/json'}))['Code'] == 200 ? true : false
+          JSON.parse(RestClient.post(signed_str_uri, picture_data, { :accept=>'application/json'}))['Code'] == 200 ? true : false
         end
 
         def delete_pictures(folder_name = '', storage_type = 'Aspose', storage_name = '')
