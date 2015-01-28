@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Slides
@@ -56,12 +39,30 @@ module Aspose
           str_uri = "#{@base_uri}/slides/#{slide_number}/shapes"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          shapes = Hash.new
+          shapes = Array.new
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['ShapeList']['ShapesLinks'].each { |item|
             signed_str_uri = Aspose::Cloud::Common::Utils.sign(item['Uri']['Href'])
             shapes.push(JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'})))
           }
           shapes
+        end
+
+=begin
+  Get a Particular Shape from the Slide
+	@param number slide_number
+  @param number shape_index
+=end
+        def get_shape(slide_number, shape_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
+          raise 'shape_index not specified.' if shape_index.nil?
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}/shapes/#{shape_index}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Shape'] : nil
         end
 
 =begin
@@ -128,6 +129,21 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Placeholder']
+        end
+
+=begin
+  Get Comments of a PowerPoint Slide
+=end
+        def get_comments(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number.nil?
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}/comments"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['SlideComments'] : nil
         end
       end
     end
