@@ -133,9 +133,10 @@ module Aspose
 
 =begin
   Get Comments of a PowerPoint Slide
+  @param number slide_number
 =end
         def get_comments(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'slide_number not specified.' if slide_number.nil?
+          raise 'slide_number not specified.' if slide_number <= 0
 
           str_uri = "#{@base_uri}/slides/#{slide_number}/comments"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)

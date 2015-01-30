@@ -39,7 +39,7 @@ module Aspose
   Copy Slides in a PowerPoint Presentation
 =end
         def clone_slide(slide_number, position, folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'slide_number not specified.' if slide_number.nil?
+          raise 'slide_number not specified.' if slide_number <= 0
           raise 'position not specified.' if position.nil?
 
           str_uri = "#{@base_uri}/slides?SlideToClone=#{slide_number}&Position=#{position}"
@@ -92,16 +92,16 @@ module Aspose
 
 =begin
   Merge PowerPoint Presentations
-  @param json presentations_list Provide it in {'PresentationPaths' : ['demo.pptx', 'test.pptx']} format
+  @param xml presentation_list
 =end
-        def merge_presentations(presentations_list, folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'presentations_list not specified.' if presentations_list.empty?
+        def merge_presentations(presentation_list, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'presentation_list not specified.' if presentation_list.empty?
 
           str_uri = "#{@base_uri}/merge"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
-          response = RestClient.post(signed_str_uri, presentations_list, {:accept=>'application/json'})
+          response = RestClient.post(signed_str_uri, presentation_list, {:accept=>'application/json'})
           json = JSON.parse(response)
           json['Code'] == 200 ? json['Document'] : nil
         end
@@ -171,7 +171,7 @@ module Aspose
         end
 
 =begin
-  Delete a Slides from a PowerPoint Presentation
+  Delete a Slide from a PowerPoint Presentation
 =end
         def delete_slide(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'slide_number not specified.' if slide_number <= 0
@@ -204,7 +204,7 @@ module Aspose
   Get Background of a PowerPoint Slide
 =end
         def get_background(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'slide_number not specified.' if slide_number.nil?
+          raise 'slide_number not specified.' if slide_number <= 0
 
           str_uri = "#{@base_uri}/slides/#{slide_number}/background"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
@@ -223,19 +223,6 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperties']['List']
-        end
-
-=begin
-   Get Resource Properties information like document source format, IsEncrypted, IsSigned and document properties
-   @param string property_name
-=end
-        def get_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'property_name not specified.' if property_name.empty?
-
-          str_uri = "#{@base_uri}/documentProperties/#{property_name}"
-          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
-          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)          
-          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['DocumentProperty']
         end
 
 =begin
@@ -279,27 +266,12 @@ module Aspose
         end
 
 =begin
-   Add custom document properties
-   @param hash property_list  
-=end
-        def add_custom_property(property_list, folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'property_list not specified.' if property_list.empty?
-
-          json_data = property_list.to_json
-
-          str_uri = "#{@base_uri}/documentProperties"
-          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
-          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'}))
-        end
-
-=begin
      saves the document into various formats    
      @param string outputFilename
      @param string outputFormat
 =end
     
-        def save_as(output_filename=@filename, output_format='', folder_name = '', storage_type = 'Aspose', storage_name = '')
+        def save_as(output_filename, output_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'output_filename not specified.' if output_filename.empty?
           raise 'output_format not specified.' if output_format.empty?
 
@@ -315,18 +287,18 @@ module Aspose
     
 =begin
   saves the document into various formats         
-  @param string slide_number
+  @param number slide_number
   @param string outputFilename
   @param string outputFormat
 =end
-        def save_slide_as(slide_number, output_filename=@filename, output_format='', folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'slide_number not specified.' if slide_number.nil?
+        def save_slide_as(slide_number, output_filename, output_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
           raise 'output_filename not specified.' if output_filename.empty?
           raise 'output_format not specified.' if output_format.empty?
 
           str_uri = "#{@base_uri}/slides/#{slide_number}?format=#{output_format}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
-          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)          
 
           response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
           valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
