@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Pdf
@@ -83,6 +66,23 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Field']
         end
 
+        def update_form_field(field_name, field_type, field_value, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'field_name not specified.' if field_name.empty?
+          raise 'field_type not specified.' if field_type.empty?
+          raise 'field_value not specified.' if field_value.empty?
+
+          str_uri = "#{@base_uri}/fields/#{field_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          data = Hash['Name' => field_name, 'Type' => field_type, 'field_value' => Array.new('field_value')]
+          json_data = JSON.generate(data)
+
+          response = RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Field'] : nil
+        end
+
         def create_from_html (html_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'html_filename not specified.' if html_filename.empty?
 
@@ -111,6 +111,51 @@ module Aspose
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
           Aspose::Cloud::Common::Utils.validate_output(response_stream)
+        end
+
+        def create_from_jpeg(jpeg_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'jpeg_filename not specified.' if jpeg_filename.empty?
+
+          str_uri = "#{@base_uri}"
+          qry = Hash.new
+          qry[:templatefile] = jpeg_filename
+          qry[:templatetype] = 'jpeg'
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def create_from_svg(svg_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'svg_filename not specified.' if svg_filename.empty?
+
+          str_uri = "#{@base_uri}"
+          qry = Hash.new
+          qry[:templatefile] = svg_filename
+          qry[:templatetype] = 'svg'
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def create_from_tiff(tiff_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'tiff_filename not specified.' if tiff_filename.empty?
+
+          str_uri = "#{@base_uri}"
+          qry = Hash.new
+          qry[:templatefile] = tiff_filename
+          qry[:templatetype] = 'tiff'
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
         end
 
         def create_empty_pdf(folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -213,6 +258,88 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
+        end
+
+        def split_all_pages(folder_name = '', storage_type = 'Aspose', storage_name = '')
+          str_uri = "#{@base_uri}/split"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.post(signed_str_uri, '', {:content_type=>:json, :accept=>'application/json'})
+          json = JSON.parse(response)
+          i=1
+          json['Result']['Documents'].each { |split_page|
+            source_filename = Aspose::Cloud::Common::Utils.get_filename(@filename)
+            split_filename = File.basename(split_page['Href'])
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/storage/file/' + split_filename
+            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+            response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+            filename = "#{source_filename}_#{i}.pdf"
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{filename}"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+            i += 1
+          }
+        end
+
+        def split_pages(from, to, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'from not specified.' if from.nil?
+          raise 'to not specified.' if to.nil?
+
+          str_uri = "#{@base_uri}/split?from=#{from}&to=#{to}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.post(signed_str_uri, '', {:content_type=>:json, :accept=>'application/json'})
+          json = JSON.parse(response)
+          i=1
+          json['Result']['Documents'].each { |split_page|
+            source_filename = Aspose::Cloud::Common::Utils.get_filename(@filename)
+            split_filename = File.basename(split_page['Href'])
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/storage/file/' + split_filename
+            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+            response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+            filename = "#{source_filename}_#{i}.pdf"
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{filename}"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+            i += 1
+          }
+        end
+
+        def split_pages_to_any_format(from, to, save_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'from not specified.' if from.nil?
+          raise 'to not specified.' if to.nil?
+          raise 'save_format not specified.' if save_format.empty?
+
+          str_uri = "#{@base_uri}/split?from=#{from}&to=#{to}&format=#{save_format}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.post(signed_str_uri, '', {:content_type=>:json, :accept=>'application/json'})
+          json = JSON.parse(response)
+          i=1
+          json['Result']['Documents'].each { |split_page|
+            source_filename = Aspose::Cloud::Common::Utils.get_filename(@filename)
+            split_filename = File.basename(split_page['Href'])
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/storage/file/' + split_filename
+            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+            response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+            filename = "#{source_filename}_#{i}.#{save_format}"
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{filename}"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+            i += 1
+          }
+        end
+
+        def add_stamp(page_number, post_data, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          raise 'post_data not specified.' if post_data.empty?
+
+          str_uri = "#{@base_uri}/pages/#{page_number}/stamp"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response = RestClient.put(signed_str_uri, post_data, {:content_type=>:json, :accept=>'application/json'})
+          json = JSON.parse(response)
+          if json['Code'] == 200
+            Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type)
+          end
         end
       end
     end
