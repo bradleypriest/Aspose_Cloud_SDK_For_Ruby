@@ -27,8 +27,9 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
-          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
-          Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          response = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? true : false          
         end
 
         def merge_documents(merged_filename, source_files, folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -75,7 +76,7 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
 
-          data = Hash['Name' => field_name, 'Type' => field_type, 'field_value' => Array.new('field_value')]
+          data = Hash['Name' => field_name, 'Type' => field_type, 'Values' => Array.new('field_value')]
           json_data = JSON.generate(data)
 
           response = RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'})
@@ -93,8 +94,9 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
-          Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          response = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})          
+          json = JSON.parse(response)
+          json['Code'] == 200 ? true : false
         end
 
         def create_from_xml (xslt_filename, xml_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -109,8 +111,9 @@ module Aspose
           str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          response_stream = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
-          Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          response = RestClient.put(signed_str_uri,'',{:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? true : false          
         end
 
         def create_from_jpeg(jpeg_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -215,7 +218,7 @@ module Aspose
         def replace_image_file(page_number, image_index, image_file, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'page_number not specified.' if page_number.nil?
           raise 'image_index not specified.' if image_index.nil?
-          raise 'image_file not specified.' if image_file.nil?
+          raise 'image_file not specified.' if image_file.empty?
 
           str_uri = "#{@base_uri}/pages/#{page_number}/images/#{image_index}?imagefile=#{image_file}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
