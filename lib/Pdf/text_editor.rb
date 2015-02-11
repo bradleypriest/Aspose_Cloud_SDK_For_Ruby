@@ -63,6 +63,23 @@ module Aspose
         end
 
 =begin
+   Get Text Format of a Particular Segment
+   @param number page_number 
+   @param number fragment_number
+   @param number segment_number
+=end
+        def get_segment_text_format(page_number, fragment_number, segment_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'page_number not specified.' if page_number.nil?
+          raise 'fragment_number not specified.' if fragment_number.nil?
+          raise 'segment_number not specified.' if segment_number.nil?
+
+          str_uri = "#{@base_uri}/pages/#{page_number}/fragments/#{fragment_number}/segments/#{segment_number}/textformat"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['TextFormat']
+        end        
+
+=begin
     Replaces all instances of old text with new text in a PDF file or a particular page
     @param string old_text
     @param string new_text 
@@ -79,7 +96,7 @@ module Aspose
           response_stream = RestClient.post(signed_str_uri,json_data,{ :content_type => 'application/json', :accept => 'application/json' })
           valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
           valid_output.empty? ? true : valid_output
-        end    
+        end
 
 =begin
   Gets count of the segments in a fragment
