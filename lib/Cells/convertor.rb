@@ -128,14 +128,34 @@ module Aspose
           qry = Hash.new
           qry[:format] = save_format
           qry[:password] = password unless password.empty?
-          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri,qry)          
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
-          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)          
           response_stream = RestClient.get(signed_str_uri, {:accept => 'application/json'})
           valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
 
           output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}.#{save_format}"
           valid_output.empty? ? Aspose::Cloud::Common::Utils.save_file(response_stream,output_path) : valid_output
+        end
+
+        def convert_local_file(input_file, output_filename, save_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'input_file not specified.' if input_file.empty?
+          raise 'output_filename not specified.' if output_filename.empty?
+          raise 'save_format not specified.' if save_format.empty?
+
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/cells/convert?format=#{save_format}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = Aspose::Cloud::Common::Utils.upload_file_binary(input_file, signed_str_uri)
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+
+          save_format = 'zip' if save_format.eql?('html')
+
+          if valid_output.empty?
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(output_filename)}.#{save_format}"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+          end
+          valid_output
         end
       end  
     end

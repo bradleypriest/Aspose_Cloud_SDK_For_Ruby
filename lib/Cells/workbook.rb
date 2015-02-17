@@ -141,6 +141,16 @@ module Aspose
           JSON.parse(RestClient.post(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'}))['Code'] == 200 ? true : false
         end
 
+        def decrypt_workbook(password, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'password not specified.' if password.empty?
+
+          json_data = { :Password => password }.to_json
+          str_uri = "#{@base_uri}/encryption"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'DELETE','JSON',json_data))['Code'] == 200 ? true : false
+        end
+
         def protect_workbook(protection_type, password, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'protection_type not specified.' if protection_type.empty?
           raise 'password not specified.' if password.empty?
@@ -206,8 +216,8 @@ module Aspose
 
           str_uri = "#{@base_uri}/worksheets/#{worksheet_name}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
-          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 201 ? true : false
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)          
+          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))['Code'] == 200 ? true : false
         end
 
         def merge_workbook(merge_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -218,6 +228,29 @@ module Aspose
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.post(signed_str_uri, '', {:accept=>'application/json'}))['Code'] == 200 ? true : false
         end
+
+        def split_workbook(save_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'save_format not specified.' if save_format.empty?
+
+          str_uri = "#{@base_uri}/split?format=#{save_format}"          
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)          
+          response = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          json = JSON.parse(response)
+          
+          i = 1
+          json['Result']['Documents'].each { |split_page|     
+            source_filename = Aspose::Cloud::Common::Utils.get_filename(@filename)       
+            split_filename = File.basename(split_page['link']['Href'])
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/storage/file/' + split_filename
+            signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+            response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+            filename = "#{source_filename}_#{i}.#{save_format}"
+            output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{filename}"
+            Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
+            i += 1
+          }
+        end       
       end
     end
   end
