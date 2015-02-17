@@ -44,6 +44,54 @@ class WorksheetTests < Test::Unit::TestCase
     assert_equal true, response>=0
   end
 
+  def test_get_first_cell
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet1')
+    response = worksheet.get_first_cell(offset=0, count=10)
+    assert_instance_of(Hash, response)
+  end
+
+  def test_get_last_cell
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet1')
+    response = worksheet.get_last_cell(offset=0, count=10)
+    assert_instance_of(Hash, response)
+  end
+
+  def test_get_max_data_row
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet1')
+    response = worksheet.get_max_data_row(offset=0, count=10)
+    assert_equal true, response>=0.to_s
+  end
+
+  def test_get_max_data_column
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet3')
+    response = worksheet.get_max_data_column(offset=0, count=10)
+    assert_equal true, response>=0.to_s
+  end
+
+  def test_get_min_row
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('Test.xlsx', 'Sheet1')
+    response = worksheet.get_min_row(offset=0, count=10)
+    assert_equal true, response>=0.to_s
+  end
+
+  def test_get_min_data_row
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('Test.xlsx', 'Sheet1')
+    response = worksheet.get_min_data_row(offset=0, count=100)
+    assert_equal true, response>=0.to_s
+  end
+
+  def test_get_min_column
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('Test.xlsx', 'Sheet1')
+    response = worksheet.get_min_column(offset=0, count=10)
+    assert_equal true, response>=0.to_s
+  end
+
+  def test_get_min_data_column
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet1')
+    response = worksheet.get_min_data_column(offset=0, count=10)
+    assert_equal true, response>=0.to_s
+  end
+
   def test_get_cells_count  
     worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet1')
     response = worksheet.get_cells_count(offset=0, count=10)    
@@ -109,6 +157,30 @@ class WorksheetTests < Test::Unit::TestCase
     worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet2')
     response = worksheet.get_oleobject_by_index(ole_index=0)
     assert_instance_of(Hash, response)
+  end
+
+  def test_add_oleobject
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet2')
+    response = worksheet.add_oleobject(ole_file='ole.docx', image_file='ole.png', upper_left_row=20, upper_left_column=20, height=200, width=200)
+    assert_equal true, response
+  end
+
+  def test_update_oleobject
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet2')
+    response = worksheet.update_oleobject(index=1, str_xml)
+    assert_equal true, response
+  end
+
+  def test_delete_oleobject
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet2')
+    response = worksheet.delete_oleobject(index=1)
+    assert_equal true, response
+  end
+
+  def test_delete_all_oleobjects
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet2')
+    response = worksheet.delete_all_oleobjects(index=1)
+    assert_equal true, response
   end
 
   def test_get_picture_by_index
@@ -351,5 +423,13 @@ class WorksheetTests < Test::Unit::TestCase
     worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet1')
     response = worksheet.set_range_value(cellarea='A10:B20', value='Sample', type='string')    
     assert_equal true, File.exist?('../Output/test_cells.xlsx')
-  end  
+  end
+
+  def test_update_properties
+    worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet1')
+    assert_nothing_thrown 'Error' do
+      worksheet.update_properties(worksheet_name='New Sheet Name', gridlines_visible = false, pagebreak_preview = false, ruler_visible = false)
+    end
+    assert_equal true, File.exist?('../Output/test_cells.tiff')
+  end    
 end

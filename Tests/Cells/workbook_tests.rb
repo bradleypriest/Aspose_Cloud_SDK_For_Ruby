@@ -80,6 +80,12 @@ class WorkbookTests < Test::Unit::TestCase
     assert_equal true, response
   end
 
+  def test_decrypt_workbook   
+    workbook = Aspose::Cloud::Cells::Workbook.new('test_cells.xlsx')
+    response = workbook.decrypt_workbook(password='123456')    
+    assert_equal true, response
+  end
+
   def test_protect_workbook    
     workbook = Aspose::Cloud::Cells::Workbook.new('test_cells.xlsx')
     response = workbook.protect_workbook(protection_type='all', password='123456')    
@@ -126,5 +132,14 @@ class WorkbookTests < Test::Unit::TestCase
     workbook = Aspose::Cloud::Cells::Workbook.new('test_cells.xlsx')
     response = workbook.merge_workbook(merge_filename='Test.xlsx')    
     assert_equal true, response
+  end
+
+  def test_split_workbook    
+    workbook = Aspose::Cloud::Cells::Workbook.new('test_cells.xlsx')
+    assert_nothing_thrown 'Error' do
+      response = workbook.split_workbook(save_format='tiff')
+    end
+    assert_equal true, File.exist?('../Output/test_cells_1.tiff')
+    assert_equal true, File.exist?('../Output/test_cells_2.tiff')
   end
 end

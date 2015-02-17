@@ -71,4 +71,13 @@ class ConverterTests < Test::Unit::TestCase
 
     assert_equal true, File.exist?('../Output/test_cells.tiff')
   end
+
+  def test_convert_local_file
+    converter = Aspose::Cloud::Cells::Converter.new('test_cells.xlsx')
+    assert_nothing_thrown 'Error' do
+      converter.convert_local_file(input_file='../Data/test_convert_cell.xlsx', output_filename='convert-local.tiff', save_format='tiff')
+    end
+
+    assert_equal true, File.exist?('../Output/convert-local.tiff')
+  end
 end
