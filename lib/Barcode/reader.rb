@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Barcode
@@ -24,6 +7,10 @@ module Aspose
           raise 'Base file is not specified' if @filename.empty?
         end
 
+=begin
+  Read Barcode from Aspose Cloud Storage
+  @param string symbology Type of barcode.
+=end
         def read(symbology='', remote_folder='', storage_type='Aspose', storage_name='')
 
             str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/barcode/#{@filename}/recognize"
@@ -36,6 +23,12 @@ module Aspose
             json['Code'] == 200 ? json['Barcodes'] : nil
         end
 
+=begin
+  Read Barcode from Local Image
+  @param string local_image Path of the local image.
+  @param string symbology Type of barcode.
+  @param string format Returns an image in specified format.  
+=end
         def read_from_local_image(local_image, remote_folder='', symbology='', format='', storage_type='Aspose', storage_name='')
             raise 'local image file not provided.' if local_image.empty?
 
@@ -45,6 +38,12 @@ module Aspose
             readr(File.basename(local_image), remote_folder, symbology, format)
         end
 
+=begin
+  Read Barcode from Aspose Cloud Storage
+  @param string remote_image_name Name of the image.
+  @param string symbology Type of barcode.
+  @param string format Returns an image in specified format.  
+=end
         def readr(remote_image_name, remote_folder='', symbology='', format='', storage_type='Aspose', storage_name='')
           raise 'remote image file not provided.' if remote_image_name.empty?
 
@@ -59,6 +58,11 @@ module Aspose
           json['Code'] == 200 ? json['Barcodes'] : nil
         end
 
+=begin
+  Read Barcode from External Image URL
+  @param string url URL of the image.
+  @param string symbology Type of barcode.
+=end
         def read_from_url(url, symbology)
           raise 'URL not provided.' if url.empty?
           raise 'Symbology not provided.' if symbology.empty?
@@ -72,6 +76,14 @@ module Aspose
           json['Code'] == 200 ? json['Barcodes'] : nil
         end
 
+=begin
+  Read Barcode from Specific Region of Image
+  @param string symbology Type of barcode.
+  @param number rectX X position of rectangle.
+  @param number rectY Y position of rectangle.
+  @param number rectWidth Width of rectangle.
+  @param number rectX Height of rectangle.
+=end
         def read_specific_region(symbology, rectX, rectY, rectWidth, rectHeight)
           raise 'Symbology not provided.' if symbology.empty?
           raise 'X position not provided.' if rectX.nil?
@@ -88,6 +100,11 @@ module Aspose
           json['Code'] == 200 ? json['Barcodes'] : nil
         end
 
+=begin
+  Recognize Barcode with Checksum Option from Storage
+  @param string symbology Type of barcode.
+  @param string checksumValidation Sets checksum validation parameter.
+=end
         def read_with_checksum(symbology, checksumValidation)
           raise 'Symbology not provided.' if symbology.empty?
           raise 'Checksum not provided.' if checksumValidation.empty?
@@ -101,6 +118,11 @@ module Aspose
           json['Code'] == 200 ? json['Barcodes'] : nil
         end
 
+=begin
+  Recognize Specified count of Barcodes
+  @param string symbology Type of barcode.
+  @param string barcodesCount Recognize specified count of barcodes.
+=end
         def read_barcode_count(symbology, barcodesCount)
           raise 'Symbology not provided.' if symbology.empty?
           raise 'Barcode count not provided.' if barcodesCount.nil?
@@ -115,6 +137,5 @@ module Aspose
         end
       end
     end
-
   end
 end
