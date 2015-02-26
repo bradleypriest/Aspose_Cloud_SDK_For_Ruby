@@ -62,9 +62,9 @@ module Aspose
           str_uri = "#{@base_uri}/assignments/#{assignment_id}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json = JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json['Code'] == 200 ? true : false
         end
-
       end
     end
   end

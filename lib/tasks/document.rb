@@ -68,7 +68,8 @@ module Aspose
           str_uri = "#{@base_uri}/tasks/#{task_id}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json = JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json['Code'] == 200 ? true : false
         end
 
         def get_links(folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -84,7 +85,8 @@ module Aspose
           str_uri = "#{@base_uri}/taskLinks/#{link_index}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json = JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json['Code'] == 200 ? true : false
         end
 
         def get_outline_codes(folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -109,7 +111,8 @@ module Aspose
           str_uri = "#{@base_uri}/outlineCodes/#{outline_code_id}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json = JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json['Code'] == 200 ? true : false
         end
 
         def get_extended_attributes(folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -134,9 +137,9 @@ module Aspose
           str_uri = "#{@base_uri}/extendedAttributes/#{attribute_id}"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-          JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json = JSON.parse(RestClient.delete(signed_str_uri, {:accept=>'application/json'}))
+          json['Code'] == 200 ? true : false
         end
-
       end
     end
   end
