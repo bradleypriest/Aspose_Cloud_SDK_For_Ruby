@@ -27,6 +27,6 @@ class ConverterTests < Test::Unit::TestCase
       converter.convert(save_format='pdf')
     end
 
-    assert_equal true, File.exist?('../Output/test_tasks.mpp.pdf')
+    assert_equal true, File.exist?('../Output/test_tasks.pdf')
   end
 end
