@@ -1,10 +1,11 @@
-require 'test/unit'
-require_relative '../lib/asposecloud'
 
-class TasksTests < Test::Unit::TestCase
+require 'test/unit'
+require_relative '../../lib/asposecloud'
+
+class ConverterTests < Test::Unit::TestCase
 
   def setup
-    file = File.read('setup.json')
+    file = File.read('../setup.json')
     data = JSON.parse(file)
 
     Aspose::Cloud::Common::AsposeApp.app_key = data['app_key']
@@ -13,18 +14,19 @@ class TasksTests < Test::Unit::TestCase
     Aspose::Cloud::Common::Product.set_base_product_uri(data['product_uri'])
   end
 
-  def test_convert_storage_file
+  # Convert Project Data to Other Formats
+  def test_convert
     # Create Object of folder class
     folder = Aspose::Cloud::AsposeStorage::Folder.new
-    response = folder.upload_file './Data/test_tasks.mpp'
+    response = folder.upload_file '../Data/test_tasks.mpp'
     assert_equal true, response
 
-    # Create object of pdf converter class
+    # Create object of converter class
     converter = Aspose::Cloud::Tasks::Converter.new('test_tasks.mpp')
     assert_nothing_thrown 'Error' do
-      converter.convert('pdf')
+      converter.convert(save_format='pdf')
     end
 
-    assert_equal true, File.exist?('./Output/test_tasks.pdf')
+    assert_equal true, File.exist?('../Output/test_tasks.mpp.pdf')
   end
 end
