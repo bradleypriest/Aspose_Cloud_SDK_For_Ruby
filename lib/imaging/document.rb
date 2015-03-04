@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Imaging
@@ -35,6 +18,13 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))
         end
 
+=begin
+  Update BMP Image Properties
+  @param number bits_per_px Color depth.
+  @param number h_resolution New horizontal resolution.
+  @param number v_resolution New vertical resolution.
+  @param string output_path Path to updated file.
+=end
         def update_bmp_properties(bits_per_px, h_resolution, v_resolution, output_path,
                                   folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/bmp"
@@ -56,6 +46,13 @@ module Aspose
           valid_output
         end
 
+=begin
+  Update BMP Image Properties without Storage
+  @param number input_file_path Path of the input file.
+  @param number bits_per_px Color depth.
+  @param number h_resolution New horizontal resolution.
+  @param string v_resolution New vertical resolution.
+=end
         def update_bmp_properties_local(input_file_path, bits_per_px, h_resolution, v_resolution,
                                   folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/bmp"
@@ -76,6 +73,13 @@ module Aspose
           valid_output
         end
 
+=begin
+  Update GIF Image Properties
+  @param number bg_color_index Index of the background color.
+  @param number px_aspect_ratio Pixel aspect ratio. 
+  @param boolean interlaced Specifies if image is interlaced.
+  @param string output_path Path to updated file.
+=end
         def update_gif_properties(bg_color_index, px_aspect_ratio, interlaced, output_path,
                                   folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/gif"
@@ -97,6 +101,13 @@ module Aspose
           valid_output
         end
 
+=begin
+  Update GIF Image Properties without Storage
+  @param string input_file_path Path of the input file.
+  @param number bg_color_index Index of the background color.
+  @param number px_aspect_ratio Pixel aspect ratio. 
+  @param boolean interlaced Specifies if image is interlaced.
+=end
         def update_gif_properties_local(input_file_path, bg_color_index, px_aspect_ratio, interlaced,
                                         folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/gif"
@@ -117,6 +128,12 @@ module Aspose
           valid_output
         end
 
+=begin
+  Update JPG Image Properties
+  @param number quality Quality of image. From 0 to 100
+  @param string compression_type Compression type. 
+  @param string output_path Path to updated file.
+=end
         def update_jpg_properties(quality, compression_type, output_path,
                                   folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/jpg"
@@ -137,6 +154,12 @@ module Aspose
           valid_output
         end
 
+=begin
+  Update JPG Image Properties without Storage
+  @param string input_file_path Path of the file.
+  @param number quality Quality of image. From 0 to 100
+  @param string compression_type Compression type. 
+=end
         def update_jpg_properties_local(input_file_path, quality, compression_type,
                                         folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/jpg"
@@ -156,6 +179,16 @@ module Aspose
           valid_output
         end
 
+=begin
+  Update TIFF Image Properties
+  @param string compression Type of the compression.
+  @param string resolution_unit Resolution unit: none, inch, centimeter.
+  @param number new_width New image width.
+  @param number new_height New image height.
+  @param number horizontal_resolution Horizontal resolution.
+  @param number vertical_resolution Vertical resolution.
+  @param string output_path Path to updated file.
+=end
         def update_tiff_properties(compression, resolution_unit, new_width, new_height, horizontal_resolution, vertical_resolution, output_path,
                                   folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/tiff"
@@ -180,6 +213,15 @@ module Aspose
           valid_output
         end
 
+=begin
+  Update TIFF Image Properties without Storage
+  @param string input_file_path Path of the input file.
+  @param string resolution_unit Resolution unit: none, inch, centimeter.
+  @param number new_width New image width.
+  @param number new_height New image height.
+  @param number horizontal_resolution Horizontal resolution.
+  @param number vertical_resolution Vertical resolution.
+=end
         def update_tiff_properties_local(input_file_path, resolution_unit, new_width, new_height, horizontal_resolution, vertical_resolution, output_path,
                                          folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/tiff"
@@ -203,6 +245,12 @@ module Aspose
           valid_output
         end
 
+=begin
+  Update PSD Image Properties
+  @param number channels_count Count of channels.
+  @param string compression_method Compression method.
+  @param string output_path Path to updated file.
+=end
         def update_psd_properties(channels_count, compression_method, output_path,
                                   folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/psd"
@@ -223,6 +271,12 @@ puts signed_str_uri
           valid_output
         end
 
+=begin
+  Update PSD Image Properties without Storage
+  @param string input_file_path Path of the input file.
+  @param number channels_count Count of channels.
+  @param string compression_method Compression method.
+=end
         def update_psd_properties_local(input_file_path, channels_count, compression_method,
                                         folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/psd"
@@ -241,7 +295,6 @@ puts signed_str_uri
           end
           valid_output
         end
-
       end
     end
   end

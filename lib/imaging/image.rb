@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Imaging
@@ -25,6 +8,14 @@ module Aspose
           @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/#{@filename}"
         end
 
+=begin
+  Resize Image without Storage
+  @param string input_file_path Path of the input file.
+  @param number new_width New width of the image.
+  @param number new_height New height of the image.
+  @param string output_filename Name of the output file.
+  @param string save_format Output file format.
+=end
         def resize_image(input_file_path, new_width, new_height, output_filename, save_format)
           raise 'input_file_path not specified.' if input_file_path.empty?
           raise 'output_filename not specified.' if output_filename.empty?
@@ -47,9 +38,17 @@ module Aspose
           valid_output
         end
 
-
+=begin
+  Crop Image with Format Change
+  @param number x X position of start point for cropping rectangle.
+  @param number y Y position of start point for cropping rectangle.
+  @param number width New width of the image.
+  @param number height New height of the image.
+  @param string output_path Name of the output file.
+  @param string save_format Output file format.
+=end
         def crop_image(x, y, width, height, output_path, save_format)
-          raise 'input_file_path not specified.' if input_file_path.empty?
+          raise 'output_path not specified.' if output_path.empty?
           raise 'save_format not specified.' if save_format.empty?
 
           str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/#{@filename}/crop"
@@ -73,7 +72,12 @@ module Aspose
           valid_output
         end
 
-
+=begin
+  RotateFlip Image on Storage
+  @param string method RotateFlip method.
+  @param string output_path Name of the output file.
+  @param string save_format Output file format.
+=end
         def rotate_image(method, output_path, save_format)
 
           str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/#{@filename}/rotateflip"
@@ -94,6 +98,10 @@ module Aspose
           valid_output
         end
 
+=begin
+  Merge Tiff Images 
+  @param string append_file Name of the file.
+=end
         def append_tiff(append_file)
           raise 'append_file not specified.' if append_file.empty?
 
@@ -104,7 +112,6 @@ module Aspose
           json = JSON.parse(response_stream)
           json['Code'] == 200 ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename) : nil
         end
-
       end
     end
   end

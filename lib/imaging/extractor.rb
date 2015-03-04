@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Imaging
@@ -25,6 +8,10 @@ module Aspose
           @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/imaging/#{@filename}"
         end
 
+=begin
+  Get TIFF Frame Properties
+  @param number frame_id ID of the frame.
+=end
         def get_tiff_frame_properties(frame_id, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'frame_id not specified.' if frame_id.nil?
 
@@ -53,6 +40,13 @@ module Aspose
           valid_output
         end
 
+=begin
+  Resize a TIFF Frame
+  @param number frame_id ID of the frame.
+  @param number new_width New width of the frame.
+  @param number new_height New height of the frame.
+  @param string output_filename Name of the output file.
+=end
         def resize_frame(frame_id, new_width, new_height, output_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'frame_id not specified.' if frame_id.nil?
           raise 'new_width not specified.' if new_width.nil?
@@ -73,6 +67,15 @@ module Aspose
           valid_output
         end
 
+=begin
+  Crop a TIFF Frame
+  @param number frame_id ID of the frame.
+  @param number x_position X position of start point for cropping rectangle.
+  @param number y_position Y position of start point for cropping rectangle.
+  @param number rect_width New width of the scaled image.
+  @param number rect_height New height of the scaled image.
+  @param string output_filename Name of the output file.
+=end
         def crop_frame(frame_id, x_position, y_position, rect_width, rect_height, output_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'frame_id not specified.' if frame_id.nil?
           raise 'x_position not specified.' if x_position.nil?
@@ -95,6 +98,12 @@ module Aspose
           valid_output
         end
 
+=begin
+  RotateFlip a TIFF Frame
+  @param number frame_id ID of the frame.
+  @param string rotate_flip_method RotateFlip method.
+  @param string output_filename Name of the output file.
+=end
         def rotate_frame(frame_id, rotate_flip_method, output_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'frame_id not specified.' if frame_id.nil?
           raise 'rotate_flip_method not specified.' if rotate_flip_method.empty?
@@ -114,6 +123,18 @@ module Aspose
           valid_output
         end
 
+=begin
+  Manipulate a Frame and Save the Modified Frame Along with Unmodified Frames 
+  @param number frame_id ID of the frame.
+  @param string rotate_flip_method RotateFlip method.
+  @param number rect_width New width of the scaled image.
+  @param number rect_height New height of the scaled image.
+  @param number x_position X position of start point for cropping rectangle.
+  @param number y_position Y position of start point for cropping rectangle.
+  @param number rect_width Width of cropping rectangle.
+  @param number rect_height Height of cropping rectangle.
+  @param string output_filename Name of the output file.
+=end
         def manipulate_frame(frame_id, rotate_flip_method, new_width, new_height, x_position, y_position, rect_width, rect_height, output_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'frame_id not specified.' if frame_id.nil?
           raise 'rotate_flip_method not specified.' if rotate_flip_method.empty?
@@ -138,8 +159,6 @@ module Aspose
           end
           valid_output
         end
-
-
       end
     end
   end
