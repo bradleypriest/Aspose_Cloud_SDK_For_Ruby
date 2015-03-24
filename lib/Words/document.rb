@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Words
@@ -24,7 +7,11 @@ module Aspose
           raise 'filename not specified.' if filename.empty?
           @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/words/#{@filename}"
         end
-        
+
+=begin
+  Convert Word Documents to any Format with Additional Settings
+  @param xml options_xml Provide options in xml format.
+=end        
         def save_as(options_xml, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'options not specified.' if options_xml.empty?
 
@@ -40,20 +27,32 @@ module Aspose
           Aspose::Cloud::Common::Utils.download_file(json_response['SaveResult']['DestDocument']['Href'],
                                                      json_response['SaveResult']['DestDocument']['Href'],
                                                      folder_name,storage_name,storage_type)
-
         end
 
-        def split_document(from, to, save_format='pdf', folder_name = '', storage_type = 'Aspose', storage_name = '')
-          raise 'from page not specified.' if from.nil?
-          raise 'to page not specified.' if to.nil?
-
+=begin
+  Split pages to new format
+  @param number from The start page number for splitting.
+  @param number to The last page number for splitting.
+  @param string save_format Return file format.
+=end
+        def split_document(from='', to='', save_format='pdf', folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/split"
-          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri, {:from=>from, :to=>to, :format=>save_format})
+          qry = Hash.new
+          qry[:from] = from
+          qry[:to] = to
+          qry[:format] = save_format
+
+          str_uri = Aspose::Cloud::Common::Utils.build_uri(str_uri, qry)
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          
           JSON.parse(RestClient.post(signed_str_uri, nil, {:content_type=>:json, :accept=>'application/json'}))['SplitResult']
         end
 
+=begin
+  Extract Page Setup Information from a Word Document
+  @param number section_index Index of the section.
+=end
         def get_page_setup(section_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'section_index not specified.' if section_index.nil?
 
@@ -63,6 +62,11 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['PageSetup']
         end
 
+=begin 
+  Update Page Setup of a Section in a Word Document 
+  @param number section_index Index of the section.
+  @param xml options_xml Options to update.
+=end
         def update_page_setup(section_index, options_xml, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'section_index not specified.' if section_index.nil?
           raise 'options_xml not specified.' if options_xml.empty?
@@ -73,12 +77,10 @@ module Aspose
           JSON.parse(RestClient.post(signed_str_uri, options_xml, {:content_type=>'application/xml', :accept=>'application/json'}))['PageSetup']
         end
 
-
 =begin
   Appends a list of documents to this one.
-  @param string append_docs
-  @param import_format_modes
-  @param source_folder
+  @param string append_docs Name of the file.
+  @param import_format_modes Specify formatting modes.
 =end
         def append_document(append_docs, import_format_modes, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'append_docs not specified.' if append_docs.empty?
@@ -99,7 +101,7 @@ module Aspose
         end
 
 =begin
-   Get Resource Properties information like document source format, IsEncrypted, IsSigned and document properties   
+  Get Resource Properties information like document source format, IsEncrypted, IsSigned and document properties   
 =end
 
         def get_document_info(folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -110,7 +112,7 @@ module Aspose
 
 =begin
    Get Resource Properties information like document source format, IsEncrypted, IsSigned and document properties
-   @param string property_name
+   @param string property_name Name of the property.
 =end
         def get_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'property_name not specified.' if property_name.empty?
@@ -123,8 +125,8 @@ module Aspose
 
 =begin
    Set document property
-   @param string property_name
-   @param string property_value
+   @param string property_name Name of the property.
+   @param string property_value Value of the property.
 =end
         def set_property(property_name, property_value, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'property_name not specified.' if property_name.empty?
@@ -139,8 +141,8 @@ module Aspose
         end
 
 =begin
-   Delete a document property
-   @param string property_name
+  Delete a document property
+  @param string property_name Name of the property.
 =end
         def delete_property(property_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'property_name not specified.' if property_name.empty?
@@ -152,7 +154,7 @@ module Aspose
         end
 
 =begin
-   Get Document's properties
+  Get Document's properties
 =end
         def get_properties(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/documentProperties"
@@ -162,7 +164,7 @@ module Aspose
         end
 
 =begin
-   Get the Current Protection of the Word document
+  Get the Current Protection of the Word document
 =end
         def get_protection(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/protection"
@@ -172,7 +174,9 @@ module Aspose
         end
 
 =begin
-   Protect a Word Document
+  Protect a Word Document
+  @param string password Document protection password.
+  @param string protection_type Document protection type.
 =end
         def protect_document(password, protection_type = 'AllowOnlyComments', folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'password not specified.' if password.empty?
@@ -190,7 +194,32 @@ module Aspose
         end
 
 =begin
-   Modify Protection of the Word Document
+  Unprotect a Word Document
+  @param string password Document protection password.
+  @param string protection_type Document protection type.
+=end
+        def unprotect_document(password, protection_type, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'password not specified.' if password.empty?
+          raise 'protection_type not specified.' if protection_type.empty?
+
+          str_uri = "#{@base_uri}/protection"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          data = Hash['Password' => password, 'ProtectionType' => protection_type]
+          json_data = JSON.generate(data)
+
+          #response_stream = RestClient.put(signed_str_uri, json_data, {:content_type=>:json, :accept=>'application/json'})
+          response_stream = Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'DELETE','JSON',json_data)
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+=begin
+  Modify Protection of the Word Document
+  @param string old_password Current document protection password.
+  @param string new_password New document protection password.
+  @param string protection_type Document protection type.
 =end
         def update_protection(old_password, new_password, protection_type = 'AllowOnlyComments', folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'old_password not specified.' if old_password.empty?
@@ -209,7 +238,7 @@ module Aspose
         end
 
 =begin
-   Get all Hyperlinks from a Word
+  Get all Hyperlinks from a Word
 =end
         def get_hyperlinks(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/hyperlinks"
@@ -219,7 +248,8 @@ module Aspose
         end
 
 =begin
-   Get a Particular Hyperlink from a Word
+  Get a Particular Hyperlink from a Word
+  @param number hyperlink_index Index of the hyperlink.
 =end
         def get_hyperlink(hyperlink_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'Hyperlink index not provided.' if hyperlink_index.nil?
@@ -231,7 +261,7 @@ module Aspose
         end
 
 =begin
-   Get Hyperlinks Count from a Word
+  Get Hyperlinks Count from a Word
 =end
         def get_hyperlinks_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/hyperlinks"
@@ -243,7 +273,7 @@ module Aspose
         end
 
 =begin
-   Get all Bookmarks from a Word
+  Get all Bookmarks from a Word
 =end
         def get_bookmarks(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/bookmarks"
@@ -253,7 +283,8 @@ module Aspose
         end
 
 =begin
-   Get a Particular Bookmark from a Word
+  Get a Particular Bookmark from a Word
+  @param string bookmark_name Name of the bookmark.
 =end
         def get_bookmark(bookmark_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'Bookmark name not specified.' if bookmark_name.empty?
@@ -265,7 +296,7 @@ module Aspose
         end
 
 =begin
-   Get Bookmarks Count from a Word
+  Get Bookmarks Count from a Word
 =end
         def get_bookmarks_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/bookmarks"
@@ -277,7 +308,27 @@ module Aspose
         end
 
 =begin
-   Remove all Headers and Footers
+  Update Bookmark Text of a Word
+  @param string bookmark_name Name of the bookmark.
+  @param string bookmark_text New text of the bookmark.
+=end
+        def update_bookmark(bookmark_name, bookmark_text, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'bookmark_name not specified.' if bookmark_name.empty?
+          raise 'bookmark_text not specified.' if bookmark_text.empty?
+
+          str_uri = "#{@base_uri}/bookmarks/#{bookmark_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          
+          json_data = JSON.generate({ "Text" => "#{bookmark_text}" })          
+          
+          response = Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'POST','JSON',json_data)
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Bookmark'] : nil
+        end
+
+=begin
+  Remove all Headers and Footers
 =end
         def delete_headers_footers(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/headersFooters"
@@ -287,7 +338,7 @@ module Aspose
         end
 
 =begin
-   Accept All Tracking Changes in the Document
+  Accept All Tracking Changes in the Document
 =end
         def accept_tracking_changes(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/revisions/acceptAll"
@@ -300,7 +351,7 @@ module Aspose
         end
 
 =begin
-   Reject All Tracking Changes in the Document
+  Reject All Tracking Changes in the Document
 =end
         def reject_tracking_changes(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/revisions/rejectAll"
@@ -313,13 +364,15 @@ module Aspose
         end
 
 =begin
-   Insert Page Number Field into the Document
+  Insert Page Number Field into the Document
+  @param string alignment Alignment of page number.
+  @param string format Specify format.
+  @param boolean is_top
+  @param boolean set_page_number_on_first_page
 =end
         def insert_page_number(alignment, format, is_top = false, set_page_number_on_first_page = false, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'alignment not specified.' if alignment.empty?
           raise 'format not specified.' if format.empty?
-          #raise 'is_top not specified.' if is_top.empty?
-          #raise 'set_page_number_on_first_page not specified.' if set_page_number_on_first_page.empty?
 
           str_uri = "#{@base_uri}/insertPageNumbers"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
@@ -334,7 +387,7 @@ module Aspose
         end
 
 =begin
-   Update All Fields in the World Document
+  Update All Fields in the World Document
 =end
         def update_fields(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/updateFields"
@@ -345,6 +398,27 @@ module Aspose
           json['Code'] == 200 ? true : false
         end
 
+=begin
+  Update Font of a Run in a Word Document
+  @param number para_id ID of the paragraph.
+  @param number run_index Index of the paragraph run.
+  @param string font_name Name of the font.
+=end
+        def update_paragraph_run_font(para_id, run_index, font_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'para_id not specified.' if para_id.nil?
+          raise 'run_index not specified.' if run_index.nil?
+          raise 'font_name not specified.' if font_name.empty?
+
+          str_uri = "#{@base_uri}/paragraphs/#{para_id}/runs/run_index/font"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          str_xml = "<Font><Name>#{font_name}</Name></Font>"
+
+          response = RestClient.post(signed_str_uri, str_xml, {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Font'] : false
+        end        
       end
     end
   end

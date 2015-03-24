@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Words
@@ -25,6 +8,10 @@ module Aspose
           @base_uri =  Aspose::Cloud::Common::Product.product_uri + '/words/' + @filename
         end
 
+=begin
+  Convert Word to Images, Multipage TIFF, HTML, PDF and other File Format using Cloud Storage
+  @param string save_format Return file format.
+=end
         def convert(save_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'save_format not specified.' if save_format.empty?
 
@@ -43,6 +30,12 @@ module Aspose
           end
         end
 
+=begin
+  Convert Word to other File Formats without using the Cloud Storage
+  @param string input_file_path Path of the input file.
+  @param string output_filename Name of the return file.
+  @param string save_format Return file format.
+=end
         def convert_local_file(input_file_path, output_filename, save_format)
           raise 'input_file_path not specified.' if input_file_path.empty?
           raise 'output_filename not specified.' if output_filename.empty?
@@ -60,6 +53,26 @@ module Aspose
             Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
           end
           valid_output
+        end
+
+=begin
+  Convert web pages to Word Documents
+  @param xml str_xml Provide xml data.
+=end
+        def convert_web_pages(str_xml, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'str_xml not specified.' if str_xml.empty?
+ 
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/words/loadWebDocument"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response = Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'POST','XML',str_xml)
+          json = JSON.parse(response)
+          
+          if json['Code'] == 200
+              filename = json['SaveResult']['DestDocument']['Href']
+              Aspose::Cloud::Common::Utils.download_file(filename,filename,folder_name,storage_name,storage_type)
+          end
         end
       end
     end

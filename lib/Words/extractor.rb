@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module Words
@@ -25,6 +8,9 @@ module Aspose
           @base_uri = "#{Aspose::Cloud::Common::Product.product_uri}/words/#{@filename}"
         end
 
+=begin
+  Get a List of Sections from a Word Document
+=end
         def get_sections(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/sections"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
@@ -32,6 +18,10 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Sections']
         end
 
+=begin
+  Get a specific Section from a Word Document
+  @param number section_id ID of the section.
+=end
         def get_section(section_id, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'section_id not specified.' if section_id.nil?
 
@@ -41,6 +31,9 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Section']
         end
 
+=begin
+  Get a List of Paragraphs from a Word Document
+=end
         def get_paragraphs(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/paragraphs"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
@@ -48,6 +41,10 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Paragraphs']
         end
 
+=begin
+  Get a Paragraph from a Word Document
+  @param number para_id ID of the paragraph.
+=end
         def get_paragraph(para_id, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'para_id not specified.' if para_id.nil?
 
@@ -57,6 +54,11 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Paragraph']
         end
 
+=begin
+  Get a specific Run of a Paragraph from a Word Document
+  @param number para_id ID of the paragraph.
+  @param number run_index Index of the praragraph run.
+=end
         def get_paragraph_run(para_id, run_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'para_id not specified.' if para_id.nil?
           raise 'run_index not specified.' if run_index.nil?
@@ -67,6 +69,11 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Run']
         end
 
+=begin
+  Get Font Information of a Run from a Word Document
+  @param number para_id ID of the paragraph.
+  @param number run_index Index of the praragraph run.
+=end
         def get_paragraph_run_font(para_id, run_index, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'para_id not specified.' if para_id.nil?
           raise 'run_index not specified.' if run_index.nil?
@@ -77,7 +84,9 @@ module Aspose
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['Font']
         end
 
-
+=begin
+  Get All Merge Field Names from a Word Document
+=end
         def get_mail_merge_fields(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/mailMergeFieldNames"
           str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
@@ -86,7 +95,7 @@ module Aspose
         end
 
 =begin
-   Gets Text items list from document
+  Gets Text items list from document
 =end
         def get_text(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/textItems"
@@ -96,9 +105,9 @@ module Aspose
         end
 
 =begin
-   Get the OLE drawing object from document
-   @param number index
-   @param string output_format
+  Get the OLE drawing object from document
+  @param number index Index of he OLE object.
+  @param string ole_format Return file format.
 =end
 
         def get_ole_data(ole_index, ole_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -116,9 +125,9 @@ module Aspose
         end
 
 =begin
-   Get the Image drawing object from document
-   @param number index
-   @param string render_format
+  Get the Image drawing object from document
+  @param number image_index Index of the image.
+  @param string image_format Return image format.
 =end
         def get_image_data(image_index, image_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'image_index not specified.' if image_index.nil?
@@ -135,9 +144,9 @@ module Aspose
         end
 
 =begin
-   Convert drawing object to image
-   @param number index
-   @param string render_format
+  Convert drawing object to image
+  @param number object_index Index of the object.
+  @param string render_format Return file format.
 =end
         def convert_drawing_object(object_index, render_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'object_index not specified.' if object_index.nil?
@@ -154,7 +163,7 @@ module Aspose
         end
 
 =begin
-   Get the List of drawing object from document	
+  Get the List of drawing object from document	
 =end
         def get_drawing_object_list(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/drawingObjects"
@@ -164,9 +173,9 @@ module Aspose
         end
 
 =begin
-   Get the drawing object from document	
-   @param string object_uri
-   @param string output_path
+  Get the drawing object from document	
+  @param string object_uri URI of the object.
+  @param string output_path Path of the output file.
 =end
 
         def get_drawing_object(object_uri, output_path, folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -197,8 +206,8 @@ module Aspose
         end
 
 =begin
-   Get the List of drawing object from document
-   @param string output_path
+  Get the List of drawing object from document
+  @param string output_path Path of the output file.
 =end
         def get_drawing_objects(output_path, folder_name = '', storage_type = 'Aspose', storage_name = '')
           raise 'output_path not specified.' if output_path.empty?
@@ -209,7 +218,7 @@ module Aspose
         end
 
 =begin
-   Get Word and Paragraph Count from Document
+  Get Word and Paragraph Count from Document
 =end
         def get_stats(folder_name = '', storage_type = 'Aspose', storage_name = '')
           str_uri = "#{@base_uri}/statistics"
@@ -217,7 +226,6 @@ module Aspose
           signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
           JSON.parse(RestClient.get(signed_str_uri, {:accept=>'application/json'}))['StatData']
         end
-
       end
     end
   end
