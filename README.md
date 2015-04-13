@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/asposecloud.svg)](http://badge.fury.io/rb/asposecloud)
 #Aspose Cloud SDK for Ruby Repository
 
 This repository contains Aspose Cloud SDK for Ruby source code. This SDK allows you to work with Aspose REST API in your Ruby applications quickly and easily. 
