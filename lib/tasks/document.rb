@@ -85,6 +85,34 @@ module Aspose
         end
 
 =begin
+  Add a Task Link to Project
+  @param string link URL of the link.
+  @param number index 
+  @param number predecessor_uid Predecessor UID.
+  @param number successor_uid  Successor UID.
+  @param string link_type Type of the link.
+  @param number lag
+  @param string lag_format
+=end
+        def add_link(link, index, predecessor_uid, successor_uid, link_type, lag, lag_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'link not specified.' if link.empty?
+          raise 'index not specified.' if index.nil?
+          raise 'predecessor_uid not specified.' if predecessor_uid.nil?
+          raise 'successor_uid not specified.' if successor_uid.nil?
+          raise 'link_type not specified.' if link_type.empty?
+          raise 'lag not specified.' if lag.nil?
+          raise 'lag_format not specified.' if lag_format.empty?
+
+          data = { :Link=> link, :Index=> index, :PredecessorUid=> predecessor_uid, :SuccessorUid=> successor_uid, :LinkType=> link_type, :Lag=> lag, :LagFormat=> lag_format }
+          json_data = data.to_json
+           
+          str_uri = "#{@base_uri}/taskLinks"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          JSON.parse(Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'POST','JSON',json_data))['Code'] == 200 ? true : false
+        end
+
+=begin
   Delete a Task from Project
   @param number link_index The index of the Link.
 =end

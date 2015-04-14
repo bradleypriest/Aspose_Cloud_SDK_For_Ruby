@@ -56,6 +56,13 @@ class DocumentTests < Test::Unit::TestCase
     assert_instance_of(Array, response)
   end
 
+  # Add a Task Link to Project
+  def test_add_link
+    document = Aspose::Cloud::Tasks::Document.new('test_tasks.mpp')
+    response = document.add_link(link='NewProductDev.mpp/taskLinks/1', index=1, predecessor_uid=1, successor_uid=2, link_type='StartToStart', lag=0, lag_format='Day')
+    assert_equal true, response
+  end
+
   # Delete a Task Link
   def test_delete_link
     document = Aspose::Cloud::Tasks::Document.new('test_tasks.mpp')
@@ -103,5 +110,5 @@ class DocumentTests < Test::Unit::TestCase
     document = Aspose::Cloud::Tasks::Document.new('test_tasks.mpp')
     response = document.delete_extended_attribute(attribute_id=1)
     assert_equal true, response
-  end  
+  end 
 end
