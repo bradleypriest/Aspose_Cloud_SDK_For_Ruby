@@ -43,4 +43,13 @@ class DocumentTests < Test::Unit::TestCase
 
     assert_equal true, File.exist?('../Output/readme.txt')
   end
+
+  def test_add_attachment
+    document = Aspose::Cloud::Email::Document.new('email_test.eml')
+    assert_nothing_thrown 'Error' do
+      document.add_attachment(attachment_name='watermark.png')
+    end
+
+    assert_equal true, File.exist?('../Output/email_test.eml')
+  end
 end

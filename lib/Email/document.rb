@@ -57,6 +57,25 @@ module Aspose
           end
           valid_output
         end
+
+=begin
+  Add email attachment
+  @param string attachment_name Name of the attachment.
+=end
+        def add_attachment(attachment_name, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'attachment_name not specified.' if attachment_name.empty?
+
+          str_uri = "#{@base_uri}/attachments/#{attachment_name}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response_stream = RestClient.post(signed_str_uri, '', {:accept=>'application/json'})
+          
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          if valid_output.empty?
+             Aspose::Cloud::Common::Utils.download_file(@filename,@filename)
+          end
+          valid_output
+        end
       end
     end
   end
