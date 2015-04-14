@@ -107,6 +107,22 @@ module Aspose
         end
 
 =begin
+  Merge Selected Slides of PowerPoint Presentations
+  @param xml presentation_list
+=end
+        def merge_selected_slides(presentation_list, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'presentation_list not specified.' if presentation_list.empty?
+
+          str_uri = "#{@base_uri}/merge"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response = RestClient.put(signed_str_uri, presentation_list, {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Document'] : nil
+        end
+
+=begin
   Finds the slide count of the specified PowerPoint document
 =end
         def get_slide_count(folder_name = '', storage_type = 'Aspose', storage_name = '')
@@ -305,6 +321,22 @@ module Aspose
           output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(output_filename)}_#{slide_number}.#{output_format}"
           valid_output.empty? ? Aspose::Cloud::Common::Utils.save_file(response_stream,output_path) : valid_output
         end
+
+=begin
+  Get Aspect Ratio of a PowerPoint Slide
+  @param number slide_number
+=end
+        def aspect_ratio(slide_number, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'slide_number not specified.' if slide_number <= 0
+
+          str_uri = "#{@base_uri}/slides/#{slide_number}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)          
+
+          response = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          json = JSON.parse(response)
+          json['Slide']['Width']/json['Slide']['Height']
+        end        
       end
     end
   end

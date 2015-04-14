@@ -47,4 +47,13 @@ class ConverterTests < Test::Unit::TestCase
 
     assert_equal true, File.exist?('../Output/output.pdf')
   end
+
+  def test_convert_with_additional_settings
+    slides_converter = Aspose::Cloud::Slides::Converter.new('test_convert_slide.pptx')
+    assert_nothing_thrown 'Error' do
+      slides_converter.convert_with_additional_settings(save_format = 'pdf', text_compression = 'Flat', embed_full_fonts = false, compliance ='Pdf15', jpeg_quality = 50, save_metafiles_as_png = false, pdf_password = '123456', embed_true_type_fonts_for_ascii = false)
+    end
+
+    assert_equal true, File.exist?('../Output/test_convert_slide.pdf')
+  end
 end

@@ -66,6 +66,20 @@ class DocumentTests < Test::Unit::TestCase
     assert_instance_of(Hash, response)
   end
 
+  # Merge Selected Slides of PowerPoint Presentations
+  def test_merge_selected_slides
+    document = Aspose::Cloud::Slides::Document.new('test_slides.pptx')
+    presentation_list = '<OrderedMergeRequest>
+                          <Presentation>
+                            <Path>demo.pptx</Path>
+                            <Slide>2</Slide>
+                            <Slide>1</Slide>
+                          </Presentation>
+                        </OrderedMergeRequest>'
+    response = document.merge_selected_slides(presentation_list)
+    assert_instance_of(Hash, response)
+  end
+
   # Finds the slide count of the specified PowerPoint document
   def test_get_slide_count
     document = Aspose::Cloud::Slides::Document.new('test_slides.pptx')
@@ -162,4 +176,12 @@ class DocumentTests < Test::Unit::TestCase
 
     assert_equal true, File.exist?('../Output/test_slides_1.tiff')
   end
+
+  # Get Aspect Ratio of a PowerPoint Slide
+  def test_aspect_ratio
+    document = Aspose::Cloud::Slides::Document.new('test_slides.pptx')
+    response = document.aspect_ratio(slide_number=1)
+    assert_equal true, response >= 0
+  end
+  
 end
