@@ -1,20 +1,3 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module AsposeStorage
@@ -28,9 +11,10 @@ module Aspose
           @str_uri_disc = Aspose::Cloud::Common::Product.product_uri + '/storage/disc/'
         end
 
-        # Uploads file from the local path to the remote folder.
-        # * :localFilePath represents full local file path and name
-        # * :remoteFolderPath represents remote folder relative to the root. Pass empty string for the root folder.		 
+=begin
+  Uploads file from the local path to the remote folder
+  @param string localFilePath represents full local file path and name.
+=end        		 
         def upload_file(local_file, remote_folder='', storage_type='Aspose', storage_name='')
           raise 'Local file not specified' if local_file.empty?
 
@@ -43,9 +27,9 @@ module Aspose
           response['Status'].eql? 'OK'
         end
 
-
-        # Retrieves Files and Folder information from a remote folder. The method returns an Array of AppFile objects.
-        # * :remoteFolderPath represents remote folder relative to the root. Pass empty string for the root folder.
+=begin
+  Retrieves Files and Folder information from a remote folder
+=end        
         def get_files(remote_folder_path='', storage_type='Aspose', storage_name='')
           str_uri = @str_uri_folder + remote_folder_path
           str_uri = str_uri[0..-2] if str_uri[-1].eql? '/'
@@ -57,7 +41,10 @@ module Aspose
           JSON.parse(response)['Files']
         end
 
-        # check if a file exists on the storage
+=begin
+  Check if a file exists on the storage
+  @param string filename Name of the file.
+=end
         def file_exists(filename, storage_type = 'Aspose', storage_name = '')
             raise('Filename cannot be empty') if filename.empty?
 
@@ -70,6 +57,10 @@ module Aspose
             JSON.parse(response_stream)['FileExist']['IsExist']
         end
 
+=begin
+  Delete a Particular File
+  @param string filename Name of the file.
+=end
         def delete_file(filename, storage_type = 'Aspose', storage_name = '')
             raise 'File name cannot be empty' if filename.empty?
 
@@ -82,6 +73,10 @@ module Aspose
             JSON.parse(response_stream)['Code'].eql? 200
         end
 
+=begin
+  Create a New Folder
+  @param string folder_name Name of the folder.
+=end
         def create_folder (folder_name, storage_type = 'Aspose', storage_name='')
             raise 'Folder name cannot be empty' if folder_name.empty?
             str_uri = @str_uri_folder + folder_name
@@ -92,6 +87,10 @@ module Aspose
             JSON.parse(response)['Code'].eql? 200
         end
 
+=begin
+  Delete a Particular Folder
+  @param string folder_name Name of the folder.
+=end
         def delete_folder (folder_name, storage_type = 'Aspose', storage_name='')
             raise 'Folder name cannot be empty' if folder_name.empty?
             str_uri = @str_uri_folder + folder_name
@@ -102,6 +101,9 @@ module Aspose
             JSON.parse(response)['Code'].eql? 200
         end
 
+=begin
+  Get Disk Usage
+=end
         def get_disc_usage (storage_type = 'Aspose', storage_name = '')
             str_uri = @str_uri_disc
             str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,'',storage_name,storage_type)
@@ -111,7 +113,10 @@ module Aspose
             JSON.parse(response)['DiscUsage']
         end
 
-        # Get file from storage
+=begin
+  Get file from storage
+  @param string file_name Name of the file.
+=end
         def get_file (file_name, storage_type = 'Aspose', storage_name = '')
             raise 'Filename cannot be empty' if file_name.empty?
 

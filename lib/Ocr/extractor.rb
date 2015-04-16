@@ -1,24 +1,18 @@
-# Copyright (c) Aspose 2002-2014. All Rights Reserved.
-#
-# LICENSE: This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see <http://opensource.org/licenses/gpl-3.0.html>;.
-#
-# @package Aspose_Cloud_SDK_For_Ruby
-# @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
-# @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
-
 module Aspose
   module Cloud
     module OCR
       class Extractor
+
+=begin
+  Extract OCR or HOCR Text from Images
+  @param string url URL of the document.
+  @param string language Language of document to recogniize.
+  @param boolean use_default_dictionaries Allows to correct text after recognition using default dictionaries.
+  @param number rectX X position of rectangle.
+  @param number rectY Y position of rectangle.
+  @param number rectWidth Width of rectangle.
+  @param number rectHeight Height of rectangle.
+=end        
         def extract_text(*args)
           case args.size
           when 2
@@ -83,7 +77,12 @@ module Aspose
           end
         end
 
-
+=begin
+  Extract OCR or HOCR Text from Images without using Storage
+  @param string local_file Path of the file.
+  @param string language Language of document to recogniize.
+  @param boolean use_default_dictionaries Allows to correct text after recognition using default dictionaries. 
+=end
         def extract_text_from_local_file(local_file,language,use_default_dictionaries)
             str_uri = Aspose::Cloud::Common::Product.product_uri + '/ocr/recognize?language=' + language.to_s + '&useDefaultDictionaries=' + use_default_dictionaries.to_s
             file_stream = File.binread(local_file)
@@ -92,10 +91,17 @@ module Aspose
             json = JSON.parse(response)
             return json
         end
+
+=begin
+  Extract OCR or HOCR Text from Image URL
+  @param string url URL of the document.
+  @param string language Language of document to recogniize.
+  @param boolean use_default_dictionaries Allows to correct text after recognition using default dictionaries. 
+=end
         def extract_text_from_url(url,language,use_default_dictionaries)
-            str_uri = Aspose::Cloud::Common::Product.product_uri + '/ocr/recognize?url=' + url + '&language=' + language + '&useDefaultDictionaries=' + use_default_dictionaries
+            str_uri = Aspose::Cloud::Common::Product.product_uri + '/ocr/recognize?url=' + url.to_s + '&language=' + language.to_s + '&useDefaultDictionaries=' + use_default_dictionaries.to_s
             signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
-            response = RestClient.post(signed_uri,:accept => 'application/json')
+            response = RestClient.post(signed_uri, '', {:accept => 'application/json'})
             json=JSON.parse(response)
             return json
         end
