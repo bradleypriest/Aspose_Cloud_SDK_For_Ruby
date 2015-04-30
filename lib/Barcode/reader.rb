@@ -135,6 +135,24 @@ module Aspose
           json = JSON.parse(response)
           json['Code'] == 200 ? json['Barcodes'] : nil
         end
+
+=begin
+  Read Barcodes by Applying Image Processing Algorithm
+  @param string symbology Type of barcode.
+  @param string barcodesCount Recognize specified count of barcodes.
+=end
+        def read_by_algorithm(symbology, algorithm)
+          raise 'Symbology not provided.' if symbology.empty?
+          raise 'algorithm not provided.' if algorithm.empty?
+
+          str_uri = "#{Aspose::Cloud::Common::Product.product_uri}/barcode/#{@filename}/recognize"
+          str_uri = "#{str_uri}?type=#{symbology}&BinarizationHints=#{algorithm}"
+
+          signed_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          response = RestClient.get(signed_uri, {:accept => 'application/json'})
+          json = JSON.parse(response)
+          json['Code'] == 200 ? json['Barcodes'] : nil
+        end
       end
     end
   end

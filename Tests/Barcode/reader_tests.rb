@@ -61,4 +61,10 @@ class ReaderTests < Test::Unit::TestCase
     response = reader.read_barcode_count(symbology='QR', barcodesCount=2)
     assert_instance_of(Array, response)
   end 
+
+  def test_read_by_algorithm
+    reader = Aspose::Cloud::Barcode::Reader.new('barcodeQR.png')
+    response = reader.read_by_algorithm(symbology='Code128', algorithm='MedianSmoothing')
+    assert_instance_of(Array, response)
+  end 
 end
