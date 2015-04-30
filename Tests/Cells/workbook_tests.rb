@@ -142,4 +142,26 @@ class WorkbookTests < Test::Unit::TestCase
     assert_equal true, File.exist?('../Output/test_cells_1.tiff')
     assert_equal true, File.exist?('../Output/test_cells_2.tiff')
   end
+
+  def test_save_as  
+    workbook = Aspose::Cloud::Cells::Workbook.new('test_cells.xlsx')
+    assert_nothing_thrown 'Error' do
+      str_xml = '<PdfSaveOptions>
+                  <desiredPPI>300</desiredPPI>
+                  <jpegQuality>70</jpegQuality>
+                  <OnePagePerSheet>true</OnePagePerSheet>
+                  <SaveFormat>Pdf</SaveFormat>
+                </PdfSaveOptions>'
+      response = workbook.save_as(str_xml, output_filename='saveas.pdf')
+    end
+    assert_equal true, File.exist?('../Output/saveas.pdf')
+  end
+
+  def test_autofit_rows    
+    workbook = Aspose::Cloud::Cells::Workbook.new('test_cells.xlsx')
+    assert_nothing_thrown 'Error' do
+      response = workbook.autofit_rows(save_format='pdf')
+    end
+    assert_equal true, File.exist?('../Output/test_cells.pdf')
+  end
 end

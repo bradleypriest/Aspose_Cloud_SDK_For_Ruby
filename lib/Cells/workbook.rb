@@ -250,7 +250,34 @@ module Aspose
             Aspose::Cloud::Common::Utils.save_file(response_stream,output_path)
             i += 1
           }
-        end       
+        end
+
+        def save_as(str_xml, output_filename, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'str_xml not specified.' if str_xml.empty?
+          raise 'output_filename not specified.' if output_filename.empty?
+
+          str_uri = "#{@base_uri}/saveAs?newfilename=#{output_filename}"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+          
+          response_stream = Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'POST','XML',str_xml)
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.download_file(output_filename,output_filename,folder_name,storage_name,storage_type) : valid_output
+        end
+
+        def autofit_rows(save_format, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'save_format not specified.' if save_format.empty?
+
+          str_uri = "#{@base_uri}?format=#{save_format}&isAutoFit=true"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response_stream = RestClient.get(signed_str_uri, {:accept=>'application/json'})
+          valid_output = Aspose::Cloud::Common::Utils.validate_output(response_stream)
+
+          output_path = "#{Aspose::Cloud::Common::AsposeApp.output_location}#{Aspose::Cloud::Common::Utils.get_filename(@filename)}.#{save_format}"
+          valid_output.empty? ? Aspose::Cloud::Common::Utils.save_file(response_stream,output_path) : valid_output
+        end  
       end
     end
   end
