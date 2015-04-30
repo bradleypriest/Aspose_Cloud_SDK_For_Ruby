@@ -99,6 +99,23 @@ module Aspose
         end
 
 =begin
+    Replaces multiple instances of old text with new text in a PDF file or a particular page
+    @param string str_xml Data in XML format.
+    @param number page_number Number of the page. 
+=end    
+        def replace_multiple_text(str_xml, page_number = 0, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'str_xml not specified.' if str_xml.empty?
+
+          str_uri = page_number > 0 ? "#{@base_uri}/pages/#{page_number}/replaceTextList" : "#{@base_uri}/replaceTextList"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response = Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'POST','XML',str_xml)
+          json = JSON.parse(response)
+          json['Status'] == 'OK' ? true : false
+        end        
+
+=begin
   Gets count of the segments in a fragment
   @param number pageNumber
   @param number fragmentNumber

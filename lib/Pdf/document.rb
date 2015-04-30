@@ -344,6 +344,20 @@ module Aspose
             Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type)
           end
         end
+
+        def add_signature(json_data, page_number = 0, folder_name = '', storage_type = 'Aspose', storage_name = '')
+          raise 'json_data not specified.' if json_data.empty?
+
+          str_uri = page_number > 0 ? "#{@base_uri}/pages/#{page_number}/sign" : "#{@base_uri}/sign"
+          str_uri = Aspose::Cloud::Common::Utils.append_storage(str_uri,folder_name,storage_name,storage_type)
+          signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
+
+          response = Aspose::Cloud::Common::Utils.process_command(signed_str_uri,'POST','JSON',json_data)
+          json = JSON.parse(response)
+          if json['Code'] == 200
+            Aspose::Cloud::Common::Utils.download_file(@filename,@filename,folder_name,storage_name,storage_type)
+          end  
+        end
       end
     end
   end

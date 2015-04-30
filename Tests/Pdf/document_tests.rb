@@ -254,5 +254,32 @@ class DocumentTests < Test::Unit::TestCase
       document.add_stamp(page_number=2, post_data)
     end
     assert_equal true, File.exist?('../Output/Test.pdf')
-  end    
+  end
+
+  # Sign PDF Documents
+  def test_add_signature
+    document = Aspose::Cloud::Pdf::Document.new('sign.pdf')
+    assert_nothing_thrown 'Error' do
+      json_data = '{
+                    "SignaturePath": "temp.pfx",
+                    "SignatureType": "PKCS7",
+                    "Password": "password",
+                    "Reason": "Success",
+                    "Contact": "test@mail.ru",
+                    "Location": "Ukraine",
+                    "Visible": true,
+                    "Rectangle": {
+                      "X": 100,
+                      "Y": 100,
+                      "Width": 400,
+                      "Height": 100
+                    },
+                    "FormFieldName": "Signature2",
+                    "Authority": "Sergey Smal",
+                    "Date": "1-1-2015"
+                  }'
+      document.add_signature(json_data, page_number=1)
+    end
+    assert_equal true, File.exist?('../Output/sign.pdf')
+  end
 end

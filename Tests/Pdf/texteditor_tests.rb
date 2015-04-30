@@ -56,10 +56,29 @@ class TextEditorTests < Test::Unit::TestCase
     assert_equal true, response
   end
 
+  # Replace Multiple Texts in a PDF file or a particular page
+  def test_replace_multiple_text
+    str_xml = '<TextReplaceListRequest>
+                <TextReplace>
+                  <OldValue>Kevin</OldValue>
+                  <NewValue>Mike</NewValue>
+                  <Regex>true</Regex>
+                </TextReplace>
+                <TextReplace>
+                  <OldValue>nick</OldValue>
+                  <NewValue>Cruise</NewValue>
+                  <Regex>false</Regex>
+                </TextReplace>
+              </TextReplaceListRequest>'
+    texteditor = Aspose::Cloud::Pdf::TextEditor.new('test_replace_text.pdf')
+    response = texteditor.replace_multiple_text(str_xml)
+    assert_equal true, response
+  end
+
   # Get count of the segments in a fragment
   def test_get_segment_count
     texteditor = Aspose::Cloud::Pdf::TextEditor.new('Test.pdf')
     response = texteditor.get_segment_count(page_number=1, fragment_number=1)
     assert_equal true, response>=0
-  end
+  end  
 end
