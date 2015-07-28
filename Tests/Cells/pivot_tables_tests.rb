@@ -22,14 +22,14 @@ class PivotTablesTests < Test::Unit::TestCase
   def test_add_a_pivot_table_into_worksheet
     pivot_table_obj = Aspose::Cloud::Cells::PivotTable.new('pivot-tables.xls', 'Sheet4')
     
-    createPivotTableRequest = Aspose::Cloud::Cells::CreatePivotTableRequest.new
-    createPivotTableRequest.name = "SalePivotTable"
-    createPivotTableRequest.source_data = "A1:F214"
-    createPivotTableRequest.dest_cell_name = "A1"
-    createPivotTableRequest.use_same_source = true
-    createPivotTableRequest.pivot_field_rows = [1]
-    createPivotTableRequest.pivot_field_columns = [1]
-    createPivotTableRequest.pivot_field_data = [1]
+    create_pivot_table_request = Aspose::Cloud::Cells::CreatePivotTableRequest.new
+    create_pivot_table_request.name = "SalePivotTable"
+    create_pivot_table_request.source_data = "A1:F214"
+    create_pivot_table_request.dest_cell_name = "A1"
+    create_pivot_table_request.use_same_source = true
+    create_pivot_table_request.pivot_field_rows = [1]
+    create_pivot_table_request.pivot_field_columns = [1]
+    create_pivot_table_request.pivot_field_data = [1]
 
     response = pivot_table_obj.add_a_pivot_table_into_worksheet(createPivotTableRequest)
     assert_instance_of(Hash, response)
