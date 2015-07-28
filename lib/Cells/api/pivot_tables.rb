@@ -71,7 +71,7 @@ module Aspose
 
 				def update_style_for_pivot_table(pivot_table_index, pivot_table_style_request)
 					request_json_string = pivot_table_style_request.to_json
-					#build URL
+					#Build URL
 					str_uri = "#{@base_uri}/pivottables/#{pivot_table_index}/FormatAll"
 					#sign URL
 					signed_str_uri = Aspose::Cloud::Common::Utils.sign(str_uri)
