@@ -19,7 +19,6 @@ class WorksheetTests < Test::Unit::TestCase
     response = worksheet.get_cells_list(offset=0, count=10)
     assert_instance_of(Array, response)
   end
-
   def test_get_row_list   
     worksheet = Aspose::Cloud::Cells::Worksheet.new('test_cells.xlsx', 'Sheet1')
     response = worksheet.get_row_list(offset=0, count=10)
