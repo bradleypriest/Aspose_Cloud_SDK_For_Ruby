@@ -3,6 +3,19 @@
 
 This repository contains Aspose Cloud SDK for Ruby source code. This SDK allows you to work with Aspose REST API in your Ruby applications quickly and easily. 
 
+## Installation
+
+Install the gem by running
+
+```ruby
+gem install asposecloud
+```
+
+or put it in your Gemfile and run `bundle install`
+
+```ruby
+gem "asposecloud"
+```
 
 ##What's included in this SDK repository?
 
