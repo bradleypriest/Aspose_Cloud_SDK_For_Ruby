@@ -15,9 +15,9 @@
 # @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
-require_relative 'aspose_storage'
-require_relative 'tasks/document'
-require_relative 'tasks/calendar'
-require_relative 'tasks/assignments'
-require_relative 'tasks/resources'
-require_relative 'tasks/converter'
+require 'aspose_storage'
+require 'tasks/document'
+require 'tasks/calendar'
+require 'tasks/assignments'
+require 'tasks/resources'
+require 'tasks/converter'

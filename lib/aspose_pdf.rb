@@ -15,9 +15,9 @@
 # @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
-require_relative 'aspose_storage'
-require_relative 'Pdf/converter'
-require_relative 'Pdf/extractor'
-require_relative 'Pdf/text_editor'
-require_relative 'Pdf/annotation_editor'
-require_relative 'Pdf/document'
+require 'aspose_storage'
+require 'Pdf/converter'
+require 'Pdf/extractor'
+require 'Pdf/text_editor'
+require 'Pdf/annotation_editor'
+require 'Pdf/document'

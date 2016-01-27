@@ -15,9 +15,9 @@
 # @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
-require_relative 'aspose_storage'
-require_relative 'Words/document'
-require_relative 'Words/converter'
-require_relative 'Words/builder'
-require_relative 'Words/extractor'
-require_relative 'Words/mail_merge'
+require 'aspose_storage'
+require 'Words/document'
+require 'Words/converter'
+require 'Words/builder'
+require 'Words/extractor'
+require 'Words/mail_merge'
