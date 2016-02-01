@@ -15,8 +15,8 @@
 # @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
-require_relative 'aspose_storage'
-require_relative 'imaging/converter'
-require_relative 'imaging/document'
-require_relative 'imaging/image'
-require_relative 'imaging/extractor'
+require 'aspose_storage'
+require 'imaging/converter'
+require 'imaging/document'
+require 'imaging/image'
+require 'imaging/extractor'

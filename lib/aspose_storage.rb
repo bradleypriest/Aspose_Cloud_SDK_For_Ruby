@@ -15,5 +15,5 @@
 # @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
-require_relative 'aspose_common'
-require_relative 'Storage/folder'
+require 'aspose_common'
+require 'Storage/folder'

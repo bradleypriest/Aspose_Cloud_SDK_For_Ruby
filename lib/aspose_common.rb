@@ -24,6 +24,6 @@ require 'uri'
 require 'rexml/document'
 
 # This module provide common classes and methods to be used by other SDK modules
-require_relative 'Common/product'
-require_relative 'Common/aspose_app'
-require_relative 'Common/utils'
+require 'Common/product'
+require 'Common/aspose_app'
+require 'Common/utils'

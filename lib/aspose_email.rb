@@ -15,6 +15,6 @@
 # @author  Assad Mahmood Qazi <assad.mahmood@aspose.com>
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
-require_relative 'aspose_storage'
-require_relative 'Email/converter'
-require_relative 'Email/document'
+require 'aspose_storage'
+require 'Email/converter'
+require 'Email/document'

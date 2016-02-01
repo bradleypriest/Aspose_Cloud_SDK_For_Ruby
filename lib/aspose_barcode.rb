@@ -16,6 +16,6 @@
 # @link    https://github.com/asposeforcloud/Aspose_Cloud_SDK_For_Ruby/tree/revamp
 
 require 'json'
-require_relative 'aspose_storage'
-require_relative 'Barcode/builder'
-require_relative 'Barcode/reader'
+require 'aspose_storage'
+require 'Barcode/builder'
+require 'Barcode/reader'
