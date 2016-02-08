@@ -1,3 +1,20 @@
+## IMPORTANT NOTICE
+This SDK is no longer updated because we have created a newer and much improved version of this SDK available at following product wise repositories
+* [Aspose.Storage Cloud SDK for Ruby](https://goo.gl/aE7YSn)
+* [Aspose.Words Cloud SDK for Ruby](https://goo.gl/8td5OF)
+* [Aspose.Cells Cloud SDK for Ruby](https://goo.gl/2k98jR)
+* [Aspose.Slides Cloud SDK for Ruby](https://goo.gl/9BC56C)
+* [Aspose.Pdf Cloud SDK for Ruby](https://goo.gl/epUKlH)
+* [Aspose.BarCode Cloud SDK for Ruby](https://goo.gl/PJfT5V)
+* [Aspose.Email Cloud SDK for Ruby](https://goo.gl/OfgMbY)
+* [Aspose.Tasks Cloud SDK for Ruby](https://goo.gl/OfgMbY)
+* [Aspose.Imaging Cloud SDK for Ruby](https://goo.gl/fh2Fjn)
+* [Aspose.OCR Cloud SDK for Ruby](https://goo.gl/5DvePC)
+
+You are kindly requested to try our new SDKs and then plan to migrate. We will be more than happy to help and assist you if you face any issues during or after migration. We will however continue to provide support to our existing customers for some time.
+
+---
+
 [![Gem Version](https://badge.fury.io/rb/asposecloud.svg)](http://badge.fury.io/rb/asposecloud)
 #Aspose Cloud SDK for Ruby Repository
 
